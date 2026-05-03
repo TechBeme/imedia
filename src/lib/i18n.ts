@@ -5,7 +5,10 @@ export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "pt-BR";
 
 export default getRequestConfig(async ({ locale }) => {
-    const safeLocale = locales.includes(locale as Locale) ? locale : defaultLocale;
+    let safeLocale: string = defaultLocale;
+    if (locale && locales.includes(locale as Locale)) {
+        safeLocale = locale;
+    }
 
     return {
         locale: safeLocale,
