@@ -1,3 +1,7 @@
+export function generateStaticParams() {
+    return [{ locale: "pt-BR" }, { locale: "en" }, { locale: "es" }];
+}
+
 export default function Test2Page() {
     return (
         <div>
