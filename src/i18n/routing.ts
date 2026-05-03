@@ -3,10 +3,10 @@ import { defineRouting } from "next-intl/routing";
 import { locales, defaultLocale } from "@/lib/i18n";
 
 export const routing = defineRouting({
-  locales,
-  defaultLocale,
-  localePrefix: "as-needed",
+    locales,
+    defaultLocale,
+    localePrefix: "as-needed",
 });
 
 export const { Link, redirect, usePathname, useRouter, getPathname } =
-  createNavigation(routing);
+    createNavigation(routing);

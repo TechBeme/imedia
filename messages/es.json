@@ -1,81 +1,81 @@
 {
-  "metadata": {
-    "title": "iMedia - Gestor de Redes Sociales",
-    "description": "Gestiona todas tus redes sociales en un solo lugar"
-  },
-  "nav": {
-    "dashboard": "Panel",
-    "accounts": "Cuentas",
-    "compose": "Crear Post",
-    "scheduled": "Programados",
-    "history": "Historial",
-    "analytics": "Analytics",
-    "media": "Medios",
-    "settings": "Configuracion",
-    "logout": "Cerrar sesion"
-  },
-  "auth": {
-    "login": "Iniciar sesion",
-    "register": "Crear cuenta",
-    "email": "Correo electronico",
-    "password": "Contrasena",
-    "name": "Nombre",
-    "forgotPassword": "Olvidaste tu contrasena?",
-    "noAccount": "No tienes cuenta?",
-    "hasAccount": "Ya tienes cuenta?",
-    "loginTitle": "Bienvenido de nuevo",
-    "loginSubtitle": "Inicia sesion para gestionar tus redes sociales",
-    "registerTitle": "Crear cuenta",
-    "registerSubtitle": "Empieza a gestionar tus redes sociales"
-  },
-  "dashboard": {
-    "title": "Panel",
-    "scheduledPosts": "Posts Programados",
-    "publishedToday": "Publicados Hoy",
-    "connectedAccounts": "Cuentas Conectadas",
-    "recentActivity": "Actividad Reciente",
-    "upcomingPosts": "Proximos Posts"
-  },
-  "accounts": {
-    "title": "Cuentas Conectadas",
-    "connect": "Conectar",
-    "connected": "Conectado",
-    "disconnect": "Desconectar",
-    "instagram": "Instagram",
-    "facebook": "Facebook",
-    "threads": "Threads",
-    "youtube": "YouTube",
-    "tiktok": "TikTok",
-    "x": "X (Twitter)"
-  },
-  "compose": {
-    "title": "Crear Post",
-    "placeholder": "Que quieres compartir?",
-    "selectPlatforms": "Selecciona las plataformas",
-    "addMedia": "Anadir medio",
-    "schedule": "Programar",
-    "publishNow": "Publicar ahora",
-    "saveDraft": "Guardar borrador"
-  },
-  "scheduled": {
-    "title": "Posts Programados",
-    "calendarView": "Calendario",
-    "listView": "Lista",
-    "cancel": "Cancelar",
-    "edit": "Editar",
-    "publishNow": "Publicar ahora"
-  },
-  "common": {
-    "loading": "Cargando...",
-    "save": "Guardar",
-    "cancel": "Cancelar",
-    "delete": "Eliminar",
-    "edit": "Editar",
-    "create": "Crear",
-    "search": "Buscar",
-    "filter": "Filtrar",
-    "noResults": "No se encontraron resultados",
-    "error": "Ocurrio un error",
-    "success": "Exito!"
-  }
+    "metadata": {
+        "title": "iMedia - Gestor de Redes Sociales",
+        "description": "Gestiona todas tus redes sociales en un solo lugar"
+    },
+    "nav": {
+        "dashboard": "Panel",
+        "accounts": "Cuentas",
+        "compose": "Crear Post",
+        "scheduled": "Programados",
+        "history": "Historial",
+        "analytics": "Analytics",
+        "media": "Medios",
+        "settings": "Configuracion",
+        "logout": "Cerrar sesion"
+    },
+    "auth": {
+        "login": "Iniciar sesion",
+        "register": "Crear cuenta",
+        "email": "Correo electronico",
+        "password": "Contrasena",
+        "name": "Nombre",
+        "forgotPassword": "Olvidaste tu contrasena?",
+        "noAccount": "No tienes cuenta?",
+        "hasAccount": "Ya tienes cuenta?",
+        "loginTitle": "Bienvenido de nuevo",
+        "loginSubtitle": "Inicia sesion para gestionar tus redes sociales",
+        "registerTitle": "Crear cuenta",
+        "registerSubtitle": "Empieza a gestionar tus redes sociales"
+    },
+    "dashboard": {
+        "title": "Panel",
+        "scheduledPosts": "Posts Programados",
+        "publishedToday": "Publicados Hoy",
+        "connectedAccounts": "Cuentas Conectadas",
+        "recentActivity": "Actividad Reciente",
+        "upcomingPosts": "Proximos Posts"
+    },
+    "accounts": {
+        "title": "Cuentas Conectadas",
+        "connect": "Conectar",
+        "connected": "Conectado",
+        "disconnect": "Desconectar",
+        "instagram": "Instagram",
+        "facebook": "Facebook",
+        "threads": "Threads",
+        "youtube": "YouTube",
+        "tiktok": "TikTok",
+        "x": "X (Twitter)"
+    },
+    "compose": {
+        "title": "Crear Post",
+        "placeholder": "Que quieres compartir?",
+        "selectPlatforms": "Selecciona las plataformas",
+        "addMedia": "Anadir medio",
+        "schedule": "Programar",
+        "publishNow": "Publicar ahora",
+        "saveDraft": "Guardar borrador"
+    },
+    "scheduled": {
+        "title": "Posts Programados",
+        "calendarView": "Calendario",
+        "listView": "Lista",
+        "cancel": "Cancelar",
+        "edit": "Editar",
+        "publishNow": "Publicar ahora"
+    },
+    "common": {
+        "loading": "Cargando...",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "delete": "Eliminar",
+        "edit": "Editar",
+        "create": "Crear",
+        "search": "Buscar",
+        "filter": "Filtrar",
+        "noResults": "No se encontraron resultados",
+        "error": "Ocurrio un error",
+        "success": "Exito!"
+    }
 }

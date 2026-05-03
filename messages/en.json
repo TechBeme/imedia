@@ -1,81 +1,81 @@
 {
-  "metadata": {
-    "title": "iMedia - Social Media Manager",
-    "description": "Manage all your social media in one place"
-  },
-  "nav": {
-    "dashboard": "Dashboard",
-    "accounts": "Accounts",
-    "compose": "Compose",
-    "scheduled": "Scheduled",
-    "history": "History",
-    "analytics": "Analytics",
-    "media": "Media",
-    "settings": "Settings",
-    "logout": "Logout"
-  },
-  "auth": {
-    "login": "Sign In",
-    "register": "Sign Up",
-    "email": "Email",
-    "password": "Password",
-    "name": "Name",
-    "forgotPassword": "Forgot password?",
-    "noAccount": "Don't have an account?",
-    "hasAccount": "Already have an account?",
-    "loginTitle": "Welcome back",
-    "loginSubtitle": "Sign in to manage your social media",
-    "registerTitle": "Create account",
-    "registerSubtitle": "Start managing your social media"
-  },
-  "dashboard": {
-    "title": "Dashboard",
-    "scheduledPosts": "Scheduled Posts",
-    "publishedToday": "Published Today",
-    "connectedAccounts": "Connected Accounts",
-    "recentActivity": "Recent Activity",
-    "upcomingPosts": "Upcoming Posts"
-  },
-  "accounts": {
-    "title": "Connected Accounts",
-    "connect": "Connect",
-    "connected": "Connected",
-    "disconnect": "Disconnect",
-    "instagram": "Instagram",
-    "facebook": "Facebook",
-    "threads": "Threads",
-    "youtube": "YouTube",
-    "tiktok": "TikTok",
-    "x": "X (Twitter)"
-  },
-  "compose": {
-    "title": "Create Post",
-    "placeholder": "What do you want to share?",
-    "selectPlatforms": "Select platforms",
-    "addMedia": "Add media",
-    "schedule": "Schedule",
-    "publishNow": "Publish now",
-    "saveDraft": "Save draft"
-  },
-  "scheduled": {
-    "title": "Scheduled Posts",
-    "calendarView": "Calendar",
-    "listView": "List",
-    "cancel": "Cancel",
-    "edit": "Edit",
-    "publishNow": "Publish now"
-  },
-  "common": {
-    "loading": "Loading...",
-    "save": "Save",
-    "cancel": "Cancel",
-    "delete": "Delete",
-    "edit": "Edit",
-    "create": "Create",
-    "search": "Search",
-    "filter": "Filter",
-    "noResults": "No results found",
-    "error": "An error occurred",
-    "success": "Success!"
-  }
+    "metadata": {
+        "title": "iMedia - Social Media Manager",
+        "description": "Manage all your social media in one place"
+    },
+    "nav": {
+        "dashboard": "Dashboard",
+        "accounts": "Accounts",
+        "compose": "Compose",
+        "scheduled": "Scheduled",
+        "history": "History",
+        "analytics": "Analytics",
+        "media": "Media",
+        "settings": "Settings",
+        "logout": "Logout"
+    },
+    "auth": {
+        "login": "Sign In",
+        "register": "Sign Up",
+        "email": "Email",
+        "password": "Password",
+        "name": "Name",
+        "forgotPassword": "Forgot password?",
+        "noAccount": "Don't have an account?",
+        "hasAccount": "Already have an account?",
+        "loginTitle": "Welcome back",
+        "loginSubtitle": "Sign in to manage your social media",
+        "registerTitle": "Create account",
+        "registerSubtitle": "Start managing your social media"
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "scheduledPosts": "Scheduled Posts",
+        "publishedToday": "Published Today",
+        "connectedAccounts": "Connected Accounts",
+        "recentActivity": "Recent Activity",
+        "upcomingPosts": "Upcoming Posts"
+    },
+    "accounts": {
+        "title": "Connected Accounts",
+        "connect": "Connect",
+        "connected": "Connected",
+        "disconnect": "Disconnect",
+        "instagram": "Instagram",
+        "facebook": "Facebook",
+        "threads": "Threads",
+        "youtube": "YouTube",
+        "tiktok": "TikTok",
+        "x": "X (Twitter)"
+    },
+    "compose": {
+        "title": "Create Post",
+        "placeholder": "What do you want to share?",
+        "selectPlatforms": "Select platforms",
+        "addMedia": "Add media",
+        "schedule": "Schedule",
+        "publishNow": "Publish now",
+        "saveDraft": "Save draft"
+    },
+    "scheduled": {
+        "title": "Scheduled Posts",
+        "calendarView": "Calendar",
+        "listView": "List",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "publishNow": "Publish now"
+    },
+    "common": {
+        "loading": "Loading...",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "create": "Create",
+        "search": "Search",
+        "filter": "Filter",
+        "noResults": "No results found",
+        "error": "An error occurred",
+        "success": "Success!"
+    }
 }
