@@ -1,7 +1,3 @@
-export function generateStaticParams() {
-    return [{ locale: "pt-BR" }, { locale: "en" }, { locale: "es" }];
-}
-
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
