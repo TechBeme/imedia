@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "title": "iMedia - Gerenciador de Redes Sociais",
+    "description": "Gerencie todas as suas redes sociais em um so lugar"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "accounts": "Contas",
+    "compose": "Criar Post",
+    "scheduled": "Agendados",
+    "history": "Historico",
+    "analytics": "Analytics",
+    "media": "Midias",
+    "settings": "Configuracoes",
+    "logout": "Sair"
+  },
+  "auth": {
+    "login": "Entrar",
+    "register": "Criar conta",
+    "email": "E-mail",
+    "password": "Senha",
+    "name": "Nome",
+    "forgotPassword": "Esqueceu a senha?",
+    "noAccount": "Nao tem conta?",
+    "hasAccount": "Ja tem conta?",
+    "loginTitle": "Bem-vindo de volta",
+    "loginSubtitle": "Entre para gerenciar suas redes sociais",
+    "registerTitle": "Criar conta",
+    "registerSubtitle": "Comece a gerenciar suas redes sociais"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "scheduledPosts": "Posts Agendados",
+    "publishedToday": "Publicados Hoje",
+    "connectedAccounts": "Contas Conectadas",
+    "recentActivity": "Atividade Recente",
+    "upcomingPosts": "Proximos Posts"
+  },
+  "accounts": {
+    "title": "Contas Conectadas",
+    "connect": "Conectar",
+    "connected": "Conectado",
+    "disconnect": "Desconectar",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "threads": "Threads",
+    "youtube": "YouTube",
+    "tiktok": "TikTok",
+    "x": "X (Twitter)"
+  },
+  "compose": {
+    "title": "Criar Post",
+    "placeholder": "O que voce quer compartilhar?",
+    "selectPlatforms": "Selecione as plataformas",
+    "addMedia": "Adicionar midia",
+    "schedule": "Agendar",
+    "publishNow": "Publicar agora",
+    "saveDraft": "Salvar rascunho"
+  },
+  "scheduled": {
+    "title": "Posts Agendados",
+    "calendarView": "Calendario",
+    "listView": "Lista",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "publishNow": "Publicar agora"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "noResults": "Nenhum resultado encontrado",
+    "error": "Ocorreu um erro",
+    "success": "Sucesso!"
+  }
+}
