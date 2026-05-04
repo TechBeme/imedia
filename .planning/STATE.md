@@ -1,21 +1,40 @@
 # Project State: iMedia
 
 **Last updated:** 2026-05-04
-**Current phase:** None — project initialization complete
-**Next action:** Approve roadmap, then run `/gsd-plan-phase 1`
+**Current phase:** Phase 1 — Foundation & Auth Hardening (COMPLETED)
+**Next action:** Start Phase 2 — Instagram Integration (Content Publishing)
 
 ## Project Reference
 
 See: `.planning/PROJECT.md` (updated 2026-05-04)
 
 **Core value:** The owner can compose once and publish or schedule everywhere — with full visibility into performance analytics and account health across all connected platforms.
-**Current focus:** Project initialization and planning
+**Current focus:** Phase 1 completed — all foundation infrastructure is production-ready
+
+## Phase 1 Completion Summary
+
+All 11 tasks completed successfully:
+
+| Task | Description | Status |
+|------|-------------|--------|
+| 1 | Token Encryption Utility (AES-256-GCM) | COMPLETED |
+| 2 | Platform Credentials CRUD API | COMPLETED |
+| 2b | Platform Credentials UI with i18n | COMPLETED |
+| 3 | Password Reset Flow | COMPLETED |
+| 4 | Rate Limiting (Upstash Redis) | COMPLETED |
+| 5 | Schema & Migrations | COMPLETED |
+| 6 | API Error Standardization | COMPLETED |
+| 7 | i18n Audit & Completion | COMPLETED |
+| 8 | Auth Guard Middleware | COMPLETED |
+| 9 | Environment Variables Docs | COMPLETED |
+| 10 | Integration Smoke Tests | COMPLETED |
+| 11 | Webhook Infrastructure | COMPLETED |
 
 ## Progress
 
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
-| 1 | Planned | 10/10 | 0% |
+| 1 | COMPLETED | 11/11 | 100% |
 | 2 | Pending | 10/10 | 0% |
 | 3 | Pending | 11/11 | 0% |
 | 4 | Pending | 6/6 | 0% |
@@ -28,7 +47,7 @@ See: `.planning/PROJECT.md` (updated 2026-05-04)
 
 ## Active Workstreams
 
-(None yet)
+(None — Phase 1 complete)
 
 ## Blockers
 
@@ -43,9 +62,16 @@ See: `.planning/PROJECT.md` (updated 2026-05-04)
 | 2026-05-04 | Internal cron scheduler for IG/X | These platforms lack native scheduling APIs |
 | 2026-05-04 | Vercel deploy without GitHub link | User requirement |
 | 2026-05-04 | 10 phases, standard granularity | Balanced scope per phase |
+| 2026-05-04 | Per-user platform credentials | User clarified: credentials configured in UI, not env vars |
+| 2026-05-04 | AES-256-GCM encryption | Industry standard for token/credential encryption at rest |
 
 ## Notes
 
-- Brownfield project with existing auth, i18n, and Instagram OAuth skeleton
-- API research completed for all 4 platforms (Meta, YouTube, TikTok, X)
-- GSD agents not installed; planning done inline without subagents
+- Phase 1 fully implemented and tested
+- All TypeScript checks pass (`npx tsc --noEmit`)
+- Build succeeds (`next build`)
+- 7 integration smoke tests passing
+- All API routes use standardized error responses
+- i18n complete for pt-BR, en, es
+- Auth middleware protects all dashboard routes
+- Rate limiting active on auth, API, and webhook endpoints
