@@ -46,14 +46,14 @@ Implement AES-256-GCM encryption for social media access tokens AND platform app
 
 ---
 
-## Task 2: Platform Credentials CRUD API
+## Task 2: Platform Credentials CRUD API (Backend)
 
 **Priority:** P0 (blocks all OAuth flows)
 **Requirement:** CRED-01, CRED-02, CRED-03, CRED-04, CRED-06
 **Files:** `src/app/api/platform-credentials/route.ts`, `src/app/api/platform-credentials/[id]/route.ts`
 
 ### Description
-Create API endpoints for users to manage their own platform API credentials (App ID + App Secret). Each user configures their own developer app credentials per platform. Credentials are encrypted before storage.
+Create API endpoints for the frontend to manage platform API credentials. The user will fill a form in the UI, and the frontend calls these endpoints. Each user configures their own developer app credentials per platform. Credentials are encrypted before storage.
 
 ### Steps
 1. Create `src/app/api/platform-credentials/route.ts`:
@@ -80,6 +80,40 @@ Create API endpoints for users to manage their own platform API credentials (App
 - [ ] DELETE removes credential
 - [ ] Cannot access another user's credentials
 - [ ] Duplicate platform credential returns `CREDENTIALS_EXISTS`
+
+---
+
+## Task 2b: Platform Credentials UI (Frontend)
+
+**Priority:** P0
+**Requirement:** CRED-01, CRED-05, I18N-01
+**Files:** `src/app/[locale]/(dashboard)/accounts/page.tsx`, new components
+
+### Description
+Build the UI where users configure their platform API credentials. This is a form inside the dashboard where the user selects a platform and enters their App ID and App Secret. The frontend calls the API from Task 2.
+
+### Steps
+1. Update `src/app/[locale]/(dashboard)/accounts/page.tsx`:
+   - Add section "Configurar Credenciais da API" / "Configure API Credentials"
+   - Show list of configured platforms (from GET /api/platform-credentials)
+   - Add button to add new credential
+2. Create credential form component:
+   - Platform selector (dropdown: Instagram, YouTube, TikTok, X, Facebook, Threads)
+   - App ID input (text)
+   - App Secret input (password type, masked)
+   - Redirect URI input (optional, pre-filled with app URL)
+   - Save button → POST /api/platform-credentials
+   - Edit/Delete buttons for existing credentials
+3. Add i18n strings for all labels, placeholders, and toasts
+4. Show validation errors inline (Zod errors from API)
+
+### Verification
+- [ ] User can add Instagram credentials via form in the UI
+- [ ] App Secret is masked (password input)
+- [ ] List shows configured platforms without exposing secrets
+- [ ] User can edit or delete credentials
+- [ ] All text is i18n-translated
+- [ ] Form validation shows inline errors
 
 ---
 
@@ -364,7 +398,7 @@ End-to-end smoke test of all Phase 1 deliverables.
 1. Fresh database migration
 2. Sign up with email/password
 3. Log in
-4. Add Instagram platform credentials (App ID + App Secret) via API
+4. Add Instagram platform credentials (App ID + App Secret) via UI form
 5. Verify credentials are encrypted in DB
 6. Connect Instagram account using user's own credentials
 7. Verify tokens are encrypted in DB
@@ -389,9 +423,10 @@ End-to-end smoke test of all Phase 1 deliverables.
 ## Dependencies
 
 ```
-Task 1 (Encryption) ──> Task 2 (Credentials CRUD)
+Task 1 (Encryption) ──> Task 2 (Credentials CRUD API)
+Task 2 (Credentials CRUD API) ──> Task 2b (Credentials UI)
 Task 1 (Encryption) ──> Task 5 (Schema) ──> Task 10 (Smoke Test)
-Task 2 (Credentials CRUD) ──> Task 10
+Task 2b (Credentials UI) ──> Task 10
 Task 3 (Password Reset) ──> Task 10
 Task 4 (Rate Limit) ──> Task 10
 Task 6 (API Errors) ──> Task 10
@@ -400,7 +435,7 @@ Task 8 (Auth Guard) ──> Task 10
 Task 9 (Env Docs) ──> Task 10
 ```
 
-**Parallelizable:** Tasks 1, 3, 4, 6, 7, 8, 9 can run in parallel after initial setup. Task 2 depends on Task 1.
+**Parallelizable:** Tasks 1, 3, 4, 6, 7, 8, 9 can run in parallel after initial setup. Task 2 depends on Task 1. Task 2b depends on Task 2.
 
 ---
 
