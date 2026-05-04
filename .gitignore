@@ -40,3 +40,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# GSD workflow files
+.github/get-shit-done/
+.github/skills/
+.github/agents/
+.github/prompts/
+.github/gsd-file-manifest.json
+.github/copilot-instructions.md
+
+# Design system docs
+design-system/
