@@ -69,12 +69,6 @@ test.describe("Auth Flow", () => {
     });
 
     test("login form submit triggers API call and sets cookie", async ({ page }) => {
-        // Capture browser console logs
-        const consoleLogs: string[] = [];
-        page.on("console", (msg) => {
-            consoleLogs.push(`[${msg.type()}] ${msg.text()}`);
-        });
-
         await page.goto("/pt-BR/login");
 
         // Intercept the sign-in API call to capture response body before navigation
@@ -105,9 +99,8 @@ test.describe("Auth Flow", () => {
         // Wait for potential redirect
         await page.waitForTimeout(3000);
 
-        // Log final URL and console logs
+        // Log final URL
         console.log("Final URL:", page.url());
-        console.log("Browser console logs:", consoleLogs.join("\n"));
 
         // If still on login, the frontend redirect didn't work
         // but the API call succeeded (which is the core fix)

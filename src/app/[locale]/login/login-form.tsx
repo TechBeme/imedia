@@ -34,26 +34,20 @@ export function LoginForm() {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
-        console.log("[login] Submitting form...");
 
-        // Do NOT pass callbackURL — better-auth may try to handle redirect
-        // internally which conflicts with our manual navigation.
         const result = await authClient.signIn.email({
             email,
             password,
         });
 
         setLoading(false);
-        console.log("[login] Result:", JSON.stringify(result, null, 2));
 
         if (result.error) {
-            console.log("[login] Error:", result.error);
             toast.error(result.error.message || t("loginFailed"));
             return;
         }
 
         toast.success(t("loginSuccess"));
-        console.log("[login] Success, navigating to dashboard...");
 
         // Force full page navigation so the middleware sees the new cookie
         window.location.href = `/${locale}/dashboard`;
