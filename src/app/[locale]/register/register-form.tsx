@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { authClient } from "@/lib/auth-client";
@@ -27,7 +26,6 @@ function GoogleIcon({ className }: { className?: string }) {
 export function RegisterForm() {
     const t = useTranslations("auth");
     const locale = useLocale();
-    const router = useRouter();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -42,7 +40,6 @@ export function RegisterForm() {
             name,
             email,
             password,
-            callbackURL: `/${locale}/dashboard`,
         });
 
         setLoading(false);
@@ -53,8 +50,9 @@ export function RegisterForm() {
         }
 
         toast.success(t("registerSuccess"));
-        router.push(`/${locale}/dashboard`);
-        router.refresh();
+        // Use window.location for full page navigation so the middleware
+        // sees the new cookie on the next request
+        window.location.href = `/${locale}/dashboard`;
     }
 
     async function handleGoogleSignIn() {
