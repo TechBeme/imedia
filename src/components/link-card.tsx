@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { QRCodeGenerator } from "@/components/qr-code-generator";
 import { toast } from "sonner";
 import { motion } from "motion/react";
-import { Copy, Check, ExternalLink, Trash2, Pencil } from "lucide-react";
+import { Copy, Check, ExternalLink, Trash2, Pencil, QrCode, BarChart3 } from "lucide-react";
 
 interface LinkItem {
     id: string;
@@ -31,7 +33,9 @@ interface LinkCardProps {
 export function LinkCard({ link, onDelete, onEdit, onToggle }: LinkCardProps) {
     const t = useTranslations("links");
     const tc = useTranslations("common");
+    const router = useRouter();
     const [copied, setCopied] = useState(false);
+    const [qrOpen, setQrOpen] = useState(false);
 
     const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/${link.slug}`;
 
@@ -88,6 +92,24 @@ export function LinkCard({ link, onDelete, onEdit, onToggle }: LinkCardProps) {
                                 variant="ghost"
                                 size="icon-xs"
                                 className="cursor-pointer"
+                                onClick={() => router.push(`/links/${link.id}/analytics`)}
+                                title={t("analytics")}
+                            >
+                                <BarChart3 className="h-3.5 w-3.5" />
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                size="icon-xs"
+                                className="cursor-pointer"
+                                onClick={() => setQrOpen(true)}
+                                title={t("qrCode")}
+                            >
+                                <QrCode className="h-3.5 w-3.5" />
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                size="icon-xs"
+                                className="cursor-pointer"
                                 onClick={handleCopy}
                                 title={t("copy")}
                             >
@@ -140,6 +162,13 @@ export function LinkCard({ link, onDelete, onEdit, onToggle }: LinkCardProps) {
                     </div>
                 </CardContent>
             </Card>
+
+            <QRCodeGenerator
+                linkId={link.id}
+                slug={link.slug}
+                open={qrOpen}
+                onOpenChange={setQrOpen}
+            />
         </motion.div>
     );
 }
