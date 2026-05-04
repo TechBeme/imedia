@@ -74,15 +74,6 @@ export default async function middleware(req: NextRequest) {
         }
     }
 
-    // Redirect authenticated users away from public auth pages
-    if (isPublic && !isApi) {
-        const sessionCookie = req.cookies.get("better-auth.session_token")?.value;
-        if (sessionCookie) {
-            const locale = localeMatch ? localeMatch[1] : "pt-BR";
-            return NextResponse.redirect(new URL(`/${locale}/dashboard`, req.url));
-        }
-    }
-
     return intlMiddleware(req);
 }
 
