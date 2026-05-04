@@ -35,22 +35,24 @@ export function LoginForm() {
         e.preventDefault();
         setLoading(true);
 
-        const { error, data } = await authClient.signIn.email({
+        const result = await authClient.signIn.email({
             email,
             password,
+            callbackURL: `/${locale}/dashboard`,
         });
 
         setLoading(false);
 
-        if (error) {
-            toast.error(error.message || t("loginFailed"));
+        if (result.error) {
+            toast.error(result.error.message || t("loginFailed"));
             return;
         }
 
         toast.success(t("loginSuccess"));
-        // Use window.location for full page navigation so the middleware
-        // sees the new cookie on the next request
-        window.location.href = `/${locale}/dashboard`;
+
+        // better-auth may return redirect info; use it or fallback
+        const redirectUrl = (result.data as any)?.url || `/${locale}/dashboard`;
+        window.location.href = redirectUrl;
     }
 
     async function handleGoogleSignIn() {
