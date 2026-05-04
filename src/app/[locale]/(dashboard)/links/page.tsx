@@ -217,13 +217,13 @@ export default function LinksPage() {
                 initialData={
                     editingLink
                         ? {
-                              id: editingLink.id,
-                              originalUrl: editingLink.originalUrl,
-                              slug: editingLink.slug,
-                              password: "",
-                              expiresAt: editingLink.expiresAt || "",
-                              isActive: editingLink.isActive,
-                          }
+                            id: editingLink.id,
+                            originalUrl: editingLink.originalUrl,
+                            slug: editingLink.slug,
+                            password: "",
+                            expiresAt: editingLink.expiresAt || "",
+                            isActive: editingLink.isActive,
+                        }
                         : undefined
                 }
                 onSubmit={editingLink ? handleUpdate : handleCreate}

@@ -1,6 +1,4 @@
-import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { getSession } from "@/lib/session";
 import { LoginForm } from "./login-form";
 
 export default async function LoginPage({
@@ -9,12 +7,7 @@ export default async function LoginPage({
     params: Promise<{ locale: string }>;
 }) {
     const { locale } = await params;
-    const session = await getSession();
     const t = await getTranslations({ locale, namespace: "auth" });
-
-    if (session) {
-        redirect(`/${locale}/dashboard`);
-    }
 
     return (
         <div className="min-h-screen flex bg-background">

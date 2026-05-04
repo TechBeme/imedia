@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/session";
 import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
 
@@ -11,11 +9,6 @@ export default async function DashboardLayout({
     params: Promise<{ locale: string }>;
 }) {
     const { locale } = await params;
-    const session = await getSession();
-
-    if (!session) {
-        redirect(`/${locale}/login`);
-    }
 
     return (
         <div className="min-h-screen bg-gray-50/50 dark:bg-background">
