@@ -30,6 +30,7 @@ import { motion } from "motion/react";
 const navItems = [
     { key: "dashboard", href: "/dashboard", icon: RiDashboardLine },
     { key: "accounts", href: "/accounts", icon: RiLinksLine },
+    { key: "links", href: "/links", icon: RiLinksLine },
     { key: "compose", href: "/compose", icon: RiAddCircleLine },
     { key: "scheduled", href: "/scheduled", icon: RiCalendarScheduleLine },
     { key: "history", href: "/history", icon: RiHistoryLine },

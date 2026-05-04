@@ -12,6 +12,7 @@ import {
     isSlugAvailable,
     generateUniqueSlug,
 } from "@/lib/links";
+import { eq, desc } from "drizzle-orm";
 
 const createLinkSchema = z.object({
     originalUrl: z.string().url("Invalid URL"),
@@ -98,5 +99,22 @@ export async function POST(req: NextRequest) {
             expiresAt: link.expiresAt,
             createdAt: link.createdAt,
         });
+    });
+}
+
+export async function GET(req: NextRequest) {
+    return withRateLimit(req, apiRateLimit, async () => {
+        const session = await getSession();
+        if (!session) {
+            return unauthorized();
+        }
+
+        const links = await db
+            .select()
+            .from(shortLinks)
+            .where(eq(shortLinks.userId, session.user.id))
+            .orderBy(desc(shortLinks.createdAt));
+
+        return success({ links });
     });
 }

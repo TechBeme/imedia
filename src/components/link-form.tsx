@@ -1,0 +1,167 @@
+"use client";
+
+import { useState } from "react";
+import { useTranslations } from "next-intl";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+
+interface LinkFormData {
+    id?: string;
+    originalUrl: string;
+    slug: string;
+    password: string;
+    expiresAt: string;
+    isActive: boolean;
+}
+
+interface LinkFormProps {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    initialData?: Partial<LinkFormData>;
+    onSubmit: (data: LinkFormData) => Promise<void>;
+}
+
+export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkFormProps) {
+    const t = useTranslations("links");
+    const tc = useTranslations("common");
+    const isEditing = !!initialData?.id;
+
+    const [originalUrl, setOriginalUrl] = useState(initialData?.originalUrl || "");
+    const [slug, setSlug] = useState(initialData?.slug || "");
+    const [password, setPassword] = useState(initialData?.password || "");
+    const [expiresAt, setExpiresAt] = useState(initialData?.expiresAt || "");
+    const [isActive, setIsActive] = useState(initialData?.isActive ?? true);
+    const [loading, setLoading] = useState(false);
+
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        if (!originalUrl.trim()) {
+            toast.error(t("urlRequired"));
+            return;
+        }
+        setLoading(true);
+        try {
+            await onSubmit({
+                id: initialData?.id,
+                originalUrl: originalUrl.trim(),
+                slug: slug.trim(),
+                password: password.trim(),
+                expiresAt,
+                isActive,
+            });
+            if (!isEditing) {
+                setOriginalUrl("");
+                setSlug("");
+                setPassword("");
+                setExpiresAt("");
+                setIsActive(true);
+            }
+            onOpenChange(false);
+        } catch {
+            // error handled by caller
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>
+                        {isEditing ? t("edit") : t("create")}
+                    </DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="url">{t("originalUrl")}</Label>
+                        <Input
+                            id="url"
+                            type="url"
+                            placeholder="https://example.com"
+                            value={originalUrl}
+                            onChange={(e) => setOriginalUrl(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    {!isEditing && (
+                        <div className="space-y-2">
+                            <Label htmlFor="slug">{t("slug")}</Label>
+                            <Input
+                                id="slug"
+                                placeholder={t("slugPlaceholder")}
+                                value={slug}
+                                onChange={(e) => setSlug(e.target.value)}
+                            />
+                        </div>
+                    )}
+
+                    {!isEditing && (
+                        <div className="space-y-2">
+                            <Label htmlFor="password">{t("password")}</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                placeholder={t("passwordPlaceholder")}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </div>
+                    )}
+
+                    <div className="space-y-2">
+                        <Label htmlFor="expires">{t("expiresAt")}</Label>
+                        <Input
+                            id="expires"
+                            type="datetime-local"
+                            value={expiresAt}
+                            onChange={(e) => setExpiresAt(e.target.value)}
+                        />
+                    </div>
+
+                    {isEditing && (
+                        <div className="flex items-center justify-between">
+                            <Label htmlFor="active">{t("status")}</Label>
+                            <Switch
+                                id="active"
+                                checked={isActive}
+                                onCheckedChange={setIsActive}
+                            />
+                        </div>
+                    )}
+
+                    <div className="flex justify-end gap-2 pt-2">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => onOpenChange(false)}
+                            disabled={loading}
+                        >
+                            {tc("cancel")}
+                        </Button>
+                        <Button type="submit" disabled={loading}>
+                            {loading ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : isEditing ? (
+                                tc("save")
+                            ) : (
+                                t("create")
+                            )}
+                        </Button>
+                    </div>
+                </form>
+            </DialogContent>
+        </Dialog>
+    );
+}
