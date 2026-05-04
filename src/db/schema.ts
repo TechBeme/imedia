@@ -9,6 +9,7 @@ import {
     uuid,
     index,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 // Better Auth tables
 export const user = pgTable("user", {
@@ -214,5 +215,55 @@ export const platformCredentials = pgTable(
         index("platform_credentials_user_idx").on(table.userId),
         index("platform_credentials_platform_idx").on(table.platform),
         index("platform_credentials_user_platform_idx").on(table.userId, table.platform),
+    ]
+);
+
+// Link shortener tables
+export const shortLinks = pgTable(
+    "short_links",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
+        originalUrl: text("original_url").notNull(),
+        slug: text("slug").notNull().unique(),
+        customSlug: boolean("custom_slug").notNull().default(false),
+        domain: text("domain").notNull().default(""),
+        password: text("password"),
+        expiresAt: timestamp("expires_at"),
+        isActive: boolean("is_active").notNull().default(true),
+        clickCount: integer("click_count").notNull().default(0),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+        updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("short_links_slug_idx").on(table.slug),
+        index("short_links_user_idx").on(table.userId),
+        index("short_links_domain_idx").on(table.domain),
+        index("short_links_active_idx").on(table.isActive),
+    ]
+);
+
+export const linkClicks = pgTable(
+    "link_clicks",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        linkId: uuid("link_id")
+            .notNull()
+            .references(() => shortLinks.id, { onDelete: "cascade" }),
+        ip: text("ip"),
+        country: text("country"),
+        city: text("city"),
+        region: text("region"),
+        userAgent: text("user_agent"),
+        device: text("device"),
+        browser: text("browser"),
+        os: text("os"),
+        referrer: text("referrer"),
+        clickedAt: timestamp("clicked_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("link_clicks_link_idx").on(table.linkId),
+        index("link_clicks_clicked_at_idx").on(table.clickedAt),
+        index("link_clicks_country_idx").on(table.country),
     ]
 );
