@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -52,6 +52,7 @@ const itemVariants = {
 
 export default function ScheduledPage() {
     const t = useTranslations("scheduled");
+    const locale = useLocale();
     const [view, setView] = useState("list");
 
     return (
@@ -103,7 +104,7 @@ export default function ScheduledPage() {
                                             <div className="flex-1 min-w-0">
                                                 <p className="text-sm font-medium truncate">{post.content}</p>
                                                 <p className="text-xs text-muted-foreground mt-1">
-                                                    {new Date(post.date).toLocaleString("pt-BR")}
+                                                    {new Date(post.date).toLocaleString(locale)}
                                                 </p>
                                             </div>
                                         </div>
