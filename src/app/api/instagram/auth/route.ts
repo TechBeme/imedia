@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { success, unauthorized, internalError } from "@/lib/api-response";
 import { withRateLimit } from "@/lib/api-guard";
 import { authRateLimit } from "@/lib/rate-limit";
 import { getPlatformCredentials } from "@/lib/platform-credentials";
@@ -11,7 +12,7 @@ export async function GET(req: NextRequest) {
         const session = await auth.api.getSession({ headers: requestHeaders });
 
         if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+            return unauthorized();
         }
 
         // Try per-user credentials first
@@ -20,10 +21,7 @@ export async function GET(req: NextRequest) {
         const redirectUri = userCreds?.redirectUri || process.env.INSTAGRAM_REDIRECT_URI;
 
         if (!appId || !redirectUri) {
-            return NextResponse.json(
-                { error: "Instagram not configured" },
-                { status: 500 }
-            );
+            return internalError("Instagram not configured");
         }
 
         const state = Buffer.from(
@@ -39,6 +37,6 @@ export async function GET(req: NextRequest) {
         authUrl.searchParams.set("state", state);
         authUrl.searchParams.set("response_type", "code");
 
-        return NextResponse.json({ url: authUrl.toString() });
+        return success({ url: authUrl.toString() });
     });
 }

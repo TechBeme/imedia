@@ -110,7 +110,8 @@
         "connectFailed": "Failed to connect",
         "disconnectFailed": "Failed to disconnect",
         "credentialsTitle": "Platform Credentials",
-        "noCredentials": "No credentials configured"
+        "noCredentials": "No credentials configured",
+        "comingSoon": "Coming soon"
     },
     "credentials": {
         "title": "Platform Credentials",

@@ -110,7 +110,8 @@
         "connectFailed": "Falha ao conectar",
         "disconnectFailed": "Falha ao desconectar",
         "credentialsTitle": "Credenciais da Plataforma",
-        "noCredentials": "Nenhuma credencial configurada"
+        "noCredentials": "Nenhuma credencial configurada",
+        "comingSoon": "Em breve"
     },
     "credentials": {
         "title": "Credenciais da Plataforma",

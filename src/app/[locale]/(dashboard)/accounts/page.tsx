@@ -249,7 +249,7 @@ export default function AccountsPage() {
                                     </Button>
                                     {platform.key !== "instagram" && (
                                         <p className="text-xs text-muted-foreground mt-2 text-center">
-                                            Coming soon
+                                            {t("comingSoon")}
                                         </p>
                                     )}
                                 </CardContent>
