@@ -12,11 +12,11 @@
 ## Task 1: Token Encryption Utility
 
 **Priority:** P0 (blocks all social account work)
-**Requirement:** AUTH-06, DB-02
-**Files:** `src/lib/encryption.ts`, `src/lib/social-accounts.ts`
+**Requirement:** AUTH-06, DB-02, CRED-02
+**Files:** `src/lib/encryption.ts`, `src/lib/social-accounts.ts`, `src/lib/platform-credentials.ts`
 
 ### Description
-Implement AES-256-GCM encryption for social media access tokens. All tokens stored in `socialAccounts` table must be encrypted at rest.
+Implement AES-256-GCM encryption for social media access tokens AND platform app credentials. All sensitive data stored in `socialAccounts` and `platformCredentials` tables must be encrypted at rest.
 
 ### Steps
 1. Create `src/lib/encryption.ts`:
@@ -28,7 +28,12 @@ Implement AES-256-GCM encryption for social media access tokens. All tokens stor
    - `getSocialAccounts(userId: string)` — query DB, decrypt tokens in results
    - `saveSocialAccount(data)` — encrypt tokens before insert/update
    - `updateSocialAccountTokens(id, tokens)` — encrypt and update
-3. Add unit tests for encrypt/decrypt roundtrip
+3. Create `src/lib/platform-credentials.ts`:
+   - `getPlatformCredentials(userId, platform)` — query DB, decrypt appId/appSecret
+   - `savePlatformCredential(data)` — encrypt appId/appSecret before insert/update
+   - `deletePlatformCredential(id)` — remove credential
+   - `listPlatformCredentials(userId)` — list all credentials for user (without secrets)
+4. Add unit tests for encrypt/decrypt roundtrip
 
 ### Verification
 - [ ] Encrypt "hello" and decrypt returns "hello"
@@ -36,35 +41,45 @@ Implement AES-256-GCM encryption for social media access tokens. All tokens stor
 - [ ] Tampered ciphertext throws on decrypt
 - [ ] `getSocialAccounts` returns decrypted tokens
 - [ ] `saveSocialAccount` stores encrypted tokens
+- [ ] `getPlatformCredentials` returns decrypted appId/appSecret
+- [ ] `savePlatformCredential` stores encrypted appId/appSecret
 
 ---
 
-## Task 2: Update Instagram OAuth to Use Token Encryption
+## Task 2: Platform Credentials CRUD API
 
-**Priority:** P0
-**Requirement:** AUTH-06, AUTH-07, IG-01
-**Files:** `src/app/api/instagram/callback/route.ts`, `src/app/api/instagram/disconnect/route.ts`, `src/app/api/social-accounts/route.ts`
+**Priority:** P0 (blocks all OAuth flows)
+**Requirement:** CRED-01, CRED-02, CRED-03, CRED-04, CRED-06
+**Files:** `src/app/api/platform-credentials/route.ts`, `src/app/api/platform-credentials/[id]/route.ts`
 
 ### Description
-Refactor existing Instagram OAuth flow to encrypt tokens on save and decrypt on read. Validate state parameter properly.
+Create API endpoints for users to manage their own platform API credentials (App ID + App Secret). Each user configures their own developer app credentials per platform. Credentials are encrypted before storage.
 
 ### Steps
-1. Update `src/app/api/instagram/callback/route.ts`:
-   - After fetching tokens, encrypt `accessToken` and `refreshToken` before saving
-   - Use `saveSocialAccount` from Task 1
-   - Validate state parameter: decode base64, verify `userId` matches session, verify `nonce` is not reused
-2. Update `src/app/api/social-accounts/route.ts`:
-   - Use `getSocialAccounts` to return decrypted account info (but DO NOT return raw tokens to frontend)
-   - Return only public fields: id, platform, username, displayName, profilePicture, metadata, isActive
-3. Update `src/app/api/instagram/disconnect/route.ts`:
-   - Ensure proper auth check
-   - Delete account from DB
+1. Create `src/app/api/platform-credentials/route.ts`:
+   - `GET` — List all credentials for authenticated user (return platform, isActive, createdAt; NEVER return appId/appSecret)
+   - `POST` — Create new credential: validate `platform`, `appId`, `appSecret`, `redirectUri` (optional). Encrypt appId/appSecret before saving.
+2. Create `src/app/api/platform-credentials/[id]/route.ts`:
+   - `PUT` — Update credential by ID: validate ownership, encrypt new values
+   - `DELETE` — Delete credential by ID: validate ownership
+3. Add Zod schema for credential validation:
+   ```typescript
+   const credentialSchema = z.object({
+     platform: z.enum(["instagram", "youtube", "tiktok", "x", "facebook", "threads"]),
+     appId: z.string().min(1),
+     appSecret: z.string().min(1),
+     redirectUri: z.string().url().optional(),
+   });
+   ```
+4. Add i18n error codes: `CREDENTIALS_INVALID`, `CREDENTIALS_EXISTS`, `CREDENTIALS_NOT_FOUND`
 
 ### Verification
-- [ ] Connect Instagram account — tokens stored encrypted in DB
-- [ ] GET /api/social-accounts — returns account info without tokens
-- [ ] State parameter validated on callback
-- [ ] Disconnect removes account from DB
+- [ ] POST creates encrypted credential in DB
+- [ ] GET returns credential list without secrets
+- [ ] PUT updates credential with re-encryption
+- [ ] DELETE removes credential
+- [ ] Cannot access another user's credentials
+- [ ] Duplicate platform credential returns `CREDENTIALS_EXISTS`
 
 ---
 
@@ -138,11 +153,11 @@ Add rate limiting to prevent brute force attacks on auth endpoints.
 ## Task 5: Database Schema Completion & Migrations
 
 **Priority:** P0
-**Requirement:** DB-01, DB-03
+**Requirement:** DB-01, DB-03, CRED-01
 **Files:** `src/db/schema.ts`, `drizzle.config.ts`
 
 ### Description
-Verify existing schema covers all future needs and add any missing columns/tables. Generate and run migrations.
+Verify existing schema covers all future needs and add any missing columns/tables. The new `platformCredentials` table stores per-user App ID/Secret. Generate and run migrations.
 
 ### Steps
 1. Audit existing schema in `src/db/schema.ts`:
@@ -155,15 +170,18 @@ Verify existing schema covers all future needs and add any missing columns/table
    - `posts` — Add `scheduledAt` timestamp (nullable), `errorMessage` text (nullable)
    - `scheduledPosts` — Add `retryCount` integer default 0, `errorDetails` jsonb
    - `platformPosts` — OK
+   - `platformCredentials` — NEW table: userId, platform, appId (encrypted), appSecret (encrypted), redirectUri, isActive, createdAt, updatedAt
 2. Add any missing indexes:
    - `socialAccounts` — index on `isActive`
    - `posts` — index on `status`
+   - `platformCredentials` — composite index on (userId, platform)
 3. Run `npm run db:generate` to create migration
 4. Run `npm run db:migrate` to apply migration
 5. Verify tables in Neon console
 
 ### Verification
 - [ ] All tables exist in Neon database
+- [ ] `platformCredentials` table created with correct columns
 - [ ] Foreign key constraints are correct
 - [ ] Indexes are created
 - [ ] Migration file is committed to git
@@ -295,7 +313,7 @@ Ensure all dashboard routes are protected by server-side auth guard. Already par
 **Files:** `.env.example`, `README.md`
 
 ### Description
-Document all required environment variables. Create `.env.example` template.
+Document all required environment variables. Platform credentials (Instagram, YouTube, etc.) are NOT in env vars — they are configured per-user in the UI and stored encrypted in the database. Only infrastructure secrets remain in env vars.
 
 ### Steps
 1. Create `.env.example`:
@@ -307,16 +325,11 @@ Document all required environment variables. Create `.env.example` template.
    BETTER_AUTH_SECRET=
    BETTER_AUTH_URL=
 
-   # Google OAuth
+   # Google OAuth (for app login — still global)
    GOOGLE_CLIENT_ID=
    GOOGLE_CLIENT_SECRET=
 
-   # Instagram / Meta
-   INSTAGRAM_APP_ID=
-   INSTAGRAM_APP_SECRET=
-   INSTAGRAM_REDIRECT_URI=
-
-   # Token Encryption
+   # Token Encryption (for social tokens AND platform credentials)
    SOCIAL_TOKEN_ENCRYPTION_KEY=
 
    # Rate Limiting (Upstash)
@@ -327,12 +340,14 @@ Document all required environment variables. Create `.env.example` template.
    BLOB_READ_WRITE_TOKEN=
    ```
 2. Update `README.md` with setup instructions
-3. Verify all env vars are validated at runtime (throw if missing required vars)
+3. Document that each user must create their own developer apps and configure credentials in the UI
+4. Verify all env vars are validated at runtime (throw if missing required vars)
 
 ### Verification
 - [ ] `.env.example` exists and lists all required variables
+- [ ] NO platform-specific credentials (Instagram, YouTube, etc.) in env vars
 - [ ] App throws clear error on startup if required env var is missing
-- [ ] README has setup instructions for new developers
+- [ ] README explains per-user credential configuration
 
 ---
 
@@ -349,18 +364,21 @@ End-to-end smoke test of all Phase 1 deliverables.
 1. Fresh database migration
 2. Sign up with email/password
 3. Log in
-4. Connect Instagram account
-5. Verify tokens are encrypted in DB
-6. Verify social accounts list shows connected account (no tokens exposed)
-7. Disconnect Instagram
-8. Test password reset flow
-9. Test rate limiting (rapid login attempts)
-10. Switch languages and verify all text updates
-11. Verify API error codes are returned correctly
+4. Add Instagram platform credentials (App ID + App Secret) via API
+5. Verify credentials are encrypted in DB
+6. Connect Instagram account using user's own credentials
+7. Verify tokens are encrypted in DB
+8. Verify social accounts list shows connected account (no tokens exposed)
+9. Disconnect Instagram
+10. Test password reset flow
+11. Test rate limiting (rapid login attempts)
+12. Switch languages and verify all text updates
+13. Verify API error codes are returned correctly
 
 ### Verification
 - [ ] All auth flows work end-to-end
-- [ ] Tokens encrypted in database
+- [ ] Platform credentials encrypted in database
+- [ ] Social tokens encrypted in database
 - [ ] API returns consistent error codes
 - [ ] Zero hardcoded strings
 - [ ] All new tables have migrations
@@ -371,8 +389,9 @@ End-to-end smoke test of all Phase 1 deliverables.
 ## Dependencies
 
 ```
-Task 1 (Encryption) ──> Task 2 (Instagram OAuth update)
+Task 1 (Encryption) ──> Task 2 (Credentials CRUD)
 Task 1 (Encryption) ──> Task 5 (Schema) ──> Task 10 (Smoke Test)
+Task 2 (Credentials CRUD) ──> Task 10
 Task 3 (Password Reset) ──> Task 10
 Task 4 (Rate Limit) ──> Task 10
 Task 6 (API Errors) ──> Task 10
@@ -381,7 +400,7 @@ Task 8 (Auth Guard) ──> Task 10
 Task 9 (Env Docs) ──> Task 10
 ```
 
-**Parallelizable:** Tasks 1, 3, 4, 6, 7, 8, 9 can run in parallel after initial setup.
+**Parallelizable:** Tasks 1, 3, 4, 6, 7, 8, 9 can run in parallel after initial setup. Task 2 depends on Task 1.
 
 ---
 
@@ -395,6 +414,8 @@ Task 9 (Env Docs) ──> Task 10
 | Session hijacking | MEDIUM | httpOnly cookies, 7-day expiry |
 | API enumeration | MEDIUM | Generic error messages, rate limiting |
 | Token decryption key exposure | HIGH | Store in env var, never log |
+| Platform credentials leaked in DB | HIGH | AES-256-GCM encryption at rest for appId/appSecret |
+| User A accesses User B's credentials | HIGH | Row-level ownership checks on all credential APIs |
 
 ---
 
@@ -402,6 +423,8 @@ Task 9 (Env Docs) ──> Task 10
 
 - [ ] All auth flows (signup, login, Google OAuth, password reset) work end-to-end
 - [ ] Social account tokens are encrypted in the database
+- [ ] Platform credentials (appId/appSecret) are encrypted in the database
+- [ ] Users can manage their own platform credentials via API
 - [ ] API returns consistent error codes
 - [ ] Zero hardcoded strings in UI components
 - [ ] All new tables have Drizzle migrations

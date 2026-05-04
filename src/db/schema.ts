@@ -168,3 +168,27 @@ export const platformPosts = pgTable(
         index("platform_posts_platform_idx").on(table.platform),
     ]
 );
+
+// Per-user platform API credentials (App ID / Client ID + Secret)
+// Each user configures their own developer app credentials per platform
+export const platformCredentials = pgTable(
+    "platform_credentials",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => user.id, { onDelete: "cascade" }),
+        platform: text("platform").notNull(), // instagram, youtube, tiktok, x, facebook, threads
+        appId: text("app_id").notNull(), // Client ID / App ID (encrypted)
+        appSecret: text("app_secret").notNull(), // Client Secret / App Secret (encrypted)
+        redirectUri: text("redirect_uri"), // Optional override per platform
+        isActive: boolean("is_active").notNull().default(true),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+        updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("platform_credentials_user_idx").on(table.userId),
+        index("platform_credentials_platform_idx").on(table.platform),
+        index("platform_credentials_user_platform_idx").on(table.userId, table.platform),
+    ]
+);

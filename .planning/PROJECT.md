@@ -48,11 +48,13 @@ The owner can compose once and publish or schedule everywhere — with full visi
 ## Context
 
 - **Brownfield project**: Codebase already initialized with Next.js 16, React 19, TypeScript, Drizzle ORM, Neon Postgres, better-auth, next-intl, shadcn/ui, Tailwind v4, Motion, recharts
-- **Instagram OAuth partially implemented**: Auth flow, callback, disconnect, and social-accounts listing API exist. Publishing and insights not yet implemented.
+- **Instagram OAuth partially implemented**: Auth flow, callback, disconnect, and social-accounts listing API exist — BUT currently uses global env vars for App ID/Secret. Must be refactored to use per-user credentials from the database.
+- **Platform credentials architecture**: New `platformCredentials` table stores each user's App ID/Secret per platform, encrypted at rest. OAuth flows read credentials from DB, not env vars.
 - **Design system**: `design-system/imedia/MASTER.md` defines colors, typography, spacing
 - **Database**: 8 tables defined in `src/db/schema.ts` (user, session, account, verification, socialAccounts, etc.)
 - **Deployment target**: Vercel (serverless), Neon (Postgres), no GitHub repo link
-- **Security priority**: Owner-only access; all social tokens encrypted at rest; OAuth state validation; CSRF protection
+- **Security priority**: Owner-only access; all social tokens AND platform app credentials encrypted at rest; OAuth state validation; CSRF protection
+- **Per-user platform credentials**: Each user configures their own App ID / Client ID and App Secret / Client Secret for each platform (Instagram, YouTube, TikTok, X, etc.) directly in the UI. No global env vars for platform credentials.
 - **API research completed**: Meta Graph API (content publishing, insights, comment moderation), YouTube Data API v3 (videos.insert, captions, analytics), TikTok Content Posting API (direct post, upload), X API v2 (tweets, media upload)
 
 ## Constraints
@@ -72,6 +74,7 @@ The owner can compose once and publish or schedule everywhere — with full visi
 | Instagram first, then YouTube, TikTok, X | Instagram has the most mature Graph API; reduces integration risk | — Pending |
 | Internal cron scheduler for unsupported platforms | Instagram and X lack native scheduling APIs; owner needs scheduling regardless | — Pending |
 | Vercel deployment without GitHub link | User requirement; manual deploy via Vercel CLI | — Pending |
+| Per-user platform credentials | Each user is their own developer; configures own App ID/Secret per platform | — Pending |
 | Neon Postgres for database | Already configured; serverless-friendly | ✓ Good |
 | better-auth for authentication | Already configured; supports OAuth providers needed | ✓ Good |
 | next-intl for i18n | Already configured; supports pt-BR/en/es | ✓ Good |

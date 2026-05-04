@@ -30,14 +30,15 @@ This phase secures the application foundation before any feature work begins. It
 - **Locked:** Server-side auth guard on dashboard routes via `getSession()` in layout.tsx
 
 ### Token Encryption
-- **Locked:** AES-256-GCM encryption for social account tokens
+- **Locked:** AES-256-GCM encryption for social account tokens AND platform app credentials
 - **Locked:** Encryption key from `SOCIAL_TOKEN_ENCRYPTION_KEY` env var
 - **Locked:** Encrypt both `accessToken` and `refreshToken` in `socialAccounts` table
+- **Locked:** Encrypt both `appId` and `appSecret` in `platformCredentials` table
 - **Locked:** Decrypt on read, encrypt on write — transparent wrapper around DB queries
 
 ### Database Schema
 - **Locked:** Use Drizzle ORM with existing Neon PostgreSQL setup
-- **Locked:** Add missing tables: `posts`, `scheduledPosts`, `platformPosts` already exist; verify completeness
+- **Locked:** Add `platformCredentials` table: userId, platform, appId (encrypted), appSecret (encrypted), redirectUri, isActive
 - **Locked:** All new tables must have `createdAt`, `updatedAt`, indexes on foreign keys
 - **Locked:** Use `uuid` primary keys with `defaultRandom()`
 - **Locked:** Migrations via `drizzle-kit generate` + `drizzle-kit migrate`
@@ -84,9 +85,13 @@ This phase secures the application foundation before any feature work begins. It
 
 ### Existing API Patterns
 - `src/app/api/social-accounts/route.ts` — GET pattern with auth check
-- `src/app/api/instagram/auth/route.ts` — OAuth initiation pattern
-- `src/app/api/instagram/callback/route.ts` — OAuth callback pattern
+- `src/app/api/instagram/auth/route.ts` — OAuth initiation pattern (CURRENTLY reads from env vars — MUST be refactored)
+- `src/app/api/instagram/callback/route.ts` — OAuth callback pattern (CURRENTLY reads from env vars — MUST be refactored)
 - `src/app/api/instagram/disconnect/route.ts` — DELETE pattern
+
+### New API Patterns Needed
+- `src/app/api/platform-credentials/route.ts` — CRUD for per-user platform credentials
+- Credential-aware OAuth flows — read App ID/Secret from DB per user
 
 ### Design System
 - `design-system/imedia/MASTER.md` — Color palette, typography, spacing
@@ -139,6 +144,7 @@ Existing schema already has:
 - `posts`
 - `scheduledPosts`
 - `platformPosts`
+- `platformCredentials` (NEW — per-user App ID/Secret per platform)
 
 Verify these cover all Phase 2-10 needs. Add any missing columns (e.g., `followerCount` on socialAccounts, `errorDetails` on scheduledPosts).
 
@@ -148,6 +154,7 @@ Verify these cover all Phase 2-10 needs. Add any missing columns (e.g., `followe
 - Two-factor authentication (deferred to v2)
 - Audit log table (deferred to v2)
 - API versioning (deferred until needed)
+- Credential sharing between users (not applicable — single-user app)
 
 ---
 

@@ -122,11 +122,21 @@
 
 ### Database & Backend
 
-- [ ] **DB-01**: Schema supports users, sessions, social accounts, posts, scheduled jobs, media assets
-- [ ] **DB-02**: Social account tokens encrypted with AES-256 before storage
+- [ ] **DB-01**: Schema supports users, sessions, social accounts, posts, scheduled jobs, media assets, platform credentials
+- [ ] **DB-02**: Social account tokens and platform app credentials encrypted with AES-256 before storage
 - [ ] **DB-03**: All database migrations managed via Drizzle Kit
 - [ ] **DB-04**: API routes follow RESTful patterns with proper HTTP status codes
 - [ ] **DB-05**: Input validation on all API endpoints with Zod schemas
+
+### Platform Credentials (Per-User App Configuration)
+
+- [ ] **CRED-01**: User can add platform credentials (App ID + App Secret) for each supported platform (Instagram, YouTube, TikTok, X, Facebook, Threads)
+- [ ] **CRED-02**: Credentials are encrypted with AES-256 before storage in the database
+- [ ] **CRED-03**: User can view which platforms have credentials configured
+- [ ] **CRED-04**: User can update or delete existing platform credentials
+- [ ] **CRED-05**: OAuth flows use the user's own configured credentials (not global env vars)
+- [ ] **CRED-06**: Validation that credentials are complete before allowing OAuth connection for that platform
+- [ ] **CRED-07**: UI guides user on how to create developer apps on each platform (help text, links to developer consoles)
 
 ### Production Hardening
 
