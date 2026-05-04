@@ -15,7 +15,7 @@ See: `.planning/PROJECT.md` (updated 2026-05-04)
 
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
-| 1 | Pending | 5/5 | 0% |
+| 1 | Planned | 10/10 | 0% |
 | 2 | Pending | 10/10 | 0% |
 | 3 | Pending | 11/11 | 0% |
 | 4 | Pending | 6/6 | 0% |
