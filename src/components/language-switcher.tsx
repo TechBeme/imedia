@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { useRouter, usePathname } from "@/i18n/routing";
 import { locales, type Locale } from "@/lib/i18n";
 import {
     DropdownMenu,
