@@ -2,15 +2,20 @@
 
 import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { motion } from "motion/react";
+import { cn } from "@/lib/utils";
 import {
     RiInstagramLine,
     RiYoutubeLine,
     RiFacebookCircleLine,
-    RiHeartLine,
-    RiMessage3Line,
-    RiShareForwardLine,
-    RiEyeLine,
 } from "react-icons/ri";
 
 const mockHistory = [
@@ -27,52 +32,69 @@ const platformColors: Record<string, string> = {
     facebook: "text-blue-600",
 };
 
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 12 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+};
+
 export default function HistoryPage() {
     const t = useTranslations("dashboard");
 
     return (
-        <div className="space-y-6">
-            <div>
-                <h1 className="text-2xl font-bold tracking-tight">History</h1>
-                <p className="text-muted-foreground">Your published content</p>
-            </div>
+        <motion.div
+            className="space-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+        >
+            <motion.div variants={itemVariants} className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-semibold tracking-tight font-heading">History</h1>
+                </div>
+            </motion.div>
 
-            <div className="space-y-3">
-                {mockHistory.map((post) => {
-                    const PlatformIcon = post.platform === "instagram" ? RiInstagramLine : post.platform === "youtube" ? RiYoutubeLine : RiFacebookCircleLine;
-                    return (
-                        <Card key={post.id}>
-                            <CardContent className="p-4">
-                                <div className="flex items-start justify-between gap-4">
-                                    <div className="flex items-start gap-3 flex-1">
-                                        <div className={`mt-0.5 ${platformColors[post.platform]}`}>
-                                            <PlatformIcon className="h-5 w-5" />
-                                        </div>
-                                        <div className="flex-1">
-                                            <p className="text-sm font-medium">{post.content}</p>
-                                            <p className="text-xs text-muted-foreground mt-1">{post.date}</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                                        <span className="flex items-center gap-1">
-                                            <RiHeartLine className="h-3.5 w-3.5" /> {post.likes}
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <RiMessage3Line className="h-3.5 w-3.5" /> {post.comments}
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <RiShareForwardLine className="h-3.5 w-3.5" /> {post.shares}
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <RiEyeLine className="h-3.5 w-3.5" /> {post.views}
-                                        </span>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    );
-                })}
-            </div>
-        </div>
+            <motion.div variants={itemVariants}>
+                <Card className="glass-card">
+                    <CardContent className="p-0">
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="border-border/60 hover:bg-transparent">
+                                    <TableHead className="text-xs text-muted-foreground font-medium">PLATFORM</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium">CONTENT</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium">DATE</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">LIKES</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">COMMENTS</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">VIEWS</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {mockHistory.map((post) => {
+                                    const PlatformIcon = post.platform === "instagram" ? RiInstagramLine : post.platform === "youtube" ? RiYoutubeLine : RiFacebookCircleLine;
+                                    return (
+                                        <TableRow key={post.id} className="border-border/40 hover:bg-accent/50 transition-colors cursor-pointer">
+                                            <TableCell>
+                                                <div className={cn(platformColors[post.platform])}>
+                                                    <PlatformIcon className="h-5 w-5" />
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-sm font-medium">{post.content}</TableCell>
+                                            <TableCell className="text-sm text-muted-foreground">{post.date}</TableCell>
+                                            <TableCell className="text-sm text-right">{post.likes}</TableCell>
+                                            <TableCell className="text-sm text-right">{post.comments}</TableCell>
+                                            <TableCell className="text-sm text-right">{post.views}</TableCell>
+                                        </TableRow>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            </motion.div>
+        </motion.div>
     );
 }

@@ -2,6 +2,8 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { motion } from "motion/react";
+import { cn } from "@/lib/utils";
 import { RiImageAddLine, RiImageLine } from "react-icons/ri";
 
 const mockMedia = [
@@ -13,35 +15,55 @@ const mockMedia = [
     { id: 6, name: "logo-final.png", type: "image", size: "0.5 MB" },
 ];
 
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 12 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+};
+
 export default function MediaPage() {
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
+        <motion.div
+            className="space-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+        >
+            <motion.div variants={itemVariants} className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Media Library</h1>
-                    <p className="text-muted-foreground">Manage your uploaded media</p>
+                    <h1 className="text-2xl font-semibold tracking-tight font-heading">Media Library</h1>
                 </div>
-                <Button className="gap-2">
+                <Button className="gap-2 rounded-xl cursor-pointer shadow-sm shadow-primary/20 h-11">
                     <RiImageAddLine className="h-4 w-4" />
                     Upload
                 </Button>
-            </div>
+            </motion.div>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <motion.div variants={itemVariants} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {mockMedia.map((media) => (
-                    <Card key={media.id} className="overflow-hidden cursor-pointer hover:ring-1 hover:ring-primary transition-all">
-                        <CardContent className="p-0">
-                            <div className="aspect-square bg-muted flex items-center justify-center">
-                                <RiImageLine className="h-12 w-12 text-muted-foreground/50" />
-                            </div>
-                            <div className="p-3">
-                                <p className="text-sm font-medium truncate">{media.name}</p>
-                                <p className="text-xs text-muted-foreground">{media.size}</p>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <motion.div
+                        key={media.id}
+                        variants={itemVariants}
+                        whileHover={{ y: -2, transition: { duration: 0.2 } }}
+                    >
+                        <Card className="glass-card overflow-hidden cursor-pointer transition-shadow duration-200 hover:shadow-md">
+                            <CardContent className="p-0">
+                                <div className="aspect-square bg-muted flex items-center justify-center">
+                                    <RiImageLine className="h-12 w-12 text-muted-foreground/40" />
+                                </div>
+                                <div className="p-4">
+                                    <p className="text-sm font-medium truncate">{media.name}</p>
+                                    <p className="text-xs text-muted-foreground mt-0.5">{media.size}</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
                 ))}
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 }

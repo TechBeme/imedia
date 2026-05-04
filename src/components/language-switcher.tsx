@@ -10,6 +10,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { Globe } from "lucide-react";
 
 const localeLabels: Record<Locale, string> = {
     "pt-BR": "Portugues",
@@ -36,18 +37,26 @@ export function LanguageSwitcher() {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="inline-flex items-center justify-center gap-1 rounded-md px-3 py-2 text-sm font-medium hover:bg-accent transition-colors">
-                <span className="text-xs">{localeFlags[currentLocale as Locale]}</span>
-                <span className="hidden sm:inline text-sm">{localeLabels[currentLocale as Locale]}</span>
+            <DropdownMenuTrigger>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 gap-2 rounded-xl cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50 px-3"
+                    aria-label="Switch language"
+                >
+                    <Globe className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-xs font-medium">{localeFlags[currentLocale as Locale]}</span>
+                    <span className="hidden sm:inline text-sm">{localeLabels[currentLocale as Locale]}</span>
+                </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="rounded-xl">
                 {locales.map((locale) => (
                     <DropdownMenuItem
                         key={locale}
                         onClick={() => switchLocale(locale)}
-                        className={locale === currentLocale ? "bg-accent" : ""}
+                        className={`cursor-pointer rounded-lg ${locale === currentLocale ? "bg-accent" : ""}`}
                     >
-                        <span className="mr-2 text-xs">{localeFlags[locale]}</span>
+                        <span className="mr-2 text-xs font-semibold text-muted-foreground">{localeFlags[locale]}</span>
                         {localeLabels[locale]}
                     </DropdownMenuItem>
                 ))}

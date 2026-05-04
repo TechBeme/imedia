@@ -12,6 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
+import { motion } from "motion/react";
+import { cn } from "@/lib/utils";
 import {
     RiInstagramLine,
     RiFacebookCircleLine,
@@ -40,6 +42,16 @@ const platforms = [
     { key: "x", icon: RiTwitterXLine, color: "text-foreground", label: "X" },
 ];
 
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 12 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+};
+
 export default function ComposePage() {
     const t = useTranslations("compose");
     const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(["instagram"]);
@@ -64,112 +76,131 @@ export default function ComposePage() {
     }
 
     return (
-        <div className="space-y-6 max-w-4xl">
-            <div>
-                <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
-                <p className="text-muted-foreground">Create and schedule your content</p>
-            </div>
+        <motion.div
+            className="space-y-6 max-w-4xl"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+        >
+            <motion.div variants={itemVariants}>
+                <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
+            </motion.div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-base">{t("selectPlatforms")}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex flex-wrap gap-3">
-                            {platforms.map((platform) => {
-                                const Icon = platform.icon;
-                                const isSelected = selectedPlatforms.includes(platform.key);
-                                return (
-                                    <button
-                                        key={platform.key}
-                                        type="button"
-                                        onClick={() => togglePlatform(platform.key)}
-                                        className={`flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors ${isSelected
-                                                ? "border-primary bg-primary/10 text-primary"
-                                                : "border-border bg-card text-muted-foreground hover:bg-accent"
-                                            }`}
-                                    >
-                                        <Icon className={`h-4 w-4 ${platform.color}`} />
-                                        {platform.label}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-base">Content</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <Textarea
-                            {...register("content")}
-                            placeholder={t("placeholder")}
-                            rows={6}
-                            className="resize-none"
-                        />
-                        {errors.content && (
-                            <p className="text-sm text-destructive">{errors.content.message}</p>
-                        )}
-                        <div className="flex justify-between text-xs text-muted-foreground">
-                            <span>{content.length} / 2200</span>
-                            <span>{selectedPlatforms.length} platforms selected</span>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-base">{t("addMedia")}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex items-center justify-center rounded-lg border border-dashed border-border p-8 hover:bg-accent/50 transition-colors cursor-pointer">
-                            <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                                <RiImageAddLine className="h-8 w-8" />
-                                <span className="text-sm">Click or drag files here</span>
-                                <span className="text-xs">Images, videos up to 100MB</span>
+                <motion.div variants={itemVariants}>
+                    <Card className="glass-card">
+                        <CardHeader>
+                            <CardTitle className="text-base font-semibold font-heading">{t("selectPlatforms")}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="flex flex-wrap gap-3">
+                                {platforms.map((platform) => {
+                                    const Icon = platform.icon;
+                                    const isSelected = selectedPlatforms.includes(platform.key);
+                                    return (
+                                        <button
+                                            key={platform.key}
+                                            type="button"
+                                            onClick={() => togglePlatform(platform.key)}
+                                            className={cn(
+                                                "flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                                                isSelected
+                                                    ? "border-primary bg-primary/5 text-primary shadow-sm"
+                                                    : "border-border bg-card text-muted-foreground hover:bg-accent"
+                                            )}
+                                        >
+                                            <Icon className={cn("h-4 w-4", platform.color)} />
+                                            {platform.label}
+                                        </button>
+                                    );
+                                })}
                             </div>
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
+                </motion.div>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-base">{t("schedule")}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex items-center gap-4">
-                            <Switch
-                                checked={isScheduling}
-                                onCheckedChange={setIsScheduling}
-                                id="schedule-toggle"
+                <motion.div variants={itemVariants}>
+                    <Card className="glass-card">
+                        <CardHeader>
+                            <CardTitle className="text-base font-semibold font-heading">Content</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <Textarea
+                                {...register("content")}
+                                placeholder={t("placeholder")}
+                                rows={6}
+                                className="resize-none rounded-xl border-border/60 focus-visible:ring-2 focus-visible:ring-ring/50"
                             />
-                            <Label htmlFor="schedule-toggle">
-                                {isScheduling ? "Schedule for later" : "Publish immediately"}
-                            </Label>
-                        </div>
-                        {isScheduling && (
-                            <div className="mt-4 flex items-center gap-2 rounded-lg border p-3">
-                                <RiCalendarLine className="h-4 w-4 text-muted-foreground" />
-                                <span className="text-sm text-muted-foreground">Date/time picker coming soon</span>
+                            {errors.content && (
+                                <p className="text-sm text-destructive">{errors.content.message}</p>
+                            )}
+                            <div className="flex justify-between text-xs text-muted-foreground">
+                                <span>{content.length} / 2200</span>
+                                <span>{selectedPlatforms.length} platforms selected</span>
                             </div>
-                        )}
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
+                </motion.div>
 
-                <div className="flex gap-3">
-                    <Button type="submit" variant="outline" className="gap-2">
+                <motion.div variants={itemVariants}>
+                    <Card className="glass-card">
+                        <CardHeader>
+                            <CardTitle className="text-base font-semibold font-heading">{t("addMedia")}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="flex items-center justify-center rounded-xl border border-dashed border-border/60 p-8 hover:bg-accent/50 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
+                                <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                                    <RiImageAddLine className="h-8 w-8" />
+                                    <span className="text-sm">Click or drag files here</span>
+                                    <span className="text-xs">Images, videos up to 100MB</span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </motion.div>
+
+                <motion.div variants={itemVariants}>
+                    <Card className="glass-card">
+                        <CardHeader>
+                            <CardTitle className="text-base font-semibold font-heading">{t("schedule")}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="flex items-center gap-4">
+                                <Switch
+                                    checked={isScheduling}
+                                    onCheckedChange={setIsScheduling}
+                                    id="schedule-toggle"
+                                    className="cursor-pointer"
+                                />
+                                <Label htmlFor="schedule-toggle" className="cursor-pointer">
+                                    {isScheduling ? "Schedule for later" : "Publish immediately"}
+                                </Label>
+                            </div>
+                            {isScheduling && (
+                                <div className="mt-4 flex items-center gap-2 rounded-xl border border-border/60 p-3 bg-muted/30">
+                                    <RiCalendarLine className="h-4 w-4 text-muted-foreground" />
+                                    <span className="text-sm text-muted-foreground">Date/time picker coming soon</span>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </motion.div>
+
+                <motion.div variants={itemVariants} className="flex gap-3">
+                    <Button type="submit" variant="outline" className="gap-2 rounded-xl cursor-pointer h-11">
                         <RiDraftLine className="h-4 w-4" />
                         {t("saveDraft")}
                     </Button>
-                    <Button type="button" className="gap-2 flex-1" onClick={() => toast.success("Published! (mock)")}>
+                    <Button
+                        type="button"
+                        className="gap-2 flex-1 rounded-xl h-11 cursor-pointer shadow-sm shadow-primary/20"
+                        onClick={() => toast.success("Published! (mock)")}
+                    >
                         <RiSendPlaneLine className="h-4 w-4" />
                         {isScheduling ? t("schedule") : t("publishNow")}
                     </Button>
-                </div>
+                </motion.div>
             </form>
-        </div>
+        </motion.div>
     );
 }

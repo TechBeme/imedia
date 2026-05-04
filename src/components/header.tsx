@@ -1,75 +1,50 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
-import { authClient } from "@/lib/auth-client";
 import { MobileSidebar } from "@/components/sidebar";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { LogOut, User } from "lucide-react";
-import { toast } from "sonner";
+import { Bell, Search } from "lucide-react";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export function Header() {
-    const router = useRouter();
-    const locale = useLocale();
-    const { data: session } = authClient.useSession();
-
-    async function handleLogout() {
-        await authClient.signOut();
-        toast.success("Logged out");
-        router.push(`/${locale}/login`);
-        router.refresh();
-    }
-
-    const userInitials = session?.user?.name
-        ?.split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase() || "U";
+    const [searchFocused, setSearchFocused] = useState(false);
 
     return (
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur px-4 lg:px-8">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 bg-background/70 dark:bg-background/70 backdrop-blur-xl border-b border-border/40 px-4 lg:px-6">
             <MobileSidebar />
-            <div className="flex-1" />
+
+            {/* Search bar */}
+            <div className="hidden md:flex items-center flex-1 max-w-md">
+                <div className={cn(
+                    "relative w-full transition-all duration-200",
+                    searchFocused && "scale-[1.02]"
+                )}>
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    <input
+                        type="text"
+                        placeholder="Search anything..."
+                        className="w-full h-10 pl-10 pr-4 rounded-xl bg-secondary border border-transparent text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all"
+                        onFocus={() => setSearchFocused(true)}
+                        onBlur={() => setSearchFocused(false)}
+                        aria-label="Search"
+                    />
+                </div>
+            </div>
+
+            <div className="flex-1 md:flex-none" />
+
             <div className="flex items-center gap-2">
                 <LanguageSwitcher />
                 <ThemeToggle />
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="relative h-9 w-9 rounded-full inline-flex items-center justify-center hover:bg-accent transition-colors">
-                        <Avatar className="h-9 w-9">
-                            <AvatarFallback className="bg-primary/10 text-primary text-sm font-medium">
-                                {userInitials}
-                            </AvatarFallback>
-                        </Avatar>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56">
-                        <div className="flex items-center gap-2 p-2">
-                            <Avatar className="h-8 w-8">
-                                <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                                    {userInitials}
-                                </AvatarFallback>
-                            </Avatar>
-                            <div className="flex flex-col space-y-0.5">
-                                <p className="text-sm font-medium">{session?.user?.name}</p>
-                                <p className="text-xs text-muted-foreground truncate max-w-[160px]">
-                                    {session?.user?.email}
-                                </p>
-                            </div>
-                        </div>
-                        <DropdownMenuItem onClick={handleLogout}>
-                            <LogOut className="mr-2 h-4 w-4" />
-                            Logout
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+
+                <button
+                    className="relative h-10 w-10 rounded-xl hover:bg-accent transition-colors flex items-center justify-center cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                    aria-label="Notifications"
+                >
+                    <Bell className="h-[18px] w-[18px] text-muted-foreground" />
+                    <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-destructive ring-2 ring-background" />
+                </button>
             </div>
         </header>
     );
