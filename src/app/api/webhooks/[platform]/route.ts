@@ -3,6 +3,7 @@ import { z } from "zod";
 import { storeWebhookEvent, updateWebhookStatus } from "@/lib/webhook";
 import { withRateLimit } from "@/lib/api-guard";
 import { webhookRateLimit } from "@/lib/rate-limit";
+import { success, error, unauthorized, internalError } from "@/lib/api-response";
 import type { WebhookPlatform } from "@/lib/webhook";
 
 const platformSchema = z.enum(["instagram", "youtube", "tiktok", "x", "facebook", "threads"]);
@@ -25,7 +26,7 @@ export async function POST(
         const { platform } = await params;
         const parsedPlatform = platformSchema.safeParse(platform);
         if (!parsedPlatform.success) {
-            return NextResponse.json({ error: "Invalid platform" }, { status: 400 });
+            return error("VALIDATION_ERROR", "Invalid platform", 400);
         }
 
         const bodyText = await req.text();
@@ -33,7 +34,7 @@ export async function POST(
         try {
             payload = JSON.parse(bodyText);
         } catch {
-            return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+            return error("VALIDATION_ERROR", "Invalid JSON", 400);
         }
 
         // Platform-specific signature verification (when available)
@@ -43,7 +44,7 @@ export async function POST(
             if (appSecret && signature) {
                 const isValid = verifyInstagramSignature(bodyText, signature, appSecret);
                 if (!isValid) {
-                    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+                    return unauthorized("Invalid signature");
                 }
             }
         }
@@ -64,17 +65,17 @@ export async function POST(
 
             if (!event) {
                 // Duplicate event, acknowledge to prevent retries
-                return NextResponse.json({ received: true, duplicate: true });
+                return success({ received: true, duplicate: true });
             }
 
             // Process event synchronously for now
             // In production, queue this to BullMQ/Redis for async processing
             await processWebhookEvent(event.id, platform as WebhookPlatform, payload);
 
-            return NextResponse.json({ received: true, eventId: event.id });
+            return success({ received: true, eventId: event.id });
         } catch (err) {
             console.error(`[webhook ${platform}] error:`, err);
-            return NextResponse.json({ error: "Failed to process webhook" }, { status: 500 });
+            return internalError("Failed to process webhook");
         }
     });
 }
@@ -95,7 +96,7 @@ export async function GET(
         return new NextResponse(challenge, { status: 200 });
     }
 
-    return NextResponse.json({ error: "Invalid verification request" }, { status: 400 });
+    return error("VALIDATION_ERROR", "Invalid verification request", 400);
 }
 
 function inferEventType(platform: WebhookPlatform, payload: Record<string, unknown>): import("@/lib/webhook").WebhookEventType {
