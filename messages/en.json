@@ -62,6 +62,7 @@
         "onTrackTarget": "On track for 80% target",
         "showDetails": "Show details",
         "bestSellingProducts": "Best Selling Products",
+        "id": "ID",
         "name": "NAME",
         "sold": "SOLD",
         "revenue": "REVENUE",

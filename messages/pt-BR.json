@@ -62,6 +62,7 @@
         "onTrackTarget": "No caminho para a meta de 80%",
         "showDetails": "Ver detalhes",
         "bestSellingProducts": "Produtos Mais Vendidos",
+        "id": "ID",
         "name": "NOME",
         "sold": "VENDAS",
         "revenue": "RECEITA",

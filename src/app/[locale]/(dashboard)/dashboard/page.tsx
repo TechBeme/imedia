@@ -342,7 +342,7 @@ export default function DashboardPage() {
                         <Table>
                             <TableHeader>
                                 <TableRow className="border-border/60 hover:bg-transparent">
-                                    <TableHead className="text-xs text-muted-foreground font-medium">ID</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium">{t("id")}</TableHead>
                                     <TableHead className="text-xs text-muted-foreground font-medium">{t("name")}</TableHead>
                                     <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("sold")}</TableHead>
                                     <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("revenue")}</TableHead>

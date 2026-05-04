@@ -18,6 +18,11 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
         autoSignIn: true,
+        sendResetPassword: async ({ user, url }) => {
+            // In production, integrate with Resend/SendGrid/etc
+            // For now, log the reset URL so it can be tested
+            console.log(`[Password Reset] User: ${user.email}, URL: ${url}`);
+        },
     },
     socialProviders: {
         google: {
