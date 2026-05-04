@@ -83,7 +83,7 @@ export default function ScheduledPage() {
                 <Card className="glass-card">
                     <CardContent className="p-8 text-center text-muted-foreground">
                         <RiCalendarLine className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>Calendar view coming soon</p>
+                        <p>{t("calendarComingSoon")}</p>
                     </CardContent>
                 </Card>
             </TabsContent>
@@ -108,13 +108,13 @@ export default function ScheduledPage() {
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <Badge variant="outline" className="rounded-lg text-xs">{post.status}</Badge>
+                                            <Badge variant="outline" className="rounded-lg text-xs">{t(post.status)}</Badge>
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-8 w-8 rounded-lg cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-                                                onClick={() => toast("Edit coming soon")}
-                                                aria-label="Edit"
+                                                onClick={() => toast(t("editComingSoon"))}
+                                                aria-label={t("edit")}
                                             >
                                                 <RiEditLine className="h-4 w-4" />
                                             </Button>
@@ -122,8 +122,8 @@ export default function ScheduledPage() {
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-8 w-8 rounded-lg cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-                                                onClick={() => toast("Publish now (mock)")}
-                                                aria-label="Publish now"
+                                                onClick={() => toast(t("publishNowMock"))}
+                                                aria-label={t("publishNow")}
                                             >
                                                 <RiSendPlaneLine className="h-4 w-4" />
                                             </Button>
@@ -131,8 +131,8 @@ export default function ScheduledPage() {
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-8 w-8 rounded-lg text-destructive cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-                                                onClick={() => toast("Cancelled")}
-                                                aria-label="Cancel"
+                                                onClick={() => toast(t("cancelled"))}
+                                                aria-label={t("cancel")}
                                             >
                                                 <RiDeleteBinLine className="h-4 w-4" />
                                             </Button>

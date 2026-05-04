@@ -68,6 +68,9 @@
         "upgradeNow": "Upgrade premium",
         "aiAssistant": "AI Assistant",
         "moreOptions": "More options",
+        "retailers": "Retailers",
+        "distributors": "Distributors",
+        "wholesalers": "Wholesalers",
         "pageViews": "Page Views",
         "visitors": "Visitors",
         "clicks": "Clicks",
@@ -148,6 +151,30 @@
         "newPassword": "New Password",
         "updatePassword": "Update Password"
     },
+    "history": {
+        "title": "History",
+        "platform": "PLATFORM",
+        "content": "CONTENT",
+        "date": "DATE",
+        "likes": "LIKES",
+        "comments": "COMMENTS",
+        "views": "VIEWS"
+    },
+    "media": {
+        "title": "Media",
+        "upload": "Upload",
+        "mediaLibrary": "Media Library"
+    },
+    "analytics": {
+        "title": "Analytics",
+        "7days": "7 days",
+        "30days": "30 days",
+        "90days": "90 days",
+        "engagementByPlatform": "Engagement by Platform",
+        "followerGrowth": "Follower Growth",
+        "platformDistribution": "Platform Distribution",
+        "topPerformingPosts": "Top Performing Posts"
+    },
     "common": {
         "loading": "Loading...",
         "save": "Save",
@@ -160,6 +187,7 @@
         "noResults": "No results found",
         "error": "An error occurred",
         "success": "Success!",
-        "toggleTheme": "Toggle theme"
+        "toggleTheme": "Toggle theme",
+        "switchLanguage": "Switch language"
     }
 }

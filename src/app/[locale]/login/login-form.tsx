@@ -46,11 +46,11 @@ export function LoginForm() {
         setLoading(false);
 
         if (error) {
-            toast.error(error.message || t("loginFailed") || "Login failed");
+            toast.error(error.message || t("loginFailed"));
             return;
         }
 
-        toast.success(t("loginSuccess") || "Login successful!");
+        toast.success(t("loginSuccess"));
         router.push(`/${locale}/dashboard`);
         router.refresh();
     }
@@ -81,24 +81,24 @@ export function LoginForm() {
 
             <div className="space-y-2 mb-8">
                 <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
-                    {t("loginTitle") || "Bem-vindo de volta"}
+                    {t("loginTitle")}
                 </h1>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                    {t("loginSubtitle") || "Entre para gerenciar suas redes sociais"}
+                    {t("loginSubtitle")}
                 </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="space-y-2">
                     <Label htmlFor="email" className="text-sm font-semibold text-foreground">
-                        {t("email") || "E-mail"}
+                        {t("email")}
                     </Label>
                     <div className="relative group">
                         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/70 group-focus-within:text-primary transition-colors pointer-events-none" />
                         <Input
                             id="email"
                             type="email"
-                            placeholder={t("emailPlaceholder") || "seu@email.com"}
+                            placeholder={t("emailPlaceholder")}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -111,13 +111,13 @@ export function LoginForm() {
                 <div className="space-y-2">
                     <div className="flex items-center justify-between">
                         <Label htmlFor="password" className="text-sm font-semibold text-foreground">
-                            {t("password") || "Senha"}
+                            {t("password")}
                         </Label>
                         <Link
                             href={`/${locale}/forgot-password`}
                             className="text-sm text-primary hover:text-primary/80 font-medium transition-colors"
                         >
-                            {t("forgotPassword") || "Esqueceu a senha?"}
+                            {t("forgotPassword")}
                         </Link>
                     </div>
                     <div className="relative group">
@@ -143,11 +143,11 @@ export function LoginForm() {
                     {loading ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            {t("loggingIn") || "Entrando..."}
+                            {t("loggingIn")}
                         </>
                     ) : (
                         <>
-                            {t("login") || "Entrar"}
+                            {t("login")}
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </>
                     )}
@@ -160,7 +160,7 @@ export function LoginForm() {
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                     <span className="bg-background px-3 text-muted-foreground font-medium">
-                        {t("orContinueWith") || "ou continue com"}
+                        {t("orContinueWith")}
                     </span>
                 </div>
             </div>
@@ -178,16 +178,16 @@ export function LoginForm() {
                 ) : (
                     <GoogleIcon className="mr-2 h-5 w-5" />
                 )}
-                {t("continueWithGoogle") || "Continuar com Google"}
+                {t("continueWithGoogle")}
             </Button>
 
             <p className="mt-8 text-center text-sm text-muted-foreground">
-                {t("noAccount") || "Nao tem conta?"}{" "}
+                {t("noAccount")}{" "}
                 <Link
                     href={`/${locale}/register`}
                     className="text-primary hover:text-primary/80 font-semibold transition-colors"
                 >
-                    {t("register") || "Criar conta"}
+                    {t("register")}
                 </Link>
             </p>
         </motion.div>

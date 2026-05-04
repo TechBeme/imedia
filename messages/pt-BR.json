@@ -68,6 +68,9 @@
         "upgradeNow": "Atualizar agora",
         "aiAssistant": "Assistente de IA",
         "moreOptions": "Mais opcoes",
+        "retailers": "Varejistas",
+        "distributors": "Distribuidores",
+        "wholesalers": "Atacadistas",
         "pageViews": "Visualizacoes",
         "visitors": "Visitantes",
         "clicks": "Cliques",
@@ -148,6 +151,30 @@
         "newPassword": "Nova senha",
         "updatePassword": "Atualizar senha"
     },
+    "history": {
+        "title": "Historico",
+        "platform": "PLATAFORMA",
+        "content": "CONTEUDO",
+        "date": "DATA",
+        "likes": "CURTIDAS",
+        "comments": "COMENTARIOS",
+        "views": "VISUALIZACOES"
+    },
+    "media": {
+        "title": "Midias",
+        "upload": "Enviar",
+        "mediaLibrary": "Biblioteca de Midias"
+    },
+    "analytics": {
+        "title": "Analytics",
+        "7days": "7 dias",
+        "30days": "30 dias",
+        "90days": "90 dias",
+        "engagementByPlatform": "Engajamento por Plataforma",
+        "followerGrowth": "Crescimento de Seguidores",
+        "platformDistribution": "Distribuicao por Plataforma",
+        "topPerformingPosts": "Posts Mais Performaticos"
+    },
     "common": {
         "loading": "Carregando...",
         "save": "Salvar",
@@ -160,6 +187,7 @@
         "noResults": "Nenhum resultado encontrado",
         "error": "Ocorreu um erro",
         "success": "Sucesso!",
-        "toggleTheme": "Alternar tema"
+        "toggleTheme": "Alternar tema",
+        "switchLanguage": "Mudar idioma"
     }
 }

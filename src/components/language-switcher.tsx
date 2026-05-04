@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { locales, type Locale } from "@/lib/i18n";
 import {
     DropdownMenu,
@@ -28,6 +28,7 @@ export function LanguageSwitcher() {
     const router = useRouter();
     const pathname = usePathname();
     const currentLocale = useLocale();
+    const t = useTranslations("common");
 
     function switchLocale(locale: Locale) {
         const newPath = pathname.replace(`/${currentLocale}`, `/${locale}`);
@@ -42,7 +43,7 @@ export function LanguageSwitcher() {
                     variant="ghost"
                     size="sm"
                     className="h-9 gap-2 rounded-xl cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50 px-3"
-                    aria-label="Switch language"
+                    aria-label={t("switchLanguage")}
                 >
                     <span className="text-base leading-none">{localeFlags[currentLocale as Locale]}</span>
                     <span className="hidden sm:inline text-sm">{localeLabels[currentLocale as Locale]}</span>

@@ -47,7 +47,7 @@ export function Sidebar({ className }: { className?: string }) {
 
     async function handleLogout() {
         await authClient.signOut();
-        toast.success(t("logoutSuccess") || "Logged out");
+        toast.success(t("logoutSuccess"));
         router.push(`/${locale}/login`);
         router.refresh();
     }
@@ -124,8 +124,8 @@ export function Sidebar({ className }: { className?: string }) {
                             </AvatarFallback>
                         </Avatar>
                         <div className="flex-1 text-left min-w-0">
-                            <p className="text-sm font-medium truncate">{session?.user?.name || "User"}</p>
-                            <p className="text-xs text-muted-foreground truncate">{session?.user?.email || ""}</p>
+                            <p className="text-sm font-medium truncate">{session?.user?.name}</p>
+                            <p className="text-xs text-muted-foreground truncate">{session?.user?.email}</p>
                         </div>
                         <ChevronUp className="h-4 w-4 text-muted-foreground shrink-0" />
                     </DropdownMenuTrigger>
@@ -153,7 +153,7 @@ export function MobileSidebar() {
 
     async function handleLogout() {
         await authClient.signOut();
-        toast.success(t("logoutSuccess") || "Logged out");
+        toast.success(t("logoutSuccess"));
         router.push(`/${locale}/login`);
         router.refresh();
     }

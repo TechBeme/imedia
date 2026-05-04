@@ -100,7 +100,7 @@ export default function AccountsPage() {
                 setAccounts(data.accounts);
             }
         } catch {
-            toast.error(tc("error") || "Failed to load accounts");
+            toast.error(tc("error"));
         } finally {
             setLoading(false);
         }
@@ -116,10 +116,10 @@ export default function AccountsPage() {
             if (data.url) {
                 window.location.href = data.url;
             } else {
-                toast.error(data.error || tc("error") || "Failed to start OAuth");
+                toast.error(data.error || tc("error"));
             }
         } catch {
-            toast.error(tc("error") || "Failed to connect");
+            toast.error(tc("error"));
         } finally {
             setConnecting(null);
         }
@@ -137,7 +137,7 @@ export default function AccountsPage() {
                 toast.error(t("disconnectFailed"));
             }
         } catch {
-            toast.error(tc("error") || "Failed to disconnect");
+            toast.error(tc("error"));
         }
     }
 

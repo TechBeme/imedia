@@ -43,7 +43,7 @@ const itemVariants = {
 };
 
 export default function HistoryPage() {
-    const t = useTranslations("dashboard");
+    const t = useTranslations("history");
 
     return (
         <motion.div
@@ -54,7 +54,7 @@ export default function HistoryPage() {
         >
             <motion.div variants={itemVariants} className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight font-heading">History</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
                 </div>
             </motion.div>
 
@@ -64,12 +64,12 @@ export default function HistoryPage() {
                         <Table>
                             <TableHeader>
                                 <TableRow className="border-border/60 hover:bg-transparent">
-                                    <TableHead className="text-xs text-muted-foreground font-medium">PLATFORM</TableHead>
-                                    <TableHead className="text-xs text-muted-foreground font-medium">CONTENT</TableHead>
-                                    <TableHead className="text-xs text-muted-foreground font-medium">DATE</TableHead>
-                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">LIKES</TableHead>
-                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">COMMENTS</TableHead>
-                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">VIEWS</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium">{t("platform")}</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium">{t("content")}</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium">{t("date")}</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("likes")}</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("comments")}</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("views")}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>

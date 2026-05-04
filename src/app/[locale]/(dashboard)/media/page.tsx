@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
@@ -26,6 +27,8 @@ const itemVariants = {
 };
 
 export default function MediaPage() {
+    const t = useTranslations("media");
+
     return (
         <motion.div
             className="space-y-6"
@@ -35,11 +38,11 @@ export default function MediaPage() {
         >
             <motion.div variants={itemVariants} className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight font-heading">Media Library</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("mediaLibrary")}</h1>
                 </div>
                 <Button className="gap-2 rounded-xl cursor-pointer shadow-sm shadow-primary/20 h-11">
                     <RiImageAddLine className="h-4 w-4" />
-                    Upload
+                    {t("upload")}
                 </Button>
             </motion.div>
 

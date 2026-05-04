@@ -48,11 +48,11 @@ export function RegisterForm() {
         setLoading(false);
 
         if (error) {
-            toast.error(error.message || t("registerFailed") || "Registration failed");
+            toast.error(error.message || t("registerFailed"));
             return;
         }
 
-        toast.success(t("registerSuccess") || "Account created!");
+        toast.success(t("registerSuccess"));
         router.push(`/${locale}/dashboard`);
         router.refresh();
     }
@@ -83,24 +83,24 @@ export function RegisterForm() {
 
             <div className="space-y-2 mb-8">
                 <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
-                    {t("registerTitle") || "Criar conta"}
+                    {t("registerTitle")}
                 </h1>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                    {t("registerSubtitle") || "Comece a gerenciar suas redes sociais"}
+                    {t("registerSubtitle")}
                 </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="space-y-2">
                     <Label htmlFor="name" className="text-sm font-semibold text-foreground">
-                        {t("name") || "Nome"}
+                        {t("name")}
                     </Label>
                     <div className="relative group">
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/70 group-focus-within:text-primary transition-colors pointer-events-none" />
                         <Input
                             id="name"
                             type="text"
-                            placeholder={t("namePlaceholder") || "Seu nome"}
+                            placeholder={t("namePlaceholder")}
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
@@ -112,14 +112,14 @@ export function RegisterForm() {
 
                 <div className="space-y-2">
                     <Label htmlFor="email" className="text-sm font-semibold text-foreground">
-                        {t("email") || "E-mail"}
+                        {t("email")}
                     </Label>
                     <div className="relative group">
                         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/70 group-focus-within:text-primary transition-colors pointer-events-none" />
                         <Input
                             id="email"
                             type="email"
-                            placeholder={t("emailPlaceholder") || "seu@email.com"}
+                            placeholder={t("emailPlaceholder")}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -131,7 +131,7 @@ export function RegisterForm() {
 
                 <div className="space-y-2">
                     <Label htmlFor="password" className="text-sm font-semibold text-foreground">
-                        {t("password") || "Senha"}
+                        {t("password")}
                     </Label>
                     <div className="relative group">
                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/70 group-focus-within:text-primary transition-colors pointer-events-none" />
@@ -156,11 +156,11 @@ export function RegisterForm() {
                     {loading ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            {t("creatingAccount") || "Criando conta..."}
+                            {t("creatingAccount")}
                         </>
                     ) : (
                         <>
-                            {t("register") || "Criar conta"}
+                            {t("register")}
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </>
                     )}
@@ -173,7 +173,7 @@ export function RegisterForm() {
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                     <span className="bg-background px-3 text-muted-foreground font-medium">
-                        {t("orContinueWith") || "ou continue com"}
+                        {t("orContinueWith")}
                     </span>
                 </div>
             </div>
@@ -191,16 +191,16 @@ export function RegisterForm() {
                 ) : (
                     <GoogleIcon className="mr-2 h-5 w-5" />
                 )}
-                {t("continueWithGoogle") || "Continuar com Google"}
+                {t("continueWithGoogle")}
             </Button>
 
             <p className="mt-8 text-center text-sm text-muted-foreground">
-                {t("hasAccount") || "Ja tem conta?"}{" "}
+                {t("hasAccount")}{" "}
                 <Link
                     href={`/${locale}/login`}
                     className="text-primary hover:text-primary/80 font-semibold transition-colors"
                 >
-                    {t("login") || "Entrar"}
+                    {t("login")}
                 </Link>
             </p>
         </motion.div>

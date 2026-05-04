@@ -121,9 +121,9 @@ export default function DashboardPage() {
     ];
 
     const customerSegments = [
-        { label: t("retailers") || "Retailers", value: "2.884", color: "bg-chart-1" },
-        { label: t("distributors") || "Distributors", value: "1.432", color: "bg-chart-3" },
-        { label: t("wholesalers") || "Wholesalers", value: "562", color: "bg-chart-4" },
+        { label: t("retailers"), value: "2.884", color: "bg-chart-1" },
+        { label: t("distributors"), value: "1.432", color: "bg-chart-3" },
+        { label: t("wholesalers"), value: "562", color: "bg-chart-4" },
     ];
 
     return (
@@ -187,7 +187,7 @@ export default function DashboardPage() {
                                             {kpi.change}
                                         </span>
                                     </div>
-                                    <p className="text-xs text-muted-foreground mt-1.5">{t("vsLastPeriod") || "vs. last period"}</p>
+                                    <p className="text-xs text-muted-foreground mt-1.5">{t("vsLastPeriod")}</p>
                                 </CardContent>
                             </Card>
                         </motion.div>
@@ -202,19 +202,19 @@ export default function DashboardPage() {
                     <CardContent className="p-5">
                         <div className="flex items-center justify-between mb-6">
                             <div>
-                                <h3 className="text-base font-semibold font-heading">{t("totalProfit") || "Total Profit"}</h3>
+                                <h3 className="text-base font-semibold font-heading">{t("totalProfit")}</h3>
                                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                                     <span className="text-2xl font-semibold font-heading">$446.7K</span>
                                     <span className="flex items-center text-xs font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 dark:text-emerald-400 rounded-full px-1.5 py-0.5">
                                         <TrendingUp className="h-3 w-3 mr-0.5" />
                                         +24.4%
                                     </span>
-                                    <span className="text-xs text-muted-foreground">{t("vsLastPeriod") || "vs. last period"}</span>
+                                    <span className="text-xs text-muted-foreground">{t("vsLastPeriod")}</span>
                                 </div>
                             </div>
                             <button
                                 className="p-2 rounded-xl hover:bg-accent transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-                                aria-label={t("moreOptions") || "More options"}
+                                aria-label={t("moreOptions")}
                             >
                                 <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
                             </button>
@@ -238,7 +238,7 @@ export default function DashboardPage() {
                                             boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
                                             background: "hsl(var(--card))",
                                         }}
-                                        formatter={(value) => [`$${Number(value).toLocaleString()}`, t("profit") || "Profit"]}
+                                        formatter={(value) => [`$${Number(value).toLocaleString()}`, t("profit")]}
                                     />
                                     <Area type="monotone" dataKey="value" stroke="hsl(var(--chart-1))" strokeWidth={2} fill="url(#profitGrad)" />
                                 </AreaChart>
@@ -265,10 +265,10 @@ export default function DashboardPage() {
                     <Card className="glass-card">
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-base font-semibold font-heading">{t("mostDayActive") || "Most Day Active"}</h3>
+                                <h3 className="text-base font-semibold font-heading">{t("mostDayActive")}</h3>
                                 <button
                                     className="p-2 rounded-xl hover:bg-accent transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-                                    aria-label={t("moreOptions") || "More options"}
+                                    aria-label={t("moreOptions")}
                                 >
                                     <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
                                 </button>
@@ -297,10 +297,10 @@ export default function DashboardPage() {
                     <Card className="glass-card">
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-base font-semibold font-heading">{t("repeatCustomerRate") || "Repeat Customer Rate"}</h3>
+                                <h3 className="text-base font-semibold font-heading">{t("repeatCustomerRate")}</h3>
                                 <button
                                     className="p-2 rounded-xl hover:bg-accent transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-                                    aria-label={t("moreOptions") || "More options"}
+                                    aria-label={t("moreOptions")}
                                 >
                                     <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
                                 </button>
@@ -315,9 +315,9 @@ export default function DashboardPage() {
                                         <span className="text-2xl font-bold font-heading">68%</span>
                                     </div>
                                 </div>
-                                <p className="text-xs text-muted-foreground mt-2">{t("onTrackTarget") || "On track for 80% target"}</p>
+                                <p className="text-xs text-muted-foreground mt-2">{t("onTrackTarget")}</p>
                                 <Button variant="outline" size="sm" className="mt-3 rounded-xl text-xs cursor-pointer">
-                                    {t("showDetails") || "Show details"}
+                                    {t("showDetails")}
                                 </Button>
                             </div>
                         </CardContent>
@@ -331,10 +331,10 @@ export default function DashboardPage() {
                 <Card className="lg:col-span-2 glass-card">
                     <CardContent className="p-5">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-base font-semibold font-heading">{t("bestSellingProducts") || "Best Selling Products"}</h3>
+                            <h3 className="text-base font-semibold font-heading">{t("bestSellingProducts")}</h3>
                             <button
                                 className="p-2 rounded-xl hover:bg-accent transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-                                aria-label={t("moreOptions") || "More options"}
+                                aria-label={t("moreOptions")}
                             >
                                 <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
                             </button>
@@ -343,10 +343,10 @@ export default function DashboardPage() {
                             <TableHeader>
                                 <TableRow className="border-border/60 hover:bg-transparent">
                                     <TableHead className="text-xs text-muted-foreground font-medium">ID</TableHead>
-                                    <TableHead className="text-xs text-muted-foreground font-medium">{t("name") || "NAME"}</TableHead>
-                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("sold") || "SOLD"}</TableHead>
-                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("revenue") || "REVENUE"}</TableHead>
-                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("rating") || "RATING"}</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium">{t("name")}</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("sold")}</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("revenue")}</TableHead>
+                                    <TableHead className="text-xs text-muted-foreground font-medium text-right">{t("rating")}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -377,10 +377,10 @@ export default function DashboardPage() {
                             <div className="h-10 w-10 rounded-xl bg-white/20 flex items-center justify-center mb-3 backdrop-blur-sm">
                                 <Sparkles className="h-5 w-5" />
                             </div>
-                            <h3 className="text-base font-semibold mb-1 font-heading">{t("upgradePremium") || "Upgrade to Premium!"}</h3>
-                            <p className="text-sm text-primary-foreground/80 mb-4">{t("upgradeDescription") || "Upgrade your account and unlock all of the benefits."}</p>
+                            <h3 className="text-base font-semibold mb-1 font-heading">{t("upgradePremium")}</h3>
+                            <p className="text-sm text-primary-foreground/80 mb-4">{t("upgradeDescription")}</p>
                             <Button className="w-full rounded-xl bg-white text-primary hover:bg-white/90 font-medium cursor-pointer shadow-sm">
-                                {t("upgradeNow") || "Upgrade premium"}
+                                {t("upgradeNow")}
                             </Button>
                         </CardContent>
                     </Card>
@@ -389,7 +389,7 @@ export default function DashboardPage() {
                     <Card className="glass-card cursor-pointer transition-shadow duration-200 hover:shadow-md">
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-base font-semibold font-heading">{t("aiAssistant") || "AI Assistant"}</h3>
+                                <h3 className="text-base font-semibold font-heading">{t("aiAssistant")}</h3>
                                 <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
                             </div>
                             <div className="flex items-center justify-center py-4">

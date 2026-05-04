@@ -27,11 +27,13 @@ import {
     RiDraftLine,
 } from "react-icons/ri";
 
-const composeSchema = z.object({
-    content: z.string().min(1, "Content is required").max(2200, "Too long"),
-});
+function getComposeSchema(t: (key: string) => string) {
+    return z.object({
+        content: z.string().min(1, t("contentRequired")).max(2200, t("tooLong")),
+    });
+}
 
-type ComposeForm = z.infer<typeof composeSchema>;
+type ComposeForm = z.infer<ReturnType<typeof getComposeSchema>>;
 
 const platforms = [
     { key: "instagram", icon: RiInstagramLine, color: "text-pink-500", label: "Instagram" },
@@ -58,6 +60,7 @@ export default function ComposePage() {
     const [mediaFiles, setMediaFiles] = useState<string[]>([]);
     const [isScheduling, setIsScheduling] = useState(false);
 
+    const composeSchema = getComposeSchema(t);
     const { register, handleSubmit, formState: { errors }, watch } = useForm<ComposeForm>({
         resolver: zodResolver(composeSchema),
     });
@@ -122,7 +125,7 @@ export default function ComposePage() {
                 <motion.div variants={itemVariants}>
                     <Card className="glass-card">
                         <CardHeader>
-                            <CardTitle className="text-base font-semibold font-heading">Content</CardTitle>
+                            <CardTitle className="text-base font-semibold font-heading">{t("content")}</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <Textarea
@@ -135,8 +138,8 @@ export default function ComposePage() {
                                 <p className="text-sm text-destructive">{errors.content.message}</p>
                             )}
                             <div className="flex justify-between text-xs text-muted-foreground">
-                                <span>{content.length} / 2200</span>
-                                <span>{selectedPlatforms.length} platforms selected</span>
+                                <span>{content.length} / 2200 {t("characters")}</span>
+                                <span>{selectedPlatforms.length} {t("platformsSelected")}</span>
                             </div>
                         </CardContent>
                     </Card>
@@ -151,8 +154,8 @@ export default function ComposePage() {
                             <div className="flex items-center justify-center rounded-xl border border-dashed border-border/60 p-8 hover:bg-accent/50 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
                                 <div className="flex flex-col items-center gap-2 text-muted-foreground">
                                     <RiImageAddLine className="h-8 w-8" />
-                                    <span className="text-sm">Click or drag files here</span>
-                                    <span className="text-xs">Images, videos up to 100MB</span>
+                                    <span className="text-sm">{t("clickOrDrag")}</span>
+                                    <span className="text-xs">{t("imagesVideos")}</span>
                                 </div>
                             </div>
                         </CardContent>
@@ -173,13 +176,13 @@ export default function ComposePage() {
                                     className="cursor-pointer"
                                 />
                                 <Label htmlFor="schedule-toggle" className="cursor-pointer">
-                                    {isScheduling ? "Schedule for later" : "Publish immediately"}
+                                    {isScheduling ? t("scheduleForLater") : t("publishImmediately")}
                                 </Label>
                             </div>
                             {isScheduling && (
                                 <div className="mt-4 flex items-center gap-2 rounded-xl border border-border/60 p-3 bg-muted/30">
                                     <RiCalendarLine className="h-4 w-4 text-muted-foreground" />
-                                    <span className="text-sm text-muted-foreground">Date/time picker coming soon</span>
+                                    <span className="text-sm text-muted-foreground">{t("dateTimePickerSoon")}</span>
                                 </div>
                             )}
                         </CardContent>

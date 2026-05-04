@@ -61,7 +61,7 @@ const tooltipStyle = {
 };
 
 export default function AnalyticsPage() {
-    const t = useTranslations("dashboard");
+    const t = useTranslations("analytics");
 
     return (
         <motion.div
@@ -72,13 +72,13 @@ export default function AnalyticsPage() {
         >
             <motion.div variants={itemVariants} className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight font-heading">Analytics</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
                 </div>
                 <Tabs defaultValue="7d">
                     <TabsList className="rounded-xl">
-                        <TabsTrigger value="7d" className="rounded-lg cursor-pointer">7 days</TabsTrigger>
-                        <TabsTrigger value="30d" className="rounded-lg cursor-pointer">30 days</TabsTrigger>
-                        <TabsTrigger value="90d" className="rounded-lg cursor-pointer">90 days</TabsTrigger>
+                        <TabsTrigger value="7d" className="rounded-lg cursor-pointer">{t("7days")}</TabsTrigger>
+                        <TabsTrigger value="30d" className="rounded-lg cursor-pointer">{t("30days")}</TabsTrigger>
+                        <TabsTrigger value="90d" className="rounded-lg cursor-pointer">{t("90days")}</TabsTrigger>
                     </TabsList>
                 </Tabs>
             </motion.div>
@@ -87,7 +87,7 @@ export default function AnalyticsPage() {
                 <motion.div variants={itemVariants}>
                     <Card className="glass-card">
                         <CardHeader>
-                            <CardTitle className="text-base font-semibold font-heading">Engagement by Platform</CardTitle>
+                            <CardTitle className="text-base font-semibold font-heading">{t("engagementByPlatform")}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <ResponsiveContainer width="100%" height={300}>
@@ -108,7 +108,7 @@ export default function AnalyticsPage() {
                 <motion.div variants={itemVariants}>
                     <Card className="glass-card">
                         <CardHeader>
-                            <CardTitle className="text-base font-semibold font-heading">Follower Growth</CardTitle>
+                            <CardTitle className="text-base font-semibold font-heading">{t("followerGrowth")}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <ResponsiveContainer width="100%" height={300}>
@@ -128,7 +128,7 @@ export default function AnalyticsPage() {
                 <motion.div variants={itemVariants}>
                     <Card className="glass-card">
                         <CardHeader>
-                            <CardTitle className="text-base font-semibold font-heading">Platform Distribution</CardTitle>
+                            <CardTitle className="text-base font-semibold font-heading">{t("platformDistribution")}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <ResponsiveContainer width="100%" height={300}>
@@ -164,7 +164,7 @@ export default function AnalyticsPage() {
                 <motion.div variants={itemVariants}>
                     <Card className="glass-card">
                         <CardHeader>
-                            <CardTitle className="text-base font-semibold font-heading">Top Performing Posts</CardTitle>
+                            <CardTitle className="text-base font-semibold font-heading">{t("topPerformingPosts")}</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3">
                             {[
