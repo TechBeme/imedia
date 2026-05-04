@@ -67,7 +67,12 @@
         "upgradeDescription": "Actualiza tu cuenta y desbloquea todos los beneficios.",
         "upgradeNow": "Actualizar ahora",
         "aiAssistant": "Asistente de IA",
-        "moreOptions": "Mas opciones"
+        "moreOptions": "Mas opciones",
+        "pageViews": "Vistas",
+        "visitors": "Visitantes",
+        "clicks": "Clics",
+        "orders": "Pedidos",
+        "dateRange": "1 Ene, 2025 - 1 Feb, 2025"
     },
     "accounts": {
         "title": "Cuentas Conectadas",
@@ -93,7 +98,17 @@
         "publishNow": "Publicar ahora",
         "saveDraft": "Guardar borrador",
         "draftSaved": "Borrador guardado",
-        "published": "Publicado!"
+        "published": "Publicado!",
+        "content": "Contenido",
+        "contentRequired": "El contenido es obligatorio",
+        "tooLong": "Demasiado largo",
+        "characters": "caracteres",
+        "platformsSelected": "plataformas seleccionadas",
+        "clickOrDrag": "Haz clic o arrastra archivos aqui",
+        "imagesVideos": "Imagenes, videos hasta 100MB",
+        "scheduleForLater": "Programar para despues",
+        "publishImmediately": "Publicar inmediatamente",
+        "dateTimePickerSoon": "Selector de fecha/hora proximamente"
     },
     "scheduled": {
         "title": "Posts Programados",
@@ -101,7 +116,12 @@
         "listView": "Lista",
         "cancel": "Cancelar",
         "edit": "Editar",
-        "publishNow": "Publicar ahora"
+        "publishNow": "Publicar ahora",
+        "calendarComingSoon": "Vista de calendario proximamente",
+        "editComingSoon": "Edicion proximamente",
+        "publishNowMock": "Publicar ahora (simulacion)",
+        "cancelled": "Cancelado",
+        "pending": "pendiente"
     },
     "header": {
         "searchPlaceholder": "Buscar cualquier cosa...",
@@ -139,6 +159,7 @@
         "filter": "Filtrar",
         "noResults": "No se encontraron resultados",
         "error": "Ocurrio un error",
-        "success": "Exito!"
+        "success": "Exito!",
+        "toggleTheme": "Cambiar tema"
     }
 }

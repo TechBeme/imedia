@@ -67,7 +67,12 @@
         "upgradeDescription": "Atualize sua conta e desbloqueie todos os beneficios.",
         "upgradeNow": "Atualizar agora",
         "aiAssistant": "Assistente de IA",
-        "moreOptions": "Mais opcoes"
+        "moreOptions": "Mais opcoes",
+        "pageViews": "Visualizacoes",
+        "visitors": "Visitantes",
+        "clicks": "Cliques",
+        "orders": "Pedidos",
+        "dateRange": "1 Jan, 2025 - 1 Fev, 2025"
     },
     "accounts": {
         "title": "Contas Conectadas",
@@ -93,7 +98,17 @@
         "publishNow": "Publicar agora",
         "saveDraft": "Salvar rascunho",
         "draftSaved": "Rascunho salvo",
-        "published": "Publicado!"
+        "published": "Publicado!",
+        "content": "Conteudo",
+        "contentRequired": "Conteudo e obrigatorio",
+        "tooLong": "Muito longo",
+        "characters": "caracteres",
+        "platformsSelected": "plataformas selecionadas",
+        "clickOrDrag": "Clique ou arraste arquivos aqui",
+        "imagesVideos": "Imagens, videos ate 100MB",
+        "scheduleForLater": "Agendar para depois",
+        "publishImmediately": "Publicar imediatamente",
+        "dateTimePickerSoon": "Seletor de data/hora em breve"
     },
     "scheduled": {
         "title": "Posts Agendados",
@@ -101,7 +116,12 @@
         "listView": "Lista",
         "cancel": "Cancelar",
         "edit": "Editar",
-        "publishNow": "Publicar agora"
+        "publishNow": "Publicar agora",
+        "calendarComingSoon": "Visualizacao de calendario em breve",
+        "editComingSoon": "Edicao em breve",
+        "publishNowMock": "Publicar agora (simulacao)",
+        "cancelled": "Cancelado",
+        "pending": "pendente"
     },
     "header": {
         "searchPlaceholder": "Buscar qualquer coisa...",
@@ -139,6 +159,7 @@
         "filter": "Filtrar",
         "noResults": "Nenhum resultado encontrado",
         "error": "Ocorreu um erro",
-        "success": "Sucesso!"
+        "success": "Sucesso!",
+        "toggleTheme": "Alternar tema"
     }
 }

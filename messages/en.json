@@ -67,7 +67,12 @@
         "upgradeDescription": "Upgrade your account and unlock all of the benefits.",
         "upgradeNow": "Upgrade premium",
         "aiAssistant": "AI Assistant",
-        "moreOptions": "More options"
+        "moreOptions": "More options",
+        "pageViews": "Page Views",
+        "visitors": "Visitors",
+        "clicks": "Clicks",
+        "orders": "Orders",
+        "dateRange": "Jan 1, 2025 - Feb 1, 2025"
     },
     "accounts": {
         "title": "Connected Accounts",
@@ -93,7 +98,17 @@
         "publishNow": "Publish now",
         "saveDraft": "Save draft",
         "draftSaved": "Draft saved",
-        "published": "Published!"
+        "published": "Published!",
+        "content": "Content",
+        "contentRequired": "Content is required",
+        "tooLong": "Too long",
+        "characters": "characters",
+        "platformsSelected": "platforms selected",
+        "clickOrDrag": "Click or drag files here",
+        "imagesVideos": "Images, videos up to 100MB",
+        "scheduleForLater": "Schedule for later",
+        "publishImmediately": "Publish immediately",
+        "dateTimePickerSoon": "Date/time picker coming soon"
     },
     "scheduled": {
         "title": "Scheduled Posts",
@@ -101,7 +116,12 @@
         "listView": "List",
         "cancel": "Cancel",
         "edit": "Edit",
-        "publishNow": "Publish now"
+        "publishNow": "Publish now",
+        "calendarComingSoon": "Calendar view coming soon",
+        "editComingSoon": "Edit coming soon",
+        "publishNowMock": "Publish now (mock)",
+        "cancelled": "Cancelled",
+        "pending": "pending"
     },
     "header": {
         "searchPlaceholder": "Search anything...",
@@ -139,6 +159,7 @@
         "filter": "Filter",
         "noResults": "No results found",
         "error": "An error occurred",
-        "success": "Success!"
+        "success": "Success!",
+        "toggleTheme": "Toggle theme"
     }
 }

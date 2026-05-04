@@ -40,45 +40,6 @@ import {
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
-const kpiData = [
-    {
-        label: "Page Views",
-        value: "16.431",
-        change: "+15.5%",
-        trend: "up" as const,
-        icon: Eye,
-        iconColor: "text-blue-500",
-        iconBg: "bg-blue-50 dark:bg-blue-500/10",
-    },
-    {
-        label: "Visitors",
-        value: "6.225",
-        change: "+8.4%",
-        trend: "up" as const,
-        icon: Users,
-        iconColor: "text-indigo-500",
-        iconBg: "bg-indigo-50 dark:bg-indigo-500/10",
-    },
-    {
-        label: "Click",
-        value: "2.832",
-        change: "-10.5%",
-        trend: "down" as const,
-        icon: MousePointerClick,
-        iconColor: "text-rose-500",
-        iconBg: "bg-rose-50 dark:bg-rose-500/10",
-    },
-    {
-        label: "Orders",
-        value: "1.224",
-        change: "+4.4%",
-        trend: "up" as const,
-        icon: ShoppingCart,
-        iconColor: "text-emerald-500",
-        iconBg: "bg-emerald-50 dark:bg-emerald-500/10",
-    },
-];
-
 const profitData = [
     { name: "1 Jan", value: 3200 },
     { name: "8 Jan", value: 4800 },
@@ -95,12 +56,6 @@ const dayActiveData = [
     { day: "Thu", value: 3900 },
     { day: "Fri", value: 5600 },
     { day: "Sat", value: 6100 },
-];
-
-const customerSegments = [
-    { label: "Retailers", value: "2.884", color: "bg-chart-1" },
-    { label: "Distributors", value: "1.432", color: "bg-chart-3" },
-    { label: "Wholesalers", value: "562", color: "bg-chart-4" },
 ];
 
 const bestSelling = [
@@ -126,6 +81,51 @@ export default function DashboardPage() {
     const t = useTranslations("dashboard");
     const tc = useTranslations("common");
 
+    const kpiData = [
+        {
+            label: t("pageViews"),
+            value: "16.431",
+            change: "+15.5%",
+            trend: "up" as const,
+            icon: Eye,
+            iconColor: "text-blue-500",
+            iconBg: "bg-blue-50 dark:bg-blue-500/10",
+        },
+        {
+            label: t("visitors"),
+            value: "6.225",
+            change: "+8.4%",
+            trend: "up" as const,
+            icon: Users,
+            iconColor: "text-indigo-500",
+            iconBg: "bg-indigo-50 dark:bg-indigo-500/10",
+        },
+        {
+            label: t("clicks"),
+            value: "2.832",
+            change: "-10.5%",
+            trend: "down" as const,
+            icon: MousePointerClick,
+            iconColor: "text-rose-500",
+            iconBg: "bg-rose-50 dark:bg-rose-500/10",
+        },
+        {
+            label: t("orders"),
+            value: "1.224",
+            change: "+4.4%",
+            trend: "up" as const,
+            icon: ShoppingCart,
+            iconColor: "text-emerald-500",
+            iconBg: "bg-emerald-50 dark:bg-emerald-500/10",
+        },
+    ];
+
+    const customerSegments = [
+        { label: t("retailers") || "Retailers", value: "2.884", color: "bg-chart-1" },
+        { label: t("distributors") || "Distributors", value: "1.432", color: "bg-chart-3" },
+        { label: t("wholesalers") || "Wholesalers", value: "562", color: "bg-chart-4" },
+    ];
+
     return (
         <motion.div
             className="space-y-6"
@@ -137,23 +137,23 @@ export default function DashboardPage() {
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
-                    <p className="text-sm text-muted-foreground mt-0.5">{t("subtitle") || "Overview of your social media performance"}</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">{t("subtitle")}</p>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm text-muted-foreground flex items-center gap-1.5">
                         <CalendarDays className="h-3.5 w-3.5" />
-                        Jan 1, 2025 - Feb 1, 2025
+                        {t("dateRange")}
                     </span>
                     <Button variant="outline" size="sm" className="rounded-xl cursor-pointer">
-                        {t("last30Days") || "Last 30 days"}
+                        {t("last30Days")}
                     </Button>
                     <Button variant="outline" size="sm" className="rounded-xl gap-1.5 cursor-pointer">
                         <Plus className="h-3.5 w-3.5" />
-                        {t("addWidget") || "Add widget"}
+                        {t("addWidget")}
                     </Button>
                     <Button size="sm" className="rounded-xl gap-1.5 cursor-pointer shadow-sm shadow-primary/20">
                         <Download className="h-3.5 w-3.5" />
-                        {t("export") || "Export"}
+                        {t("export")}
                     </Button>
                 </div>
             </motion.div>
