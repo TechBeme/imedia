@@ -38,7 +38,10 @@
         "registerFailed": "Falha no cadastro",
         "registerSuccess": "Conta criada com sucesso!",
         "creatingAccount": "Criando conta...",
-        "namePlaceholder": "Seu nome"
+        "namePlaceholder": "Seu nome",
+        "loginHeroTitle": "Gerencie todas as suas redes sociais em um so lugar",
+        "loginHeroDescription": "Conecte Instagram, YouTube, TikTok e X. Agende posts, acompanhe metricas e cresca sua audiencia com inteligencia.",
+        "allRightsReserved": "Todos os direitos reservados"
     },
     "dashboard": {
         "title": "Dashboard",
@@ -90,7 +93,28 @@
         "x": "X (Twitter)",
         "disconnectSuccess": "Instagram desconectado",
         "connectFailed": "Falha ao conectar",
-        "disconnectFailed": "Falha ao desconectar"
+        "disconnectFailed": "Falha ao desconectar",
+        "credentialsTitle": "Credenciais da Plataforma",
+        "noCredentials": "Nenhuma credencial configurada"
+    },
+    "credentials": {
+        "title": "Credenciais da Plataforma",
+        "description": "Adicione as credenciais do app da plataforma para habilitar a integracao.",
+        "addCredentials": "Adicionar credenciais",
+        "platform": "Plataforma",
+        "selectPlatform": "Selecione uma plataforma",
+        "appId": "App ID",
+        "appIdPlaceholder": "Seu App ID",
+        "appSecret": "App Secret",
+        "appSecretPlaceholder": "Seu App Secret",
+        "redirectUri": "Redirect URI",
+        "redirectUriPlaceholder": "https://seusite.com/api/callback",
+        "save": "Salvar credenciais",
+        "saveSuccess": "Credenciais salvas com sucesso!",
+        "deleteSuccess": "Credenciais removidas",
+        "deleteFailed": "Falha ao remover credenciais",
+        "noCredentials": "Nenhuma credencial configurada",
+        "configuredCredentials": "Credenciais configuradas"
     },
     "compose": {
         "title": "Criar Post",
@@ -135,7 +159,9 @@
         "profile": "Perfil",
         "profileDescription": "Atualize suas informações pessoais",
         "name": "Nome",
+        "namePlaceholder": "Seu nome",
         "email": "E-mail",
+        "emailPlaceholder": "seu@email.com",
         "saveChanges": "Salvar alterações",
         "notifications": "Notificações",
         "notificationsDescription": "Configure como você recebe notificações",

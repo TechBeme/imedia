@@ -38,7 +38,10 @@
         "registerFailed": "Registration failed",
         "registerSuccess": "Account created successfully!",
         "creatingAccount": "Creating account...",
-        "namePlaceholder": "Your name"
+        "namePlaceholder": "Your name",
+        "loginHeroTitle": "Manage all your social networks in one place",
+        "loginHeroDescription": "Connect Instagram, YouTube, TikTok and X. Schedule posts, track metrics and grow your audience with intelligence.",
+        "allRightsReserved": "All rights reserved"
     },
     "dashboard": {
         "title": "Dashboard",
@@ -90,7 +93,28 @@
         "x": "X (Twitter)",
         "disconnectSuccess": "Instagram disconnected",
         "connectFailed": "Failed to connect",
-        "disconnectFailed": "Failed to disconnect"
+        "disconnectFailed": "Failed to disconnect",
+        "credentialsTitle": "Platform Credentials",
+        "noCredentials": "No credentials configured"
+    },
+    "credentials": {
+        "title": "Platform Credentials",
+        "description": "Add your platform app credentials to enable integration.",
+        "addCredentials": "Add credentials",
+        "platform": "Platform",
+        "selectPlatform": "Select a platform",
+        "appId": "App ID",
+        "appIdPlaceholder": "Your App ID",
+        "appSecret": "App Secret",
+        "appSecretPlaceholder": "Your App Secret",
+        "redirectUri": "Redirect URI",
+        "redirectUriPlaceholder": "https://yoursite.com/api/callback",
+        "save": "Save credentials",
+        "saveSuccess": "Credentials saved successfully!",
+        "deleteSuccess": "Credentials removed",
+        "deleteFailed": "Failed to remove credentials",
+        "noCredentials": "No credentials configured",
+        "configuredCredentials": "Configured credentials"
     },
     "compose": {
         "title": "Create Post",
@@ -135,8 +159,8 @@
         "profile": "Profile",
         "profileDescription": "Update your personal information",
         "name": "Name",
-        "email": "Email",
-        "saveChanges": "Save Changes",
+        "namePlaceholder": "Your name",
+        "email": "Email",        "emailPlaceholder": "you@example.com",        "saveChanges": "Save Changes",
         "notifications": "Notifications",
         "notificationsDescription": "Configure how you receive notifications",
         "emailNotifications": "Email Notifications",

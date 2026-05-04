@@ -38,7 +38,10 @@
         "registerFailed": "Error al crear la cuenta",
         "registerSuccess": "Cuenta creada exitosamente!",
         "creatingAccount": "Creando cuenta...",
-        "namePlaceholder": "Tu nombre"
+        "namePlaceholder": "Tu nombre",
+        "loginHeroTitle": "Gestiona todas tus redes sociales en un solo lugar",
+        "loginHeroDescription": "Conecta Instagram, YouTube, TikTok y X. Programa publicaciones, sigue metricas y haz crecer tu audiencia con inteligencia.",
+        "allRightsReserved": "Todos los derechos reservados"
     },
     "dashboard": {
         "title": "Panel",
@@ -90,7 +93,28 @@
         "x": "X (Twitter)",
         "disconnectSuccess": "Instagram desconectado",
         "connectFailed": "Error al conectar",
-        "disconnectFailed": "Error al desconectar"
+        "disconnectFailed": "Error al desconectar",
+        "credentialsTitle": "Credenciales de la Plataforma",
+        "noCredentials": "Ninguna credencial configurada"
+    },
+    "credentials": {
+        "title": "Credenciales de la Plataforma",
+        "description": "Agrega las credenciales de la app de la plataforma para habilitar la integracion.",
+        "addCredentials": "Agregar credenciales",
+        "platform": "Plataforma",
+        "selectPlatform": "Selecciona una plataforma",
+        "appId": "App ID",
+        "appIdPlaceholder": "Tu App ID",
+        "appSecret": "App Secret",
+        "appSecretPlaceholder": "Tu App Secret",
+        "redirectUri": "Redirect URI",
+        "redirectUriPlaceholder": "https://tusitio.com/api/callback",
+        "save": "Guardar credenciales",
+        "saveSuccess": "Credenciales guardadas exitosamente!",
+        "deleteSuccess": "Credenciales eliminadas",
+        "deleteFailed": "Error al eliminar credenciales",
+        "noCredentials": "Ninguna credencial configurada",
+        "configuredCredentials": "Credenciales configuradas"
     },
     "compose": {
         "title": "Crear Post",
@@ -135,7 +159,9 @@
         "profile": "Perfil",
         "profileDescription": "Actualiza tu información personal",
         "name": "Nombre",
+        "namePlaceholder": "Tu nombre",
         "email": "Correo electrónico",
+        "emailPlaceholder": "tu@email.com",
         "saveChanges": "Guardar cambios",
         "notifications": "Notificaciones",
         "notificationsDescription": "Configura cómo recibes notificaciones",

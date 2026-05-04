@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { getSession } from "@/lib/session";
 import { LoginForm } from "./login-form";
 
@@ -9,6 +10,7 @@ export default async function LoginPage({
 }) {
     const { locale } = await params;
     const session = await getSession();
+    const t = await getTranslations({ locale, namespace: "auth" });
 
     if (session) {
         redirect(`/${locale}/dashboard`);
@@ -30,17 +32,17 @@ export default async function LoginPage({
 
                     <div className="space-y-6 max-w-lg">
                         <h1 className="text-4xl xl:text-5xl font-bold text-white leading-tight">
-                            Gerencie todas as suas redes sociais em um só lugar
+                            {t("loginHeroTitle")}
                         </h1>
                         <p className="text-lg text-white/80 leading-relaxed">
-                            Conecte Instagram, YouTube, TikTok e X. Agende posts, acompanhe métricas e cresça sua audiência com inteligência.
+                            {t("loginHeroDescription")}
                         </p>
                     </div>
 
                     <div className="flex items-center gap-4 text-white/60 text-sm">
                         <span>2026 iMedia</span>
                         <span className="w-1 h-1 rounded-full bg-white/40" />
-                        <span>Todos os direitos reservados</span>
+                        <span>{t("allRightsReserved")}</span>
                     </div>
                 </div>
             </div>

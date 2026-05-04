@@ -43,11 +43,11 @@ export default function SettingsPage() {
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="name" className="text-sm font-medium">{t("name")}</Label>
-                        <Input id="name" defaultValue="Your Name" className="rounded-xl h-11" />
+                        <Input id="name" placeholder={t("namePlaceholder")} className="rounded-xl h-11" />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="email" className="text-sm font-medium">{t("email")}</Label>
-                        <Input id="email" type="email" defaultValue="you@example.com" className="rounded-xl h-11" />
+                        <Input id="email" type="email" placeholder={t("emailPlaceholder")} className="rounded-xl h-11" />
                     </div>
                     <Button
                         onClick={() => toast.success(tc("success"))}

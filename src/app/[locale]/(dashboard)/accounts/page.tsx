@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { motion } from "motion/react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import {
     RiInstagramLine,
     RiFacebookCircleLine,
@@ -16,6 +16,7 @@ import {
     RiTiktokLine,
     RiTwitterXLine,
 } from "react-icons/ri";
+import PlatformCredentialForm from "@/components/platform-credential-form";
 
 interface SocialAccount {
     id: string;
@@ -24,6 +25,14 @@ interface SocialAccount {
     displayName: string | null;
     profilePicture: string | null;
     isActive: boolean;
+}
+
+interface PlatformCredential {
+    id: string;
+    platform: string;
+    redirectUri: string | null;
+    isActive: boolean;
+    createdAt: string;
 }
 
 const platformDefs = [
@@ -85,11 +94,13 @@ export default function AccountsPage() {
     const t = useTranslations("accounts");
     const tc = useTranslations("common");
     const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+    const [credentials, setCredentials] = useState<PlatformCredential[]>([]);
     const [loading, setLoading] = useState(true);
     const [connecting, setConnecting] = useState<string | null>(null);
 
     useEffect(() => {
         fetchAccounts();
+        fetchCredentials();
     }, []);
 
     async function fetchAccounts() {
@@ -103,6 +114,32 @@ export default function AccountsPage() {
             toast.error(tc("error"));
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function fetchCredentials() {
+        try {
+            const res = await fetch("/api/platform-credentials");
+            const data = await res.json();
+            if (data.credentials) {
+                setCredentials(data.credentials);
+            }
+        } catch {
+            // silently fail
+        }
+    }
+
+    async function handleDeleteCredential(id: string) {
+        try {
+            const res = await fetch(`/api/platform-credentials/${id}`, { method: "DELETE" });
+            if (res.ok) {
+                toast.success(t("disconnectSuccess"));
+                fetchCredentials();
+            } else {
+                toast.error(t("disconnectFailed"));
+            }
+        } catch {
+            toast.error(tc("error"));
         }
     }
 
@@ -220,6 +257,55 @@ export default function AccountsPage() {
                         </motion.div>
                     );
                 })}
+            </motion.div>
+
+            <motion.div variants={itemVariants} className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold tracking-tight font-heading">
+                        {t("credentialsTitle")}
+                    </h2>
+                    <PlatformCredentialForm onSuccess={fetchCredentials} />
+                </div>
+
+                {credentials.length === 0 ? (
+                    <Card className="glass-card">
+                        <CardContent className="p-6 text-center text-muted-foreground">
+                            {t("noCredentials")}
+                        </CardContent>
+                    </Card>
+                ) : (
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                        {credentials.map((cred) => {
+                            const platformDef = platformDefs.find((p) => p.key === cred.platform);
+                            const Icon = platformDef?.icon || RiInstagramLine;
+                            return (
+                                <Card key={cred.id} className="glass-card">
+                                    <CardContent className="p-4 flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <div className={`h-10 w-10 rounded-xl ${platformDef?.bgColor || "bg-muted"} flex items-center justify-center`}>
+                                                <Icon className={`h-5 w-5 ${platformDef?.color || "text-foreground"}`} />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-semibold capitalize">{cred.platform}</p>
+                                                {cred.redirectUri && (
+                                                    <p className="text-xs text-muted-foreground truncate max-w-[180px]">{cred.redirectUri}</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8 text-muted-foreground hover:text-red-500"
+                                            onClick={() => handleDeleteCredential(cred.id)}
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            );
+                        })}
+                    </div>
+                )}
             </motion.div>
         </motion.div>
     );
