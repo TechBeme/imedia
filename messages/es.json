@@ -41,7 +41,21 @@
         "namePlaceholder": "Tu nombre",
         "loginHeroTitle": "Gestiona todas tus redes sociales en un solo lugar",
         "loginHeroDescription": "Conecta Instagram, YouTube, TikTok y X. Programa publicaciones, sigue metricas y haz crecer tu audiencia con inteligencia.",
-        "allRightsReserved": "Todos los derechos reservados"
+        "allRightsReserved": "Todos los derechos reservados",
+        "forgotPasswordTitle": "Recuperar contrasena",
+        "forgotPasswordSubtitle": "Ingresa tu correo para recibir el enlace de recuperacion",
+        "sendResetLink": "Enviar enlace",
+        "resetEmailSent": "Correo de recuperacion enviado! Revisa tu bandeja de entrada.",
+        "backToLogin": "Volver al inicio de sesion",
+        "resetPasswordTitle": "Nueva contrasena",
+        "resetPasswordSubtitle": "Ingresa tu nueva contrasena",
+        "newPassword": "Nueva contrasena",
+        "confirmPassword": "Confirmar contrasena",
+        "resetPassword": "Restablecer contrasena",
+        "passwordsDoNotMatch": "Las contrasenas no coinciden",
+        "invalidToken": "Enlace invalido o expirado",
+        "requestNewLink": "Solicitar nuevo enlace",
+        "passwordResetSuccess": "Contrasena restablecida exitosamente!"
     },
     "dashboard": {
         "title": "Panel",

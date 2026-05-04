@@ -41,7 +41,21 @@
         "namePlaceholder": "Seu nome",
         "loginHeroTitle": "Gerencie todas as suas redes sociais em um so lugar",
         "loginHeroDescription": "Conecte Instagram, YouTube, TikTok e X. Agende posts, acompanhe metricas e cresca sua audiencia com inteligencia.",
-        "allRightsReserved": "Todos os direitos reservados"
+        "allRightsReserved": "Todos os direitos reservados",
+        "forgotPasswordTitle": "Recuperar senha",
+        "forgotPasswordSubtitle": "Digite seu e-mail para receber o link de recuperacao",
+        "sendResetLink": "Enviar link",
+        "resetEmailSent": "E-mail de recuperacao enviado! Verifique sua caixa de entrada.",
+        "backToLogin": "Voltar para o login",
+        "resetPasswordTitle": "Nova senha",
+        "resetPasswordSubtitle": "Digite sua nova senha",
+        "newPassword": "Nova senha",
+        "confirmPassword": "Confirmar senha",
+        "resetPassword": "Redefinir senha",
+        "passwordsDoNotMatch": "As senhas nao coincidem",
+        "invalidToken": "Link invalido ou expirado",
+        "requestNewLink": "Solicitar novo link",
+        "passwordResetSuccess": "Senha redefinida com sucesso!"
     },
     "dashboard": {
         "title": "Dashboard",

@@ -41,7 +41,21 @@
         "namePlaceholder": "Your name",
         "loginHeroTitle": "Manage all your social networks in one place",
         "loginHeroDescription": "Connect Instagram, YouTube, TikTok and X. Schedule posts, track metrics and grow your audience with intelligence.",
-        "allRightsReserved": "All rights reserved"
+        "allRightsReserved": "All rights reserved",
+        "forgotPasswordTitle": "Reset password",
+        "forgotPasswordSubtitle": "Enter your email to receive the reset link",
+        "sendResetLink": "Send reset link",
+        "resetEmailSent": "Reset email sent! Check your inbox.",
+        "backToLogin": "Back to login",
+        "resetPasswordTitle": "New password",
+        "resetPasswordSubtitle": "Enter your new password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm password",
+        "resetPassword": "Reset password",
+        "passwordsDoNotMatch": "Passwords do not match",
+        "invalidToken": "Invalid or expired link",
+        "requestNewLink": "Request new link",
+        "passwordResetSuccess": "Password reset successfully!"
     },
     "dashboard": {
         "title": "Dashboard",
