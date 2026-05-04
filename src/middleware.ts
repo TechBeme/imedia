@@ -42,10 +42,17 @@ export default async function middleware(req: NextRequest) {
     const host = req.headers.get("host") || "";
     const appHost = getAppHost();
 
-    // Custom domain routing: skip locale/auth middleware for verified custom domains
+    // Custom domain routing: rewrite to /l/[slug] and skip locale/auth middleware
     if (host && host !== appHost && !host.startsWith("localhost")) {
         const custom = await isCustomDomain(host);
         if (custom) {
+            // Rewrite /slug to /l/slug so the redirect handler catches it
+            const slugMatch = pathname.match(/^\/([a-zA-Z0-9_-]+)$/);
+            if (slugMatch && !pathname.startsWith("/l/")) {
+                const url = req.nextUrl.clone();
+                url.pathname = `/l${pathname}`;
+                return NextResponse.rewrite(url);
+            }
             return NextResponse.next();
         }
     }

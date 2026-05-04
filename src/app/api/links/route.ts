@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
         const baseUrl = domainValue
             ? `https://${domainValue}`
             : (process.env.NEXT_PUBLIC_APP_URL || "");
-        const shortUrl = `${baseUrl}/${link.slug}`;
+        const shortUrl = `${baseUrl}/l/${link.slug}`;
 
         return success({
             id: link.id,

@@ -31,7 +31,7 @@ export function QRCodeGenerator({ linkId, slug, open, onOpenChange }: QRCodeGene
     const [downloading, setDownloading] = useState(false);
 
     const qrUrl = `/api/links/${linkId}/qr?format=${format}&size=${size}`;
-    const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/${slug}`;
+    const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/l/${slug}`;
 
     async function handleDownload() {
         setDownloading(true);

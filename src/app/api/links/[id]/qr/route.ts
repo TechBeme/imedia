@@ -37,7 +37,7 @@ export async function GET(
         const sizeParam = searchParams.get("size");
         const size = Math.min(Math.max(parseInt(sizeParam || "256", 10), 64), 2048);
 
-        const url = `${process.env.NEXT_PUBLIC_APP_URL || ""}/${link.slug}`;
+        const url = `${process.env.NEXT_PUBLIC_APP_URL || ""}/l/${link.slug}`;
 
         if (format === "svg") {
             const svg = await QRCode.toString(url, {

@@ -65,7 +65,7 @@ export default function LinkAnalyticsPage() {
     const [loading, setLoading] = useState(true);
     const [dateRange, setDateRange] = useState<"7d" | "30d" | "90d" | "all">("30d");
 
-    const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/${link?.slug || ""}`;
+    const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/l/${link?.slug || ""}`;
 
     useEffect(() => {
         if (linkId) {
