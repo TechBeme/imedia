@@ -192,7 +192,9 @@
         "securityDescription": "Atualize sua senha",
         "currentPassword": "Senha atual",
         "newPassword": "Nova senha",
-        "updatePassword": "Atualizar senha"
+        "updatePassword": "Atualizar senha",
+        "customDomains": "Dominios Personalizados",
+        "customDomainsDescription": "Configure dominios personalizados para seus links curtos"
     },
     "history": {
         "title": "Historico",
@@ -287,6 +289,28 @@
         "format": "Formato",
         "size": "Tamanho",
         "copy": "Copiar"
+    },
+    "domains": {
+        "title": "Dominios Personalizados",
+        "add": "Adicionar Dominio",
+        "addDescription": "Adicione um dominio personalizado para seus links curtos",
+        "yourDomains": "Seus Dominios",
+        "domain": "Dominio",
+        "status": "Status",
+        "verified": "Verificado",
+        "pending": "Pendente",
+        "instructions": "Instrucoes DNS",
+        "txtRecord": "Registro TXT",
+        "verify": "Verificar",
+        "verifySuccess": "Dominio verificado com sucesso!",
+        "verifyFailed": "Falha na verificacao do dominio",
+        "delete": "Excluir",
+        "deleteSuccess": "Dominio excluido com sucesso!",
+        "noDomains": "Nenhum dominio configurado",
+        "placeholder": "links.seudominio.com",
+        "dnsHint": "Adicione um registro TXT na raiz do seu DNS com o valor acima e aguarde a propagacao.",
+        "createSuccess": "Dominio adicionado! Adicione o registro TXT para verificar.",
+        "copied": "Copiado!"
     },
     "common": {
         "loading": "Carregando...",

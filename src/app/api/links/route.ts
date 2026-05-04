@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { db } from "@/db";
-import { shortLinks } from "@/db/schema";
+import { shortLinks, customDomains } from "@/db/schema";
 import { success, error, unauthorized } from "@/lib/api-response";
 import { withRateLimit } from "@/lib/api-guard";
 import { apiRateLimit } from "@/lib/rate-limit";
@@ -12,7 +12,7 @@ import {
     isSlugAvailable,
     generateUniqueSlug,
 } from "@/lib/links";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 
 const createLinkSchema = z.object({
     originalUrl: z.string().url("Invalid URL"),
@@ -24,6 +24,7 @@ const createLinkSchema = z.object({
         .optional(),
     password: z.string().min(4).max(100).optional(),
     expiresAt: z.string().datetime().optional(),
+    domain: z.string().min(1).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -45,10 +46,31 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const { originalUrl, slug: customSlug, password, expiresAt } = parsed.data;
+        const { originalUrl, slug: customSlug, password, expiresAt, domain: customDomain } = parsed.data;
 
         // Get session if available (optional auth)
         const session = await getSession();
+
+        let domainValue = "";
+        if (customDomain && session) {
+            const normalizedDomain = customDomain.toLowerCase().trim();
+            const owned = await db
+                .select()
+                .from(customDomains)
+                .where(
+                    and(
+                        eq(customDomains.domain, normalizedDomain),
+                        eq(customDomains.userId, session.user.id),
+                        eq(customDomains.isVerified, true),
+                        eq(customDomains.isActive, true)
+                    )
+                )
+                .limit(1);
+            if (owned.length === 0) {
+                return error("DOMAIN_NOT_VERIFIED", "Domain not verified or not owned by you", 403);
+            }
+            domainValue = normalizedDomain;
+        }
 
         let slug: string;
         let isCustom = false;
@@ -58,7 +80,7 @@ export async function POST(req: NextRequest) {
             if (!validation.valid) {
                 return error("LINK_INVALID_SLUG", validation.error, 400);
             }
-            const available = await isSlugAvailable(customSlug);
+            const available = await isSlugAvailable(customSlug, domainValue);
             if (!available) {
                 return error("LINK_SLUG_TAKEN", "Slug already in use", 409);
             }
@@ -83,12 +105,16 @@ export async function POST(req: NextRequest) {
                 originalUrl,
                 slug,
                 customSlug: isCustom,
+                domain: domainValue,
                 password: hashedPassword,
                 expiresAt: expiresAt ? new Date(expiresAt) : null,
             })
             .returning();
 
-        const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/${link.slug}`;
+        const baseUrl = domainValue
+            ? `https://${domainValue}`
+            : (process.env.NEXT_PUBLIC_APP_URL || "");
+        const shortUrl = `${baseUrl}/${link.slug}`;
 
         return success({
             id: link.id,
@@ -96,6 +122,7 @@ export async function POST(req: NextRequest) {
             originalUrl: link.originalUrl,
             shortUrl,
             customSlug: link.customSlug,
+            domain: link.domain,
             expiresAt: link.expiresAt,
             createdAt: link.createdAt,
         });

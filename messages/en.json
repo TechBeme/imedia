@@ -190,7 +190,9 @@
         "securityDescription": "Update your password",
         "currentPassword": "Current Password",
         "newPassword": "New Password",
-        "updatePassword": "Update Password"
+        "updatePassword": "Update Password",
+        "customDomains": "Custom Domains",
+        "customDomainsDescription": "Configure custom domains for your short links"
     },
     "history": {
         "title": "History",
@@ -285,6 +287,28 @@
         "format": "Format",
         "size": "Size",
         "copy": "Copy"
+    },
+    "domains": {
+        "title": "Custom Domains",
+        "add": "Add Domain",
+        "addDescription": "Add a custom domain for your short links",
+        "yourDomains": "Your Domains",
+        "domain": "Domain",
+        "status": "Status",
+        "verified": "Verified",
+        "pending": "Pending",
+        "instructions": "DNS Instructions",
+        "txtRecord": "TXT Record",
+        "verify": "Verify",
+        "verifySuccess": "Domain verified successfully!",
+        "verifyFailed": "Domain verification failed",
+        "delete": "Delete",
+        "deleteSuccess": "Domain deleted successfully!",
+        "noDomains": "No domains configured",
+        "placeholder": "links.yourdomain.com",
+        "dnsHint": "Add a TXT record at the root of your DNS with the value above and wait for propagation.",
+        "createSuccess": "Domain added! Add the TXT record to verify.",
+        "copied": "Copied!"
     },
     "common": {
         "loading": "Loading...",

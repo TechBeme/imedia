@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,12 +11,13 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { motion } from "motion/react";
-import { User, Bell, Shield, Save } from "lucide-react";
+import { User, Bell, Shield, Save, Globe, ChevronRight } from "lucide-react";
 
 export default function SettingsPage() {
     const [notifications, setNotifications] = useState(true);
     const t = useTranslations("settings");
     const tc = useTranslations("common");
+    const router = useRouter();
 
     return (
         <motion.div
@@ -27,6 +29,23 @@ export default function SettingsPage() {
             <div>
                 <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
             </div>
+
+            <Card className="glass-card cursor-pointer hover:bg-accent/40 transition-colors" onClick={() => router.push("/settings/domains")}>
+                <CardHeader className="pb-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <Globe className="h-4 w-4 text-primary" />
+                            </div>
+                            <div>
+                                <CardTitle className="text-base font-semibold font-heading">{t("customDomains")}</CardTitle>
+                                <CardDescription>{t("customDomainsDescription")}</CardDescription>
+                            </div>
+                        </div>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                </CardHeader>
+            </Card>
 
             <Card className="glass-card">
                 <CardHeader className="pb-4">

@@ -8,6 +8,14 @@ import { apiRateLimit } from "@/lib/rate-limit";
 import { recordClick } from "@/lib/click-tracker";
 import bcrypt from "bcryptjs";
 
+function getAppHost(): string {
+    try {
+        return new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").host;
+    } catch {
+        return "localhost:3000";
+    }
+}
+
 function errorHtml(title: string, message: string): string {
     return `<!DOCTYPE html>
 <html lang="en">
@@ -67,6 +75,14 @@ function passwordHtml(slug: string, errorMsg?: string): string {
 </html>`;
 }
 
+function resolveDomain(host: string): string {
+    const appHost = getAppHost();
+    if (!host || host === appHost || host.startsWith("localhost")) {
+        return "";
+    }
+    return host;
+}
+
 async function getLinkBySlug(slug: string, domain: string) {
     const conditions = [eq(shortLinks.slug, slug)];
     if (domain) {
@@ -91,9 +107,7 @@ export async function GET(
     return withRateLimit(req, apiRateLimit, async () => {
         const { slug } = await params;
         const host = req.headers.get("host") || "";
-        const domain = host.includes("localhost") || !process.env.NEXT_PUBLIC_APP_URL
-            ? ""
-            : host;
+        const domain = resolveDomain(host);
 
         const link = await getLinkBySlug(slug, domain);
 
@@ -138,9 +152,7 @@ export async function POST(
     return withRateLimit(req, apiRateLimit, async () => {
         const { slug } = await params;
         const host = req.headers.get("host") || "";
-        const domain = host.includes("localhost") || !process.env.NEXT_PUBLIC_APP_URL
-            ? ""
-            : host;
+        const domain = resolveDomain(host);
 
         const link = await getLinkBySlug(slug, domain);
 

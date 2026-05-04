@@ -267,3 +267,23 @@ export const linkClicks = pgTable(
         index("link_clicks_country_idx").on(table.country),
     ]
 );
+
+export const customDomains = pgTable(
+    "custom_domains",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => user.id, { onDelete: "cascade" }),
+        domain: text("domain").notNull().unique(),
+        verificationToken: text("verification_token").notNull(),
+        isVerified: boolean("is_verified").notNull().default(false),
+        isActive: boolean("is_active").notNull().default(true),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+        updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("custom_domains_user_idx").on(table.userId),
+        index("custom_domains_domain_idx").on(table.domain),
+    ]
+);

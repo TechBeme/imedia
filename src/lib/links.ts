@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { shortLinks } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 const RESERVED_SLUGS = new Set([
     "admin", "api", "login", "register", "dashboard", "settings", "profile",
@@ -55,11 +55,11 @@ export function validateCustomSlug(slug: string): { valid: boolean; error?: stri
     return { valid: true };
 }
 
-export async function isSlugAvailable(slug: string): Promise<boolean> {
+export async function isSlugAvailable(slug: string, domain = ""): Promise<boolean> {
     const existing = await db
         .select({ id: shortLinks.id })
         .from(shortLinks)
-        .where(eq(shortLinks.slug, slug))
+        .where(and(eq(shortLinks.slug, slug), eq(shortLinks.domain, domain)))
         .limit(1);
     return existing.length === 0;
 }
