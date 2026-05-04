@@ -67,7 +67,8 @@ export default async function middleware(req: NextRequest) {
 
     // Check auth cookie for protected routes
     if (isProtected) {
-        const sessionCookie = req.cookies.get("better-auth.session_token")?.value;
+        const sessionCookie = req.cookies.get("better-auth.session_token")?.value
+            || req.cookies.get("__Secure-better-auth.session_token")?.value;
         if (!sessionCookie) {
             const locale = localeMatch ? localeMatch[1] : "pt-BR";
             return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
