@@ -138,6 +138,17 @@
 - [ ] **CRED-06**: Validation that credentials are complete before allowing OAuth connection for that platform
 - [ ] **CRED-07**: UI guides user on how to create developer apps on each platform (help text, links to developer consoles)
 
+### Webhook Infrastructure (Production-Ready)
+
+- [ ] **WH-01**: Single webhook endpoint per platform (`/api/webhooks/[platform]`) receives all events
+- [ ] **WH-02**: Webhook handler responds with HTTP 200 in < 200ms and queues event for background processing
+- [ ] **WH-03**: Webhook payload signature verified before processing (HMAC/SHA256 per platform spec)
+- [ ] **WH-04**: All events stored in `webhookEvents` table with idempotency check (eventId unique constraint)
+- [ ] **WH-05**: Background worker (BullMQ + Redis) processes events with configurable concurrency
+- [ ] **WH-06**: Failed events retried with exponential backoff (max 5 retries), dead-letter queue after exhaustion
+- [ ] **WH-07**: Event processor identifies user from payload and routes to correct handler
+- [ ] **WH-08**: Webhook dashboard shows recent events, status, and retry history (admin view)
+
 ### Production Hardening
 
 - [ ] **PROD-01**: ESLint + TypeScript strict mode passes with zero errors
@@ -279,6 +290,14 @@
 | PROD-06 | Phase 10 | Pending |
 | PROD-07 | Phase 10 | Pending |
 | PROD-08 | Phase 10 | Pending |
+| WH-01 | Phase 1 | Pending |
+| WH-02 | Phase 1 | Pending |
+| WH-03 | Phase 1 | Pending |
+| WH-04 | Phase 1 | Pending |
+| WH-05 | Phase 1 | Pending |
+| WH-06 | Phase 1 | Pending |
+| WH-07 | Phase 1 | Pending |
+| WH-08 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 89 total

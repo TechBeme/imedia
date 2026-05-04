@@ -169,6 +169,30 @@ export const platformPosts = pgTable(
     ]
 );
 
+// Webhook events for idempotency and audit trail
+// Stores all received webhook events to prevent duplicate processing
+export const webhookEvents = pgTable(
+    "webhook_events",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        eventId: text("event_id").notNull().unique(), // Platform event ID (Stripe: evt_xxx, Meta: id from payload)
+        platform: text("platform").notNull(), // stripe, instagram, youtube, tiktok, x, facebook
+        eventType: text("event_type").notNull(), // checkout.completed, message.received, etc.
+        payload: jsonb("payload").notNull(), // Full event payload
+        status: text("status").notNull().default("pending"), // pending, processing, completed, failed, skipped
+        processedAt: timestamp("processed_at"),
+        errorMessage: text("error_message"),
+        retryCount: integer("retry_count").notNull().default(0),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("webhook_events_event_id_idx").on(table.eventId),
+        index("webhook_events_platform_idx").on(table.platform),
+        index("webhook_events_status_idx").on(table.status),
+        index("webhook_events_created_at_idx").on(table.createdAt),
+    ]
+);
+
 // Per-user platform API credentials (App ID / Client ID + Secret)
 // Each user configures their own developer app credentials per platform
 export const platformCredentials = pgTable(

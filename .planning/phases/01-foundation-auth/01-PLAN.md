@@ -370,6 +370,13 @@ Document all required environment variables. Platform credentials (Instagram, Yo
    UPSTASH_REDIS_REST_URL=
    UPSTASH_REDIS_REST_TOKEN=
 
+   # Redis (for BullMQ webhook queue)
+   REDIS_URL=
+
+   # Webhook Secrets (one per platform)
+   STRIPE_WEBHOOK_SECRET=
+   META_WEBHOOK_SECRET=
+
    # Vercel Blob
    BLOB_READ_WRITE_TOKEN=
    ```
@@ -382,6 +389,105 @@ Document all required environment variables. Platform credentials (Instagram, Yo
 - [ ] NO platform-specific credentials (Instagram, YouTube, etc.) in env vars
 - [ ] App throws clear error on startup if required env var is missing
 - [ ] README explains per-user credential configuration
+
+---
+
+## Task 11: Webhook Infrastructure (Production-Ready)
+
+**Priority:** P1
+**Requirement:** WH-01..WH-08
+**Files:** `src/app/api/webhooks/[platform]/route.ts`, `src/lib/webhook-queue.ts`, `src/lib/webhook-processor.ts`
+
+### Description
+Build a robust, production-ready webhook system that handles events from all platforms (Stripe, Instagram, YouTube, TikTok, X). Uses a single endpoint per platform, queues events immediately, and processes them in background workers with idempotency and retry logic.
+
+### Architecture
+
+```
+Platform (Stripe/Meta/etc)
+    │
+    ▼
+/api/webhooks/[platform]  ←── Receives ALL events (one URL per platform)
+    │
+    ├── 1. Verify signature (HMAC/SHA256)
+    ├── 2. Check idempotency (eventId in webhookEvents table)
+    ├── 3. Store event in DB with status "pending"
+    ├── 4. Add to BullMQ queue
+    └── 5. Return HTTP 200 (< 200ms)
+    │
+    ▼
+BullMQ Worker (Redis)
+    │
+    ├── 1. Pick up job from queue
+    ├── 2. Update status to "processing"
+    ├── 3. Identify user from payload
+    ├── 4. Route to platform-specific handler
+    ├── 5. Update status to "completed" or "failed"
+    └── 6. If failed: retry with exponential backoff (max 5)
+```
+
+### Steps
+
+1. **Install dependencies:**
+   ```bash
+   npm install bullmq ioredis
+   ```
+
+2. **Create `src/lib/webhook-queue.ts`:**
+   - Initialize BullMQ queue with Redis (Upstash)
+   - Queue name: `webhook-events`
+   - Default job options: attempts=5, backoff={type: "exponential", delay: 5000}
+   - Export `addWebhookJob(event)` and `getWebhookWorker()`
+
+3. **Create `src/lib/webhook-processor.ts`:**
+   - `processWebhookEvent(job)` — main processor function
+   - `identifyUser(platform, payload)` — extract user/account ID from payload
+   - `routeToHandler(platform, eventType, userId, payload)` — dispatch to correct handler
+   - Platform handlers (stub for now):
+     - `handleStripeEvent(type, payload)`
+     - `handleInstagramEvent(type, payload)`
+     - `handleYouTubeEvent(type, payload)`
+     - `handleTikTokEvent(type, payload)`
+     - `handleXEvent(type, payload)`
+
+4. **Create `src/app/api/webhooks/[platform]/route.ts`:**
+   - `POST` — receive webhook payload
+   - Verify signature using platform-specific secret (from env vars)
+   - Extract `eventId` from payload
+   - Check if event already processed (query `webhookEvents` table)
+   - Insert event record with status "pending"
+   - Add to BullMQ queue
+   - Return 200 immediately
+   - Supported platforms: `stripe`, `instagram`, `youtube`, `tiktok`, `x`
+
+5. **Create `src/lib/webhook-signature.ts`:**
+   - `verifyStripeSignature(payload, signature, secret)` — Stripe HMAC/SHA256
+   - `verifyMetaSignature(payload, signature, secret)` — Meta app secret proof
+   - `verifyYouTubeSignature(...)` — placeholder for future
+   - Each platform has its own verification method
+
+6. **Add environment variables:**
+   ```
+   # Redis (for BullMQ queue)
+   REDIS_URL=
+
+   # Webhook secrets (one per platform)
+   STRIPE_WEBHOOK_SECRET=
+   META_WEBHOOK_SECRET=
+   ```
+
+7. **Create worker entry point** (for local dev and Vercel):
+   - `src/workers/webhook-worker.ts` — starts the BullMQ worker
+   - For Vercel: use Vercel Cron or serverless function (document approach)
+
+### Verification
+- [ ] Webhook endpoint returns 200 in < 200ms even for slow events
+- [ ] Duplicate event (same eventId) is skipped (idempotency)
+- [ ] Invalid signature returns 401
+- [ ] Failed event is retried 5 times with exponential backoff
+- [ ] Event status tracked: pending → processing → completed/failed
+- [ ] Worker processes events concurrently (configurable)
+- [ ] Database has all received events for audit trail
 
 ---
 
@@ -408,6 +514,9 @@ End-to-end smoke test of all Phase 1 deliverables.
 11. Test rate limiting (rapid login attempts)
 12. Switch languages and verify all text updates
 13. Verify API error codes are returned correctly
+14. Send test webhook event — verify 200 response in < 200ms
+15. Verify duplicate event is skipped (idempotency)
+16. Verify invalid webhook signature returns 401
 
 ### Verification
 - [ ] All auth flows work end-to-end
@@ -433,9 +542,10 @@ Task 6 (API Errors) ──> Task 10
 Task 7 (i18n) ──> Task 10
 Task 8 (Auth Guard) ──> Task 10
 Task 9 (Env Docs) ──> Task 10
+Task 5 (Schema) ──> Task 11 (Webhook) ──> Task 10
 ```
 
-**Parallelizable:** Tasks 1, 3, 4, 6, 7, 8, 9 can run in parallel after initial setup. Task 2 depends on Task 1. Task 2b depends on Task 2.
+**Parallelizable:** Tasks 1, 3, 4, 6, 7, 8, 9 can run in parallel after initial setup. Task 2 depends on Task 1. Task 2b depends on Task 2. Task 11 depends on Task 5 (schema).
 
 ---
 
@@ -451,6 +561,11 @@ Task 9 (Env Docs) ──> Task 10
 | Token decryption key exposure | HIGH | Store in env var, never log |
 | Platform credentials leaked in DB | HIGH | AES-256-GCM encryption at rest for appId/appSecret |
 | User A accesses User B's credentials | HIGH | Row-level ownership checks on all credential APIs |
+| Webhook replay attack | HIGH | Idempotency check (eventId unique constraint) |
+| Webhook signature forgery | HIGH | HMAC/SHA256 signature verification per platform |
+| Webhook processing timeout | MEDIUM | Respond 200 immediately, process in background queue |
+| Webhook event loss | MEDIUM | Store in DB before queue, retry with exponential backoff |
+| Webhook queue overflow | MEDIUM | BullMQ concurrency limits, monitor queue depth |
 
 ---
 
@@ -459,12 +574,16 @@ Task 9 (Env Docs) ──> Task 10
 - [ ] All auth flows (signup, login, Google OAuth, password reset) work end-to-end
 - [ ] Social account tokens are encrypted in the database
 - [ ] Platform credentials (appId/appSecret) are encrypted in the database
-- [ ] Users can manage their own platform credentials via API
+- [ ] Users can manage their own platform credentials via UI
 - [ ] API returns consistent error codes
 - [ ] Zero hardcoded strings in UI components
 - [ ] All new tables have Drizzle migrations
 - [ ] Rate limiting active on auth endpoints
 - [ ] Dashboard routes protected server-side
+- [ ] Webhook endpoint responds < 200ms with background processing
+- [ ] Webhook events are idempotent (no duplicate processing)
+- [ ] Webhook signatures verified before processing
+- [ ] Failed webhook events retried with exponential backoff
 
 ---
 
