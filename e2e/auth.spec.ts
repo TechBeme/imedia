@@ -68,45 +68,19 @@ test.describe("Auth Flow", () => {
         await context.close();
     });
 
-    test("login form submit triggers API call and sets cookie", async ({ page }) => {
+    test("login form submit with callbackURL redirects to dashboard", async ({ page }) => {
         await page.goto("/pt-BR/login");
-
-        // Intercept the sign-in API call to capture response body before navigation
-        let apiBody: any = null;
-        await page.route("**/api/auth/sign-in/email", async (route) => {
-            const response = await route.fetch();
-            apiBody = await response.json();
-            await route.fulfill({
-                status: response.status(),
-                headers: response.headers(),
-                body: JSON.stringify(apiBody),
-            });
-        });
 
         await page.locator('input[type="email"]').fill(TEST_EMAIL);
         await page.locator('input[type="password"]').fill(TEST_PASSWORD);
         await page.locator('button[type="submit"]').click();
 
-        // Wait for API response to be captured
-        await page.waitForTimeout(2000);
+        // Wait for redirect to dashboard (better-auth returns redirect=true with callbackURL)
+        await page.waitForURL(/\/pt-BR\/dashboard/, { timeout: 10000 });
+        await expect(page).toHaveURL(/\/pt-BR\/dashboard/);
 
-        // Verify API returned success
-        expect(apiBody).toBeTruthy();
-        expect(apiBody.error).toBeUndefined();
-        expect(apiBody.token).toBeTruthy();
-        expect(apiBody.user).toBeTruthy();
-
-        // Wait for potential redirect
-        await page.waitForTimeout(3000);
-
-        // Log final URL
-        console.log("Final URL:", page.url());
-
-        // If still on login, the frontend redirect didn't work
-        // but the API call succeeded (which is the core fix)
-        if (page.url().includes("/login")) {
-            console.log("Frontend redirect did not trigger — API login succeeded but page stayed");
-        }
+        // Verify dashboard loaded
+        await expect(page.locator("text=iMedia").first()).toBeVisible();
     });
 
     test("login with invalid credentials shows error", async ({ page }) => {

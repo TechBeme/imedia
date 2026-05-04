@@ -38,6 +38,7 @@ export function LoginForm() {
         const result = await authClient.signIn.email({
             email,
             password,
+            callbackURL: `/${locale}/dashboard`,
         });
 
         setLoading(false);
@@ -49,8 +50,10 @@ export function LoginForm() {
 
         toast.success(t("loginSuccess"));
 
-        // Force full page navigation so the middleware sees the new cookie
-        window.location.href = `/${locale}/dashboard`;
+        // better-auth returns redirect info when callbackURL is provided
+        if (result.data?.redirect && result.data?.url) {
+            window.location.href = result.data.url;
+        }
     }
 
     async function handleGoogleSignIn() {

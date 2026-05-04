@@ -37,7 +37,7 @@ async function isCustomDomain(host: string): Promise<boolean> {
     }
 }
 
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
     const { pathname } = req.nextUrl;
     const host = req.headers.get("host") || "";
     const appHost = getAppHost();
@@ -47,7 +47,7 @@ export default async function middleware(req: NextRequest) {
         const custom = await isCustomDomain(host);
         if (custom) {
             // Rewrite /slug to /l/slug so the redirect handler catches it
-            const slugMatch = pathname.match(/^\/([a-zA-Z0-9_-]+)$/);
+            const slugMatch = pathname.match(/^\/[a-zA-Z0-9_-]+$/);
             if (slugMatch && !pathname.startsWith("/l/")) {
                 const url = req.nextUrl.clone();
                 url.pathname = `/l${pathname}`;
@@ -61,7 +61,6 @@ export default async function middleware(req: NextRequest) {
     const localeMatch = pathname.match(/^\/(pt-BR|en|es)(\/.*)?$/);
     const pathWithoutLocale = localeMatch ? localeMatch[2] || "/" : pathname;
 
-    const isPublic = PUBLIC_PATHS.some((p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(`${p}/`));
     const isProtected = PROTECTED_PREFIXES.some((p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(`${p}/`));
     const isApi = pathname.startsWith("/api/");
 
