@@ -12,7 +12,9 @@
         "analytics": "Analytics",
         "media": "Midias",
         "settings": "Configuracoes",
-        "logout": "Sair"
+        "logout": "Sair",
+        "logoutSuccess": "Sessão encerrada",
+        "openMenu": "Abrir menu"
     },
     "auth": {
         "login": "Entrar",
@@ -77,7 +79,10 @@
         "threads": "Threads",
         "youtube": "YouTube",
         "tiktok": "TikTok",
-        "x": "X (Twitter)"
+        "x": "X (Twitter)",
+        "disconnectSuccess": "Instagram desconectado",
+        "connectFailed": "Falha ao conectar",
+        "disconnectFailed": "Falha ao desconectar"
     },
     "compose": {
         "title": "Criar Post",
@@ -86,7 +91,9 @@
         "addMedia": "Adicionar midia",
         "schedule": "Agendar",
         "publishNow": "Publicar agora",
-        "saveDraft": "Salvar rascunho"
+        "saveDraft": "Salvar rascunho",
+        "draftSaved": "Rascunho salvo",
+        "published": "Publicado!"
     },
     "scheduled": {
         "title": "Posts Agendados",
@@ -95,6 +102,31 @@
         "cancel": "Cancelar",
         "edit": "Editar",
         "publishNow": "Publicar agora"
+    },
+    "header": {
+        "searchPlaceholder": "Buscar qualquer coisa...",
+        "notifications": "Notificações"
+    },
+    "settings": {
+        "title": "Configurações",
+        "profile": "Perfil",
+        "profileDescription": "Atualize suas informações pessoais",
+        "name": "Nome",
+        "email": "E-mail",
+        "saveChanges": "Salvar alterações",
+        "notifications": "Notificações",
+        "notificationsDescription": "Configure como você recebe notificações",
+        "emailNotifications": "Notificações por e-mail",
+        "emailNotificationsDesc": "Receba atualizações sobre seus posts",
+        "postPublished": "Post publicado",
+        "postPublishedDesc": "Seja notificado quando um post for publicado",
+        "scheduledFailed": "Post agendado falhou",
+        "scheduledFailedDesc": "Alerta quando um post agendado falhar",
+        "security": "Segurança",
+        "securityDescription": "Atualize sua senha",
+        "currentPassword": "Senha atual",
+        "newPassword": "Nova senha",
+        "updatePassword": "Atualizar senha"
     },
     "common": {
         "loading": "Carregando...",

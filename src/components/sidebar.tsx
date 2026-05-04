@@ -47,7 +47,7 @@ export function Sidebar({ className }: { className?: string }) {
 
     async function handleLogout() {
         await authClient.signOut();
-        toast.success("Logged out");
+        toast.success(t("logoutSuccess") || "Logged out");
         router.push(`/${locale}/login`);
         router.refresh();
     }
@@ -168,7 +168,7 @@ export function MobileSidebar() {
         <Sheet>
             <SheetTrigger className="inline-flex items-center justify-center rounded-xl h-9 w-9 hover:bg-accent transition-colors lg:hidden cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
                 <Menu className="h-5 w-5 text-foreground" />
-                <span className="sr-only">{t("openMenu") || "Open menu"}</span>
+                <span className="sr-only">{t("openMenu")}</span>
             </SheetTrigger>
             <SheetContent side="left" className="w-60 p-0 border-r border-border/60 bg-sidebar">
                 <div className="flex h-16 items-center px-5">

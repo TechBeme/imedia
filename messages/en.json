@@ -12,7 +12,9 @@
         "analytics": "Analytics",
         "media": "Media",
         "settings": "Settings",
-        "logout": "Logout"
+        "logout": "Logout",
+        "logoutSuccess": "Logged out",
+        "openMenu": "Open menu"
     },
     "auth": {
         "login": "Sign In",
@@ -77,7 +79,10 @@
         "threads": "Threads",
         "youtube": "YouTube",
         "tiktok": "TikTok",
-        "x": "X (Twitter)"
+        "x": "X (Twitter)",
+        "disconnectSuccess": "Instagram disconnected",
+        "connectFailed": "Failed to connect",
+        "disconnectFailed": "Failed to disconnect"
     },
     "compose": {
         "title": "Create Post",
@@ -86,7 +91,9 @@
         "addMedia": "Add media",
         "schedule": "Schedule",
         "publishNow": "Publish now",
-        "saveDraft": "Save draft"
+        "saveDraft": "Save draft",
+        "draftSaved": "Draft saved",
+        "published": "Published!"
     },
     "scheduled": {
         "title": "Scheduled Posts",
@@ -95,6 +102,31 @@
         "cancel": "Cancel",
         "edit": "Edit",
         "publishNow": "Publish now"
+    },
+    "header": {
+        "searchPlaceholder": "Search anything...",
+        "notifications": "Notifications"
+    },
+    "settings": {
+        "title": "Settings",
+        "profile": "Profile",
+        "profileDescription": "Update your personal information",
+        "name": "Name",
+        "email": "Email",
+        "saveChanges": "Save Changes",
+        "notifications": "Notifications",
+        "notificationsDescription": "Configure how you receive notifications",
+        "emailNotifications": "Email Notifications",
+        "emailNotificationsDesc": "Receive updates about your posts",
+        "postPublished": "Post Published",
+        "postPublishedDesc": "Get notified when a post is published",
+        "scheduledFailed": "Scheduled Post Failed",
+        "scheduledFailedDesc": "Alert when a scheduled post fails",
+        "security": "Security",
+        "securityDescription": "Update your password",
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "updatePassword": "Update Password"
     },
     "common": {
         "loading": "Loading...",

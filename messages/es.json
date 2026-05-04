@@ -12,7 +12,9 @@
         "analytics": "Analytics",
         "media": "Medios",
         "settings": "Configuracion",
-        "logout": "Cerrar sesion"
+        "logout": "Cerrar sesion",
+        "logoutSuccess": "Sesión cerrada",
+        "openMenu": "Abrir menu"
     },
     "auth": {
         "login": "Iniciar sesion",
@@ -77,7 +79,10 @@
         "threads": "Threads",
         "youtube": "YouTube",
         "tiktok": "TikTok",
-        "x": "X (Twitter)"
+        "x": "X (Twitter)",
+        "disconnectSuccess": "Instagram desconectado",
+        "connectFailed": "Error al conectar",
+        "disconnectFailed": "Error al desconectar"
     },
     "compose": {
         "title": "Crear Post",
@@ -86,7 +91,9 @@
         "addMedia": "Anadir medio",
         "schedule": "Programar",
         "publishNow": "Publicar ahora",
-        "saveDraft": "Guardar borrador"
+        "saveDraft": "Guardar borrador",
+        "draftSaved": "Borrador guardado",
+        "published": "Publicado!"
     },
     "scheduled": {
         "title": "Posts Programados",
@@ -95,6 +102,31 @@
         "cancel": "Cancelar",
         "edit": "Editar",
         "publishNow": "Publicar ahora"
+    },
+    "header": {
+        "searchPlaceholder": "Buscar cualquier cosa...",
+        "notifications": "Notificaciones"
+    },
+    "settings": {
+        "title": "Configuración",
+        "profile": "Perfil",
+        "profileDescription": "Actualiza tu información personal",
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "saveChanges": "Guardar cambios",
+        "notifications": "Notificaciones",
+        "notificationsDescription": "Configura cómo recibes notificaciones",
+        "emailNotifications": "Notificaciones por correo",
+        "emailNotificationsDesc": "Recibe actualizaciones sobre tus posts",
+        "postPublished": "Post publicado",
+        "postPublishedDesc": "Sé notificado cuando un post sea publicado",
+        "scheduledFailed": "Post programado falló",
+        "scheduledFailedDesc": "Alerta cuando un post programado falle",
+        "security": "Seguridad",
+        "securityDescription": "Actualiza tu contraseña",
+        "currentPassword": "Contraseña actual",
+        "newPassword": "Nueva contraseña",
+        "updatePassword": "Actualizar contraseña"
     },
     "common": {
         "loading": "Cargando...",

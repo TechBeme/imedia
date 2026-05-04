@@ -131,10 +131,10 @@ export default function AccountsPage() {
         try {
             const res = await fetch("/api/instagram/disconnect", { method: "POST" });
             if (res.ok) {
-                toast.success("Instagram disconnected");
+                toast.success(t("disconnectSuccess"));
                 fetchAccounts();
             } else {
-                toast.error(tc("error") || "Failed to disconnect");
+                toast.error(t("disconnectFailed"));
             }
         } catch {
             toast.error(tc("error") || "Failed to disconnect");

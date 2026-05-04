@@ -71,7 +71,7 @@ export default function ComposePage() {
     }
 
     function onSubmit(data: ComposeForm) {
-        toast.success("Post saved as draft (mock)");
+        toast.success(t("draftSaved"));
         console.log({ ...data, platforms: selectedPlatforms, mediaFiles });
     }
 
@@ -194,7 +194,7 @@ export default function ComposePage() {
                     <Button
                         type="button"
                         className="gap-2 flex-1 rounded-xl h-11 cursor-pointer shadow-sm shadow-primary/20"
-                        onClick={() => toast.success("Published! (mock)")}
+                        onClick={() => toast.success(t("published"))}
                     >
                         <RiSendPlaneLine className="h-4 w-4" />
                         {isScheduling ? t("schedule") : t("publishNow")}
