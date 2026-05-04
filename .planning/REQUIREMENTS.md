@@ -39,6 +39,21 @@
 - [ ] **UI-11**: Toast notifications for all user actions (success, error, info)
 - [ ] **UI-12**: All forms validated with Zod + React Hook Form, showing inline errors
 
+### Link Shortener
+
+- [ ] **LNK-01**: User can create a short link from any valid URL with an auto-generated random slug (alphanumeric, 6-10 chars)
+- [ ] **LNK-02**: User can create a short link with a custom slug (alphanumeric, hyphens, underscores; unique; reserved words blocked)
+- [ ] **LNK-03**: Short links redirect to the original URL and record every click with timestamp
+- [ ] **LNK-04**: Click analytics capture: IP address, country, city, region, user agent, device type, browser, OS, referrer
+- [ ] **LNK-05**: Analytics dashboard per link shows: total clicks, unique clicks, clicks over time (line chart), top countries (bar chart), devices (pie chart), browsers, referrers, recent clicks table
+- [ ] **LNK-06**: QR code can be generated (PNG/SVG) for any short link and downloaded
+- [ ] **LNK-07**: User can view a list of all their short links with copy, edit, delete, toggle active/inactive, and QR download actions
+- [ ] **LNK-08**: Links can be password-protected; redirect page prompts for password before forwarding
+- [ ] **LNK-09**: Links can have an expiration date; expired links show a "link expired" page
+- [ ] **LNK-10**: Custom domains can be connected; user validates ownership via DNS TXT record; short links served under user's domain
+- [ ] **LNK-11**: Public shorten page allows anonymous users to create short links (not saved to account)
+- [ ] **LNK-12**: Shorten and redirect endpoints are rate-limited to prevent abuse
+
 ### Instagram Integration (Meta Graph API)
 
 - [ ] **IG-01**: OAuth connection flow for Instagram Business/Creator accounts via Facebook Login
@@ -222,6 +237,18 @@
 | UI-10 | Phase 2 | Pending |
 | UI-11 | Phase 2 | Pending |
 | UI-12 | Phase 2 | Pending |
+| LNK-01 | Phase 2.1 | Pending |
+| LNK-02 | Phase 2.1 | Pending |
+| LNK-03 | Phase 2.1 | Pending |
+| LNK-04 | Phase 2.1 | Pending |
+| LNK-05 | Phase 2.1 | Pending |
+| LNK-06 | Phase 2.1 | Pending |
+| LNK-07 | Phase 2.1 | Pending |
+| LNK-08 | Phase 2.1 | Pending |
+| LNK-09 | Phase 2.1 | Pending |
+| LNK-10 | Phase 2.1 | Pending |
+| LNK-11 | Phase 2.1 | Pending |
+| LNK-12 | Phase 2.1 | Pending |
 | IG-01 | Phase 3 | Pending |
 | IG-02 | Phase 3 | Pending |
 | IG-03 | Phase 3 | Pending |

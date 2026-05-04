@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-05-04
 **Current phase:** Phase 1 — Foundation & Auth Hardening (COMPLETED)
-**Next action:** Start Phase 2 — Instagram Integration (Content Publishing)
+**Next action:** Execute Phase 2.1 — Link Shortener (5 plans ready)
 
 ## Project Reference
 
@@ -36,6 +36,7 @@ All 11 tasks completed successfully:
 |-------|--------|-------|----------|
 | 1 | COMPLETED | 11/11 | 100% |
 | 2 | Pending | 10/10 | 0% |
+| 2.1 | Planned | 5/5 | 0% |
 | 3 | Pending | 11/11 | 0% |
 | 4 | Pending | 6/6 | 0% |
 | 5 | Pending | 8/8 | 0% |
@@ -64,6 +65,13 @@ All 11 tasks completed successfully:
 | 2026-05-04 | 10 phases, standard granularity | Balanced scope per phase |
 | 2026-05-04 | Per-user platform credentials | User clarified: credentials configured in UI, not env vars |
 | 2026-05-04 | AES-256-GCM encryption | Industry standard for token/credential encryption at rest |
+| 2026-05-04 | Insert Phase 2.1: Link Shortener | Owner requested full-featured link shortening tool before continuing social media integrations |
+
+## Accumulated Context
+
+### Roadmap Evolution
+
+- **Phase 2.1 inserted after Phase 2** (2026-05-04) — Link Shortener tool with custom slugs, QR codes, advanced analytics, and custom domain support. Marked as (INSERTED) in ROADMAP.md.
 
 ## Notes
 

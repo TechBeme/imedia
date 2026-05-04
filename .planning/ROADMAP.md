@@ -60,6 +60,38 @@
 
 ---
 
+## Phase 2.1: Link Shortener (INSERTED)
+
+**Goal:** Build a full-featured link shortening tool with custom slugs, QR codes, advanced click analytics, and custom domain support.
+
+**Requirements:** LNK-01 through LNK-12
+
+**Plans:**
+- [ ] **02.1-01-PLAN.md** — Database Schema & Core API (shortLinks/linkClicks tables, POST /api/links, GET /[slug] redirect with click tracking)
+- [ ] **02.1-02-PLAN.md** — Link Management UI & Public Shorten Page (dashboard links page, link card/form components, public /s page, password prompt)
+- [ ] **02.1-03-PLAN.md** — Analytics Dashboard & QR Codes (analytics API with aggregations, charts with recharts, QR code generation PNG/SVG)
+- [ ] **02.1-04-PLAN.md** — Custom Domains (customDomains table, DNS TXT verification, domain management UI, middleware routing)
+- [ ] **02.1-05-PLAN.md** — Integration & Finalization (sidebar nav, migrations, build verification)
+
+**Wave Structure:**
+- Wave 1: 02.1-01 (schema + core API)
+- Wave 2: 02.1-02, 02.1-03 (UI + analytics/QR in parallel)
+- Wave 3: 02.1-04, 02.1-05 (custom domains + integration in parallel, both depend on Wave 1)
+
+**Success Criteria:**
+- Users can create short links with custom or random slugs
+- Short links redirect correctly and record detailed analytics
+- QR codes can be generated and downloaded for any link
+- Analytics dashboard shows clicks by time, location, device, browser, and referrer
+- Custom domains can be connected and serve short links
+- Links can be password-protected and set to expire
+- Public shorten page works for anonymous users
+- All endpoints are rate-limited
+
+**Estimated:** 5-7 days
+
+---
+
 ## Phase 3: Instagram Integration
 
 **Goal:** Full Instagram Business/Creator account integration via Meta Graph API — publishing, insights, and comment management.
@@ -282,14 +314,15 @@
 |-------|------|---------------|------------|
 | 1 | Foundation & Auth Hardening | 3-5 days | 3-5 days |
 | 2 | Frontend UI/UX (Mock Data) | 5-7 days | 8-12 days |
-| 3 | Instagram Integration | 7-10 days | 15-22 days |
-| 4 | Media Library | 3-4 days | 18-26 days |
-| 5 | Scheduling Engine | 5-7 days | 23-33 days |
-| 6 | YouTube Integration | 5-7 days | 28-40 days |
-| 7 | TikTok Integration | 4-6 days | 32-46 days |
-| 8 | X (Twitter) Integration | 4-5 days | 36-51 days |
-| 9 | Analytics Aggregation | 3-4 days | 39-55 days |
-| 10 | Production Hardening & CI/CD | 4-5 days | 43-60 days |
+| 2.1 | Link Shortener | 5-7 days | 13-19 days |
+| 3 | Instagram Integration | 7-10 days | 20-29 days |
+| 4 | Media Library | 3-4 days | 23-33 days |
+| 5 | Scheduling Engine | 5-7 days | 28-40 days |
+| 6 | YouTube Integration | 5-7 days | 33-47 days |
+| 7 | TikTok Integration | 4-6 days | 37-53 days |
+| 8 | X (Twitter) Integration | 4-5 days | 41-58 days |
+| 9 | Analytics Aggregation | 3-4 days | 44-62 days |
+| 10 | Production Hardening & CI/CD | 4-5 days | 48-67 days |
 
 **Total Estimated:** 6-9 weeks (depending on parallelization and complexity)
 
