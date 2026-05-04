@@ -23,8 +23,8 @@ export function success<T>(data: T, status = 200) {
     return NextResponse.json({ data }, { status });
 }
 
-export function error(code: ErrorCode, message?: string, status = 400) {
-    return NextResponse.json({ error: { code, message } }, { status });
+export function error(code: ErrorCode, message?: string, status = 400, headers?: Record<string, string>) {
+    return NextResponse.json({ error: { code, message } }, { status, headers });
 }
 
 export function unauthorized(message = "Unauthorized") {

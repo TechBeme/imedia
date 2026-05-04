@@ -3,6 +3,8 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { success, error, unauthorized, notFound } from "@/lib/api-response";
+import { withRateLimit } from "@/lib/api-guard";
+import { apiRateLimit } from "@/lib/rate-limit";
 import {
     updatePlatformCredential,
     deletePlatformCredential,
@@ -21,93 +23,97 @@ export async function PUT(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const requestHeaders = await headers();
-    const session = await auth.api.getSession({ headers: requestHeaders });
+    return withRateLimit(req, apiRateLimit, async () => {
+        const requestHeaders = await headers();
+        const session = await auth.api.getSession({ headers: requestHeaders });
 
-    if (!session) {
-        return unauthorized();
-    }
-
-    const { id } = await params;
-
-    let body: unknown;
-    try {
-        body = await req.json();
-    } catch {
-        return error("VALIDATION_ERROR", "Invalid JSON body", 400);
-    }
-
-    const parsed = updateSchema.safeParse(body);
-    if (!parsed.success) {
-        return error(
-            "VALIDATION_ERROR",
-            parsed.error.issues.map((e) => `${e.path.join(".")}: ${e.message}`).join(", "),
-            400
-        );
-    }
-
-    try {
-        const updates: {
-            appId?: string;
-            appSecret?: string;
-            redirectUri?: string;
-        } = {};
-
-        if (parsed.data.appId) updates.appId = parsed.data.appId;
-        if (parsed.data.appSecret) updates.appSecret = parsed.data.appSecret;
-        if (parsed.data.redirectUri !== undefined) {
-            updates.redirectUri = parsed.data.redirectUri || undefined;
+        if (!session) {
+            return unauthorized();
         }
 
-        const credential = await updatePlatformCredential(
-            id,
-            session.user.id,
-            updates
-        );
+        const { id } = await params;
 
-        if (!credential) {
-            return notFound("Credential not found");
+        let body: unknown;
+        try {
+            body = await req.json();
+        } catch {
+            return error("VALIDATION_ERROR", "Invalid JSON body", 400);
         }
 
-        return success({
-            credential: {
-                id: credential.id,
-                platform: credential.platform,
-                redirectUri: credential.redirectUri,
-                isActive: credential.isActive,
-                createdAt: credential.createdAt,
-                updatedAt: credential.updatedAt,
-            },
-        });
-    } catch (err) {
-        console.error("[platform-credentials PUT] error:", err);
-        return error("INTERNAL_ERROR", "Failed to update credential", 500);
-    }
+        const parsed = updateSchema.safeParse(body);
+        if (!parsed.success) {
+            return error(
+                "VALIDATION_ERROR",
+                parsed.error.issues.map((e) => `${e.path.join(".")}: ${e.message}`).join(", "),
+                400
+            );
+        }
+
+        try {
+            const updates: {
+                appId?: string;
+                appSecret?: string;
+                redirectUri?: string;
+            } = {};
+
+            if (parsed.data.appId) updates.appId = parsed.data.appId;
+            if (parsed.data.appSecret) updates.appSecret = parsed.data.appSecret;
+            if (parsed.data.redirectUri !== undefined) {
+                updates.redirectUri = parsed.data.redirectUri || undefined;
+            }
+
+            const credential = await updatePlatformCredential(
+                id,
+                session.user.id,
+                updates
+            );
+
+            if (!credential) {
+                return notFound("Credential not found");
+            }
+
+            return success({
+                credential: {
+                    id: credential.id,
+                    platform: credential.platform,
+                    redirectUri: credential.redirectUri,
+                    isActive: credential.isActive,
+                    createdAt: credential.createdAt,
+                    updatedAt: credential.updatedAt,
+                },
+            });
+        } catch (err) {
+            console.error("[platform-credentials PUT] error:", err);
+            return error("INTERNAL_ERROR", "Failed to update credential", 500);
+        }
+    });
 }
 
 export async function DELETE(
-    _req: NextRequest,
+    req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const requestHeaders = await headers();
-    const session = await auth.api.getSession({ headers: requestHeaders });
+    return withRateLimit(req, apiRateLimit, async () => {
+        const requestHeaders = await headers();
+        const session = await auth.api.getSession({ headers: requestHeaders });
 
-    if (!session) {
-        return unauthorized();
-    }
-
-    const { id } = await params;
-
-    try {
-        const credential = await deletePlatformCredential(id, session.user.id);
-
-        if (!credential) {
-            return notFound("Credential not found");
+        if (!session) {
+            return unauthorized();
         }
 
-        return success({ deleted: true });
-    } catch (err) {
-        console.error("[platform-credentials DELETE] error:", err);
-        return error("INTERNAL_ERROR", "Failed to delete credential", 500);
-    }
+        const { id } = await params;
+
+        try {
+            const credential = await deletePlatformCredential(id, session.user.id);
+
+            if (!credential) {
+                return notFound("Credential not found");
+            }
+
+            return success({ deleted: true });
+        } catch (err) {
+            console.error("[platform-credentials DELETE] error:", err);
+            return error("INTERNAL_ERROR", "Failed to delete credential", 500);
+        }
+    });
 }
