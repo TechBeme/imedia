@@ -1,0 +1,34 @@
+{
+  "mode": "yolo",
+  "granularity": "standard",
+  "parallelization": true,
+  "commit_docs": true,
+  "model_profile": "quality",
+  "workflow": {
+    "research": true,
+    "plan_check": true,
+    "verifier": true,
+    "nyquist_validation": true,
+    "auto_advance": true,
+    "research_before_questions": false
+  },
+  "runtime": "claude",
+  "instruction_file": "copilot-instructions.md",
+  "project_exists": true,
+  "has_codebase_map": true,
+  "planning_exists": true,
+  "has_existing_code": true,
+  "has_package_file": true,
+  "is_brownfield": true,
+  "needs_codebase_map": false,
+  "has_git": true,
+  "project_path": "/home/ubuntu/work/imedia",
+  "agents_installed": false,
+  "missing_agents": [
+    "gsd-project-researcher",
+    "gsd-research-synthesizer",
+    "gsd-roadmapper"
+  ],
+  "created_at": "2026-05-04",
+  "last_updated": "2026-05-04"
+}
