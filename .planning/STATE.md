@@ -1,8 +1,8 @@
 # Project State: iMedia
 
 **Last updated:** 2026-05-04
-**Current phase:** Phase 1 — Foundation & Auth Hardening (COMPLETED)
-**Next action:** Execute Phase 2.1 — Link Shortener (5 plans ready)
+**Current phase:** Phase 2.1 — Link Shortener (SHIPPED — PR #1)
+**Next action:** Review/merge PR #1, then proceed to next phase
 
 ## Project Reference
 
@@ -36,7 +36,7 @@ All 11 tasks completed successfully:
 |-------|--------|-------|----------|
 | 1 | COMPLETED | 11/11 | 100% |
 | 2 | Pending | 10/10 | 0% |
-| 2.1 | Planned | 5/5 | 0% |
+| 2.1 | SHIPPED | 5/5 | 100% |
 | 3 | Pending | 11/11 | 0% |
 | 4 | Pending | 6/6 | 0% |
 | 5 | Pending | 8/8 | 0% |
@@ -48,7 +48,7 @@ All 11 tasks completed successfully:
 
 ## Active Workstreams
 
-(None — Phase 1 complete)
+- Phase 2.1 Link Shortener — SHIPPED (PR #1 open for review)
 
 ## Blockers
 
@@ -76,8 +76,10 @@ All 11 tasks completed successfully:
 ## Notes
 
 - Phase 1 fully implemented and tested
+- Phase 2.1 fully implemented, verified, and shipped as PR #1
 - All TypeScript checks pass (`npx tsc --noEmit`)
 - Build succeeds (`next build`)
+- Drizzle migration 0001 applied to Neon Postgres
 - 7 integration smoke tests passing
 - All API routes use standardized error responses
 - i18n complete for pt-BR, en, es
