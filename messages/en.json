@@ -326,6 +326,7 @@
         "expiredRedirectUrlPlaceholder": "https://example.com/expired",
         "expiredRedirectUrlHelp": "Redirect users here when the link expires (overrides global setting)",
         "all": "All",
+        "allLinks": "All links",
         "sortBy": "Sort by",
         "sortCreatedAtDesc": "Newest first",
         "sortCreatedAtAsc": "Oldest first",
