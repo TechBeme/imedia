@@ -56,7 +56,11 @@
         "passwordsDoNotMatch": "Las contrasenas no coinciden",
         "invalidToken": "Enlace invalido o expirado",
         "requestNewLink": "Solicitar nuevo enlace",
-        "passwordResetSuccess": "Contrasena restablecida exitosamente!"
+        "passwordResetSuccess": "Contrasena restablecida exitosamente!",
+        "agreeToTerms": "Al crear una cuenta, aceptas los",
+        "termsOfService": "Terminos de Uso",
+        "and": "y",
+        "privacyPolicy": "Politica de Privacidad"
     },
     "dashboard": {
         "title": "Panel",
@@ -422,5 +426,145 @@
         "toggleTheme": "Cambiar tema",
         "switchLanguage": "Cambiar idioma",
         "reset": "Restablecer"
+    },
+    "privacy": {
+        "metadata": {
+            "title": "Politica de Privacidad - SoMedia",
+            "description": "Conozca como SoMedia recopila, utiliza y protege sus datos personales."
+        },
+        "title": "Politica de Privacidad",
+        "lastUpdated": "Ultima actualizacion: 9 de mayo de 2026",
+        "backToHome": "Volver a la pagina de inicio",
+        "footer": "SoMedia. Todos los derechos reservados.",
+        "sections": {
+            "intro": {
+                "heading": "1. Introduccion",
+                "content": "SoMedia (SoMedia Tech, en adelante 'SoMedia', 'nosotros', 'nuestro' o 'plataforma') valora su privacidad. Esta Politica de Privacidad describe como recopilamos, usamos, almacenamos, compartimos y protegemos su informacion personal cuando utiliza nuestra plataforma de gestion de redes sociales y acortamiento de enlaces disponible en https://somedia.techbe.me (el 'Servicio').\n\nAl acceder o utilizar el Servicio, usted acepta los terminos de esta Politica de Privacidad. Si no esta de acuerdo, por favor no utilice nuestra plataforma."
+            },
+            "controller": {
+                "heading": "2. Responsable del Tratamiento de Datos",
+                "content": "El responsable del tratamiento de sus datos personales es:\n\nSoMedia Tech\nCorreo electronico: privacy@somedia.techbe.me\nSitio web: https://somedia.techbe.me\n\nPara preguntas relacionadas con la privacidad, contactenos en el correo electronico anterior."
+            },
+            "dataCollected": {
+                "heading": "3. Datos que Recopilamos",
+                "content": "Recopilamos los siguientes tipos de datos personales:\n\n3.1. Datos de Registro\n- Nombre completo\n- Direccion de correo electronico\n- Foto de perfil (cuando se proporciona u obtiene via OAuth)\n\n3.2. Datos de Autenticacion\n- Credenciales de inicio de sesion (contrasenas cifradas con bcrypt)\n- Tokens de sesion\n- Datos de autenticacion OAuth (Google)\n\n3.3. Datos de Cuentas Sociales\nCuando conecta cuentas de redes sociales (Instagram, Facebook, Threads, YouTube, TikTok, X), recopilamos:\n- ID de la cuenta en la plataforma\n- Nombre de usuario y nombre de visualizacion\n- Foto de perfil\n- Tokens de acceso y actualizacion (almacenados cifrados)\n- Metadatos publicos (numero de seguidores, etc.)\n\n3.4. Datos de Credenciales de API\n- App ID / Client ID de las plataformas sociales (almacenados cifrados)\n- App Secret / Client Secret (almacenados cifrados)\n- URIs de redireccion configuradas\n\n3.5. Datos de Enlaces Acortados\n- URL original\n- Slug personalizado\n- Titulo, descripcion e imagenes Open Graph\n- Datos de clics (IP, pais, ciudad, dispositivo, navegador, sistema operativo, idioma, zona horaria, referente)\n\n3.6. Datos de Medios\n- Archivos multimedia cargados en la biblioteca (almacenados en Vercel Blob)\n- Metadatos de archivos (tipo MIME, tamano, dimensiones)\n\n3.7. Datos de Publicaciones y Programacion\n- Contenido de las publicaciones\n- URLs de medios asociados\n- Plataformas de destino\n- Fecha y hora de programacion\n- Estado de publicacion\n\n3.8. Datos de Uso y Analitica\n- Direccion IP\n- User-Agent del navegador\n- Datos de geolocalizacion aproximada\n- Patrones de uso de la plataforma\n\n3.9. Datos de Pago (cuando aplique)\n- Informacion de suscripcion y facturacion\n- Historial de pagos (procesados via Stripe)\n\n3.10. Datos de Webhooks\n- Eventos recibidos de plataformas de terceros (payloads completos para auditoria e idempotencia)"
+            },
+            "purposes": {
+                "heading": "4. Finalidades del Tratamiento",
+                "content": "Utilizamos sus datos personales para las siguientes finalidades:\n\n4.1. Prestacion del Servicio\n- Crear y gestionar su cuenta\n- Autenticar su acceso a la plataforma\n- Conectar y gestionar sus cuentas de redes sociales\n- Permitir la programacion y publicacion de posts\n- Proporcionar analitica de enlaces acortados\n- Almacenar y gestionar su biblioteca de medios\n\n4.2. Comunicacion\n- Enviar notificaciones sobre posts programados\n- Alertas de seguridad y cambios en la cuenta\n- Responder a solicitudes de soporte\n\n4.3. Mejora del Servicio\n- Analizar patrones de uso para mejorar la plataforma\n- Identificar y corregir problemas tecnicos\n- Desarrollar nuevas funciones\n\n4.4. Seguridad y Cumplimiento Legal\n- Prevenir fraudes y abusos\n- Cumplir con obligaciones legales y regulatorias\n- Resolver disputas y hacer cumplir nuestros terminos"
+            },
+            "legalBasis": {
+                "heading": "5. Base Legal para el Tratamiento",
+                "content": "El tratamiento de sus datos personales se basa en los siguientes fundamentos legales, de conformidad con la Ley General de Proteccion de Datos (LGPD - Ley 13.709/2018) y el Reglamento General de Proteccion de Datos (GDPR, cuando aplique):\n\n5.1. Ejecucion de Contrato (Art. 7, V de la LGPD / Art. 6, I(b) del GDPR)\nEl tratamiento es necesario para la ejecucion del contrato de prestacion de servicios o para procedimientos preliminares a la contratacion a solicitud del titular.\n\n5.2. Consentimiento (Art. 7, I de la LGPD / Art. 6, I(a) del GDPR)\nPara la conexion de cuentas de redes sociales, envio de comunicaciones de marketing y uso de cookies no esenciales, solicitamos su consentimiento explicito, que puede revocarse en cualquier momento.\n\n5.3. Cumplimiento de Obligacion Legal (Art. 7, II de la LGPD / Art. 6, I(c) del GDPR)\nCuando sea necesario para cumplir con obligaciones legales, como la retencion de registros fiscales.\n\n5.4. Interes Legitimo (Art. 7, IX de la LGPD / Art. 6, I(f) del GDPR)\nPara la prevencion de fraudes, seguridad de la plataforma y mejora de los servicios, siempre que no prevalezcan sus derechos y libertades fundamentales.\n\n5.5. Proteccion del Credito (Art. 7, V de la LGPD)\nPara la evaluacion de riesgo y concesion de credito, cuando aplique."
+            },
+            "dataSharing": {
+                "heading": "6. Compartir Datos",
+                "content": "Podemos compartir sus datos personales en las siguientes situaciones:\n\n6.1. Proveedores de Servicios\nUtilizamos proveedores de terceros para alojamiento, procesamiento de pagos, almacenamiento de archivos y analitica. Estos proveedores tienen acceso limitado a los datos estrictamente necesarios para ejecutar sus funciones y estan contractualmente obligados a proteger sus datos:\n\n- Vercel (alojamiento y almacenamiento blob)\n- Neon (base de datos PostgreSQL)\n- Stripe (procesamiento de pagos)\n- Upstash (limitacion de tasa via Redis)\n- Google (autenticacion OAuth)\n\n6.2. Plataformas de Redes Sociales\nAl conectar sus cuentas, compartimos los datos necesarios con las respectivas plataformas (Meta, Google, TikTok, X) para permitir la publicacion de contenido. Cada plataforma tiene su propia politica de privacidad.\n\n6.3. Obligaciones Legales\nPodemos divulgar datos personales cuando sea requerido por ley, orden judicial o solicitud gubernamental valida.\n\n6.4. Transferencias de Negocios\nEn caso de fusion, adquisicion o venta de activos, sus datos pueden transferirse como parte del negocio, con notificacion previa.\n\n6.5. No Vendemos Datos\nNo vendemos, alquilamos ni comercializamos sus datos personales a terceros para fines de marketing."
+            },
+            "dataRetention": {
+                "heading": "7. Retencion y Eliminacion de Datos",
+                "content": "Conservamos sus datos personales durante el tiempo necesario para cumplir con las finalidades descritas en esta politica, a menos que un periodo de retencion mas largo sea requerido o permitido por ley:\n\n7.1. Datos de Cuenta\nConservados mientras su cuenta este activa. Despues del cierre de la cuenta, los datos se eliminan o anonimizan en un plazo de 90 dias, excepto cuando exista una obligacion legal de retencion.\n\n7.2. Datos de Enlaces y Analitica\nConservados durante el periodo definido por el usuario (configurable en las preferencias). Por defecto, los datos de clics se mantienen durante 12 meses.\n\n7.3. Datos de Webhooks\nConservados durante 24 meses para fines de auditoria e idempotencia.\n\n7.4. Datos de Pago\nConservados durante el periodo exigido por la legislacion fiscal aplicable (generalmente 5 anos en Brasil).\n\n7.5. Copias de Seguridad\nLos datos eliminados pueden permanecer en copias de seguridad durante hasta 30 dias adicionales antes de la eliminacion completa."
+            },
+            "userRights": {
+                "heading": "8. Sus Derechos",
+                "content": "De conformidad con la LGPD y el GDPR, usted tiene los siguientes derechos sobre sus datos personales:\n\n8.1. Derechos LGPD (Brasil)\n- Confirmacion de la existencia de tratamiento\n- Acceso a los datos\n- Correccion de datos incompletos, inexactos o desactualizados\n- Anonimizacion, bloqueo o eliminacion de datos innecesarios, excesivos o tratados en incumplimiento de la ley\n- Portabilidad de los datos a otro proveedor de servicios o productos\n- Eliminacion de los datos personales tratados con consentimiento\n- Informacion sobre entidades publicas y privadas con las que compartimos datos\n- Informacion sobre la posibilidad de no proporcionar consentimiento y las consecuencias de la negativa\n- Revocacion del consentimiento\n\n8.2. Derechos GDPR (Union Europea)\n- Derecho de acceso (Art. 15)\n- Derecho de rectificacion (Art. 16)\n- Derecho al olvido (Art. 17)\n- Derecho a la restriccion del tratamiento (Art. 18)\n- Derecho a la portabilidad (Art. 20)\n- Derecho de oposicion (Art. 21)\n- Derechos relacionados con la toma de decisiones automatizada (Art. 22)\n\n8.3. Como Ejercer sus Derechos\nPara ejercer cualquiera de estos derechos, contactenos en privacy@somedia.techbe.me. Responderemos en un plazo de 15 dias (LGPD) o 30 dias (GDPR). Podemos solicitar verificacion de identidad antes de procesar su solicitud."
+            },
+            "cookies": {
+                "heading": "9. Cookies y Tecnologias Similares",
+                "content": "Utilizamos cookies y tecnologias similares para mejorar su experiencia, analizar el uso de la plataforma y personalizar el contenido:\n\n9.1. Cookies Esenciales\nNecesarias para el funcionamiento basico de la plataforma, como la autenticacion y la seguridad. No pueden desactivarse.\n\n9.2. Cookies de Preferencias\nRecuerdan sus elecciones de idioma, tema y otras configuraciones personalizadas.\n\n9.3. Cookies de Analitica\nUtilizadas para comprender como los usuarios interactuan con la plataforma, identificar problemas y mejorar el servicio.\n\n9.4. Cookies de Marketing\nUtilizadas para entregar anuncios relevantes y medir la efectividad de las campanas (cuando aplique).\n\n9.5. Gestion de Cookies\nPuede gestionar sus preferencias de cookies a traves de la configuracion de su navegador. Tenga en cuenta que desactivar las cookies esenciales puede comprometer el funcionamiento de la plataforma."
+            },
+            "security": {
+                "heading": "10. Seguridad de los Datos",
+                "content": "Implementamos medidas tecnicas y organizativas apropiadas para proteger sus datos personales contra el acceso no autorizado, la alteracion, la divulgacion o la destruccion:\n\n10.1. Cifrado\n- Los datos sensibles (tokens de acceso, credenciales de API) se cifran en reposo\n- La comunicacion con la plataforma esta protegida por TLS/SSL (HTTPS)\n\n10.2. Autenticacion\n- Las contrasenas se almacenan con bcrypt (hashing adaptativo)\n- Soporte para autenticacion de dos factores (cuando esta habilitada)\n- Sesiones con expiracion automatica\n\n10.3. Control de Acceso\n- Acceso a los datos restringido al personal autorizado\n- Registros de auditoria para el seguimiento de actividades\n- Limitacion de tasa para prevenir abusos\n\n10.4. Copias de Seguridad\n- Copias de seguridad regulares y cifradas\n- Pruebas periodicas de recuperacion\n\n10.5. Limitaciones\nAunque nos esforzamos por proteger sus datos, ningun metodo de transmision o almacenamiento electronico es 100% seguro. No podemos garantizar seguridad absoluta."
+            },
+            "internationalTransfers": {
+                "heading": "11. Transferencias Internacionales de Datos",
+                "content": "Sus datos personales pueden transferirse y procesarse en paises distintos al de su residencia. Nuestros proveedores de servicios (Vercel, Neon, Stripe) operan en varios paises, incluidos los Estados Unidos.\n\nCuando transferimos datos fuera de Brasil o la Union Europea, nos aseguramos de que las transferencias se realicen con salvaguardas adecuadas, incluyendo:\n\n- Clusulas contractuales estandar aprobadas por la Comision Europea\n- Certificaciones de adecuacion (Privacy Shield, cuando aplique)\n- Medidas tecnicas y organizativas para garantizar un nivel de proteccion equivalente\n\nAl utilizar nuestro Servicio, usted consiente estas transferencias internacionales."
+            },
+            "children": {
+                "heading": "12. Privacidad de los Menores",
+                "content": "Nuestro Servicio no esta destinado a menores de 13 anos. No recopilamos intencionalmente datos personales de menores de 13 anos. Si usted es padre, madre o tutor y cree que su hijo nos ha proporcionado datos personales, contactenos inmediatamente en privacy@somedia.techbe.me para que podamos eliminar esta informacion.\n\nPara usuarios entre 13 y 18 anos, recomendamos la supervision de los padres o tutores legales."
+            },
+            "thirdPartyLinks": {
+                "heading": "13. Enlaces a Sitios de Terceros",
+                "content": "Nuestro Servicio puede contener enlaces a sitios web, servicios o aplicaciones operados por terceros que no son operados por nosotros. No tenemos control sobre el contenido y las practicas de privacidad de estos sitios y no asumimos responsabilidad por sus politicas.\n\nLe recomendamos que revise la politica de privacidad de cada sitio que visite, especialmente al conectar cuentas de redes sociales (Instagram, Facebook, YouTube, TikTok, X, Threads), ya que cada plataforma tiene sus propias practicas de privacidad."
+            },
+            "changes": {
+                "heading": "14. Cambios en esta Politica",
+                "content": "Podemos actualizar esta Politica de Privacidad periodicamente para reflejar cambios en nuestras practicas, legislacion o servicios ofrecidos.\n\nLe notificaremos los cambios materiales mediante:\n- Correo electronico a la direccion registrada\n- Aviso en la plataforma al iniciar sesion\n- Actualizacion de la fecha de 'Ultima actualizacion' en la parte superior de esta pagina\n\nLos cambios entran en vigor inmediatamente despues de su publicacion, a menos que se especifique lo contrario. El uso continuado del Servicio despues de los cambios constituye la aceptacion de la nueva politica."
+            },
+            "contact": {
+                "heading": "15. Contactenos",
+                "content": "Si tiene preguntas, inquietudes o solicitudes relacionadas con esta Politica de Privacidad o el tratamiento de sus datos personales, contactenos:\n\nCorreo electronico: privacy@somedia.techbe.me\nSitio web: https://somedia.techbe.me\n\nPara cuestiones de proteccion de datos en Brasil, tambien puede contactar a la Autoridad Nacional de Proteccion de Datos (ANPD):\nSitio web: https://www.gov.br/anpd\n\nPara cuestiones en la Union Europea, puede contactar a la autoridad de proteccion de datos de su pais de residencia."
+            }
+        }
+    },
+    "terms": {
+        "metadata": {
+            "title": "Terminos de Uso",
+            "description": "Terminos de uso de SoMedia - Gestor de Redes Sociales"
+        },
+        "title": "Terminos de Uso",
+        "lastUpdated": "Ultima actualizacion: 9 de mayo de 2026",
+        "backToHome": "Volver al inicio",
+        "footer": "SoMedia. Todos los derechos reservados.",
+        "sections": {
+            "acceptance": {
+                "heading": "1. Aceptacion de los Terminos",
+                "content": "Al acceder o utilizar SoMedia (el \"Servicio\"), usted acepta cumplir y estar sujeto a estos Terminos de Uso (\"Terminos\"). Si no esta de acuerdo con alguna parte de estos Terminos, no podra acceder ni utilizar el Servicio.\n\nEstos Terminos constituyen un acuerdo legalmente vinculante entre usted (\"Usuario\", \"usted\" o \"su\") y SoMedia (\"Empresa\", \"nosotros\", \"nuestro\" o \"nos\"). El uso continuado del Servicio despues de cualquier cambio en estos Terminos constituye la aceptacion de dichos cambios."
+            },
+            "serviceDescription": {
+                "heading": "2. Descripcion del Servicio",
+                "content": "SoMedia es una plataforma de gestion de redes sociales que permite a los usuarios:\n\n- Conectar y gestionar cuentas de redes sociales (Instagram, Facebook, Threads, YouTube, TikTok, X y otras);\n- Programar, publicar y gestionar contenido en multiples plataformas;\n- Seguir metricas de rendimiento y analytics;\n- Crear y gestionar enlaces cortos personalizados;\n- Almacenar y organizar medios digitales;\n- Utilizar herramientas de inteligencia artificial para asistir en la creacion de contenido.\n\nEl Servicio se proporciona \"tal cual\" y \"segun disponibilidad\". No garantizamos que el Servicio sea ininterrumpido, oportuno, seguro o libre de errores."
+            },
+            "accounts": {
+                "heading": "3. Cuentas de Usuario",
+                "content": "Para utilizar ciertas funciones del Servicio, debe crear una cuenta proporcionando informacion precisa, completa y actualizada. Usted es responsable de:\n\n- Mantener la confidencialidad de su contrasena y credenciales de acceso;\n- Todas las actividades que ocurran en su cuenta;\n- Notificarnos inmediatamente sobre cualquier uso no autorizado de su cuenta;\n- Garantizar que su informacion de contacto este siempre actualizada.\n\nNos reservamos el derecho de suspender o cerrar cuentas que contengan informacion falsa, incompleta o desactualizada."
+            },
+            "acceptableUse": {
+                "heading": "4. Uso Aceptable",
+                "content": "Al utilizar el Servicio, usted acepta NO:\n\n- Violar leyes, regulaciones o derechos de terceros;\n- Publicar, compartir o distribuir contenido ilegal, ofensivo, difamatorio, obsceno o que incite al odio;\n- Utilizar el Servicio para enviar spam, phishing o cualquier forma de comunicacion no solicitada;\n- Intentar acceder, interferir o danar sistemas, redes o cuentas de otros usuarios;\n- Utilizar bots, scripts o herramientas automatizadas de manera que viole los terminos de las plataformas de redes sociales conectadas;\n- Reproducir, duplicar, copiar, vender, revender o explotar comercialmente cualquier parte del Servicio sin autorizacion expresa;\n- Eludir, desactivar o interferir en las funciones de seguridad del Servicio;\n- Recopilar o almacenar datos personales de otros usuarios sin consentimiento.\n\nEl incumplimiento de estas reglas puede resultar en la suspension o cierre inmediato de su cuenta, sin reembolso."
+            },
+            "intellectualProperty": {
+                "heading": "5. Propiedad Intelectual",
+                "content": "SoMedia y todo su contenido, caracteristicas y funcionalidades (incluyendo pero no limitado a diseno, codigo, textos, graficos, logotipos, iconos, imagenes, clips de audio, descargas de software y compilaciones de datos) son propiedad de la Empresa o de sus licenciantes y estan protegidos por leyes de derechos de autor, marcas registradas y otras leyes de propiedad intelectual.\n\nSe le otorga una licencia limitada, no exclusiva, no transferible y revocable para acceder y utilizar el Servicio para fines personales o comerciales internos, de acuerdo con estos Terminos.\n\nUsted no puede:\n- Modificar, descompilar, realizar ingenieria inversa o crear trabajos derivados del Servicio;\n- Eliminar avisos de derechos de autor, marcas registradas u otros avisos de propiedad;\n- Utilizar nuestras marcas registradas sin autorizacion previa por escrito."
+            },
+            "userContent": {
+                "heading": "6. Contenido del Usuario",
+                "content": "Usted conserva todos los derechos sobre el contenido que crea, envia, publica o muestra a traves del Servicio (\"Contenido del Usuario\"). Al utilizar el Servicio, usted otorga a SoMedia una licencia mundial, no exclusiva, libre de regalias, sublicenciable y transferible para usar, reproducir, modificar, adaptar, publicar, traducir y distribuir su Contenido del Usuario, exclusivamente para fines de operacion, mejora y promocion del Servicio.\n\nUsted declara y garantiza que:\n- Es el propietario o tiene las licencias, derechos, consentimientos y permisos necesarios para usar y autorizar a SoMedia a usar su Contenido del Usuario;\n- Su Contenido del Usuario no viola derechos de propiedad intelectual, privacidad, publicidad u otros derechos de terceros;\n- Su Contenido del Usuario cumple con los terminos de uso de las plataformas de redes sociales conectadas.\n\nSoMedia no se responsabiliza por el Contenido del Usuario ni respalda ninguna opinion expresada por los usuarios."
+            },
+            "thirdPartyServices": {
+                "heading": "7. Servicios de Terceros",
+                "content": "El Servicio se integra con plataformas de terceros, incluyendo pero no limitado a Instagram, Facebook, Threads, YouTube, TikTok, X, Google y Stripe. El uso de estas integraciones esta sujeto a los terminos de uso y politicas de privacidad de cada plataforma.\n\nAl conectar sus cuentas de redes sociales a SoMedia, usted:\n- Autoriza a SoMedia a acceder, almacenar y utilizar sus datos de acuerdo con los permisos otorgados;\n- Reconoce que SoMedia actua como intermediario y no controla las plataformas de terceros;\n- Entiende que los cambios en las APIs o politicas de las plataformas de terceros pueden afectar la funcionalidad del Servicio;\n- Acepta cumplir con los terminos de uso de cada plataforma conectada.\n\nSoMedia no se responsabiliza por cambios, interrupciones o cierres de servicios de terceros."
+            },
+            "payments": {
+                "heading": "8. Pagos y Suscripciones",
+                "content": "Ciertas funciones del Servicio pueden requerir pago. Al adquirir una suscripcion o servicio de pago, usted acepta los siguientes terminos:\n\n- Todos los precios se muestran en la moneda indicada y pueden estar sujetos a impuestos aplicables;\n- Las suscripciones se renuevan automaticamente al final de cada periodo de facturacion, a menos que se cancelen;\n- Puede cancelar su suscripcion en cualquier momento a traves de la configuracion de su cuenta;\n- No se realizan reembolsos parciales por periodos no utilizados, salvo disposicion en contrario de la ley aplicable;\n- Nos reservamos el derecho de cambiar los precios con previo aviso de 30 dias;\n- Los fallos de pago pueden resultar en la suspension o degradacion de su cuenta.\n\nLos pagos son procesados por proveedores de pago de terceros (Stripe). Al realizar un pago, usted tambien acepta los terminos del proveedor de pago."
+            },
+            "liability": {
+                "heading": "9. Limitacion de Responsabilidad",
+                "content": "En la maxima extension permitida por la ley aplicable, SoMedia, sus directores, empleados, socios, agentes, proveedores o afiliados no seran responsables por danos indirectos, incidentales, especiales, consecuentes o punitivos, incluyendo sin limitacion perdida de beneficios, datos, uso, buena voluntad u otras perdidas intangibles, resultantes de:\n\n- Su acceso o uso, o incapacidad de acceder o usar el Servicio;\n- Cualquier conducta o contenido de terceros en el Servicio;\n- Cualquier contenido obtenido del Servicio;\n- Acceso no autorizado, uso o alteracion de sus transmisiones o contenido;\n- Errores, omisiones, interrupciones, defectos, retrasos o fallas en el Servicio;\n- Virus u otros codigos maliciosos transmitidos a traves del Servicio.\n\nEn ningun caso la responsabilidad total de SoMedia excedera el monto pagado por usted al Servicio en los 12 meses anteriores al evento que dio origen a la responsabilidad, o cien reales (R$ 100,00), el que sea mayor."
+            },
+            "indemnification": {
+                "heading": "10. Indemnizacion",
+                "content": "Usted acepta defender, indemnizar y eximir a SoMedia, sus directores, empleados, socios, agentes, proveedores y afiliados de y contra cualquier reclamo, responsabilidad, dano, perdida, costo y gasto (incluyendo honorarios de abogados razonables) derivados de o relacionados con:\n\n- Su uso del Servicio;\n- Su Contenido del Usuario;\n- Su violacion de estos Terminos;\n- Su violacion de cualquier derecho de terceros, incluyendo derechos de propiedad intelectual, privacidad o publicidad;\n- Su conducta en violacion de la ley aplicable.\n\nEsta obligacion de indemnizacion sobrevivira a la rescision de estos Terminos y a su uso del Servicio."
+            },
+            "termination": {
+                "heading": "11. Rescision",
+                "content": "Podemos suspender o cerrar su cuenta y acceso al Servicio inmediatamente, sin previo aviso ni responsabilidad, por cualquier motivo, incluyendo sin limitacion la violacion de estos Terminos.\n\nUsted puede cerrar su cuenta en cualquier momento a traves de la configuracion de su cuenta o contactandonos.\n\nTras la rescision:\n- Su derecho a usar el Servicio cesara inmediatamente;\n- Podemos eliminar o archivar su Contenido del Usuario, como se describe en nuestra Politica de Privacidad;\n- Las disposiciones que, por su naturaleza, deben sobrevivir a la rescision (incluyendo sin limitacion disposiciones sobre propiedad intelectual, indemnizacion, limitacion de responsabilidad y ley aplicable) permaneceran en vigor."
+            },
+            "governingLaw": {
+                "heading": "12. Ley Aplicable y Jurisdiccion",
+                "content": "Estos Terminos se regiran e interpretaran de acuerdo con las leyes de la Republica Federativa del Brasil, sin consideracion a sus principios de conflicto de leyes.\n\nCualquier disputa, controversia o reclamo derivado de o relacionado con estos Terminos o el uso del Servicio se sometera a la jurisdiccion exclusiva de los tribunales de la Comarca de Sao Paulo, Estado de Sao Paulo, Brasil.\n\nUsted acepta que cualquier accion judicial debe iniciarse dentro del plazo de un (1) ano despues del surgimiento de la causa de accion."
+            },
+            "general": {
+                "heading": "13. Disposiciones Generales",
+                "content": "Estos Terminos constituyen el acuerdo integral entre usted y SoMedia en relacion con el uso del Servicio y sustituyen todos los acuerdos anteriores o contemporaneos, escritos u orales.\n\nSi alguna disposicion de estos Terminos se considera invalida, ilegal o inaplicable, las demas disposiciones permaneceran en pleno vigor y efecto.\n\nNuestra falta de ejercer o hacer cumplir cualquier derecho o disposicion de estos Terminos no constituira renuncia a dicho derecho o disposicion.\n\nUsted no puede ceder o transferir estos Terminos, por operacion de ley o de otro modo, sin nuestro consentimiento previo por escrito. Podemos ceder o transferir estos Terminos libremente.\n\nLas notificaciones pueden enviarse por correo electronico o publicarse en el Servicio."
+            },
+            "contact": {
+                "heading": "14. Contacto",
+                "content": "Si tiene preguntas, inquietudes o solicitudes relacionadas con estos Terminos de Uso, contactenos:\n\nCorreo electronico: legal@somedia.techbe.me\n\nDireccion:\nSoMedia\nRua Exemplo, 123\nSao Paulo, SP, 01000-000\nBrasil\n\nResponderemos en un plazo de 30 (treinta) dias habiles."
+            }
+        }
     }
 }

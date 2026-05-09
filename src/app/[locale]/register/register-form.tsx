@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { motion } from "motion/react";
 import { User, Mail, Lock, Loader2, ArrowRight } from "lucide-react";
@@ -29,11 +30,18 @@ export function RegisterForm() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [loading, setLoading] = useState(false);
     const [googleLoading, setGoogleLoading] = useState(false);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
+
+        if (!agreedToTerms) {
+            toast.error("Voce deve concordar com os Termos de Uso e Politica de Privacidade.");
+            return;
+        }
+
         setLoading(true);
 
         const result = await authClient.signUp.email({
@@ -146,6 +154,26 @@ export function RegisterForm() {
                             autoComplete="new-password"
                         />
                     </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                    <Checkbox
+                        id="terms"
+                        checked={agreedToTerms}
+                        onCheckedChange={(checked) => setAgreedToTerms(checked === true)}
+                        className="mt-0.5"
+                    />
+                    <Label htmlFor="terms" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
+                        {t("agreeToTerms")}{" "}
+                        <Link href={`/${locale}/terms`} className="text-primary hover:underline font-medium">
+                            {t("termsOfService")}
+                        </Link>{" "}
+                        {t("and")}{" "}
+                        <Link href={`/${locale}/privacy`} className="text-primary hover:underline font-medium">
+                            {t("privacyPolicy")}
+                        </Link>
+                        .
+                    </Label>
                 </div>
 
                 <Button
