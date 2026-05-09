@@ -110,17 +110,28 @@ export default function AccountsPage() {
     async function handleConnect(platform: string) {
         if (platform !== "instagram") return;
         setConnecting(platform);
+        console.log("[Instagram Connect] Starting...");
 
         try {
             const res = await fetch("/api/instagram/auth");
+            console.log("[Instagram Connect] Response status:", res.status);
+
             const data = await res.json();
+            console.log("[Instagram Connect] Response body:", data);
+
             const url = data.data?.url;
+            console.log("[Instagram Connect] Extracted URL:", url);
+
             if (url) {
+                console.log("[Instagram Connect] Redirecting to:", url);
                 window.location.href = url;
+                console.log("[Instagram Connect] window.location.href set");
             } else {
+                console.error("[Instagram Connect] No URL in response:", data);
                 toast.error(data.error?.message || tc("error"));
             }
-        } catch {
+        } catch (err) {
+            console.error("[Instagram Connect] Exception:", err);
             toast.error(tc("error"));
         } finally {
             setConnecting(null);
