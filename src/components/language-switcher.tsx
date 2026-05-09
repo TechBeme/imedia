@@ -47,7 +47,7 @@ export function LanguageSwitcher() {
                 <Globe className="h-4 w-4 text-muted-foreground" />
                 <span className="text-base leading-none">{localeFlags[currentLocale]}</span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align="start" className="min-w-fit whitespace-nowrap">
                 {locales.map((locale) => (
                     <DropdownMenuItem
                         key={locale}
