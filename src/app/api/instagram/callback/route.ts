@@ -118,13 +118,40 @@ export async function GET(req: NextRequest) {
                 });
             }
 
-            return NextResponse.redirect(
-                new URL("/pt-BR/accounts?success=instagram_connected", req.url)
+            // Return HTML that closes popup and notifies parent window
+            return new Response(
+                `<!DOCTYPE html>
+<html>
+<head><title>Conectando Instagram...</title></head>
+<body>
+  <p style="font-family:sans-serif;text-align:center;margin-top:40px;">Conectado com sucesso! Fechando...</p>
+  <script>
+    if (window.opener) {
+      window.opener.postMessage({ type: "INSTAGRAM_CONNECTED", success: true }, "*");
+    }
+    setTimeout(function() { window.close(); }, 500);
+  </script>
+</body>
+</html>`,
+                { headers: { "Content-Type": "text/html; charset=utf-8" } }
             );
         } catch (err) {
             const message = err instanceof Error ? err.message : "Unknown error";
-            return NextResponse.redirect(
-                new URL(`/pt-BR/accounts?error=${encodeURIComponent(message)}`, req.url)
+            return new Response(
+                `<!DOCTYPE html>
+<html>
+<head><title>Erro na conexão</title></head>
+<body>
+  <p style="font-family:sans-serif;text-align:center;margin-top:40px;color:red;">Erro: ${message.replace(/</g, "&lt;")}</p>
+  <script>
+    if (window.opener) {
+      window.opener.postMessage({ type: "INSTAGRAM_CONNECTED", success: false, error: "${message.replace(/"/g, "\\\"").replace(/</g, "&lt;")}" }, "*");
+    }
+    setTimeout(function() { window.close(); }, 3000);
+  </script>
+</body>
+</html>`,
+                { headers: { "Content-Type": "text/html; charset=utf-8" }, status: 400 }
             );
         }
     });

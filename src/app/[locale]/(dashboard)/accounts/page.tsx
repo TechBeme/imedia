@@ -91,20 +91,21 @@ export default function AccountsPage() {
     useEffect(() => {
         fetchAccounts();
 
-        // Detect OAuth callback success/error and refetch accounts
-        const params = new URLSearchParams(window.location.search);
-        const success = params.get("success");
-        const error = params.get("error");
-
-        if (success === "instagram_connected") {
-            toast.success(t("connectSuccess") || "Instagram conectado com sucesso!");
-            fetchAccounts();
-            // Clean URL
-            window.history.replaceState({}, "", window.location.pathname);
-        } else if (error) {
-            toast.error(decodeURIComponent(error));
-            window.history.replaceState({}, "", window.location.pathname);
+        // Listen for popup OAuth completion via postMessage
+        function handleMessage(event: MessageEvent) {
+            if (event.data?.type === "INSTAGRAM_CONNECTED") {
+                if (event.data.success) {
+                    toast.success(t("connectSuccess") || "Instagram conectado com sucesso!");
+                } else {
+                    toast.error(event.data.error || "Erro ao conectar Instagram");
+                }
+                fetchAccounts();
+                setConnecting(null);
+            }
         }
+
+        window.addEventListener("message", handleMessage);
+        return () => window.removeEventListener("message", handleMessage);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
