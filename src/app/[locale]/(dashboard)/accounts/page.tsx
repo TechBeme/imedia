@@ -90,6 +90,21 @@ export default function AccountsPage() {
 
     useEffect(() => {
         fetchAccounts();
+
+        // Detect OAuth callback success/error and refetch accounts
+        const params = new URLSearchParams(window.location.search);
+        const success = params.get("success");
+        const error = params.get("error");
+
+        if (success === "instagram_connected") {
+            toast.success(t("connectSuccess") || "Instagram conectado com sucesso!");
+            fetchAccounts();
+            // Clean URL
+            window.history.replaceState({}, "", window.location.pathname);
+        } else if (error) {
+            toast.error(decodeURIComponent(error));
+            window.history.replaceState({}, "", window.location.pathname);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -97,7 +112,9 @@ export default function AccountsPage() {
         try {
             const res = await fetch("/api/social-accounts");
             const data = await res.json();
-            if (data.accounts) {
+            if (data.data?.accounts) {
+                setAccounts(data.data.accounts);
+            } else if (data.accounts) {
                 setAccounts(data.accounts);
             }
         } catch {
@@ -110,28 +127,37 @@ export default function AccountsPage() {
     async function handleConnect(platform: string) {
         if (platform !== "instagram") return;
         setConnecting(platform);
-        console.log("[Instagram Connect] Starting...");
 
         try {
             const res = await fetch("/api/instagram/auth");
-            console.log("[Instagram Connect] Response status:", res.status);
-
             const data = await res.json();
-            console.log("[Instagram Connect] Response body:", data);
-
             const url = data.data?.url;
-            console.log("[Instagram Connect] Extracted URL:", url);
 
             if (url) {
-                console.log("[Instagram Connect] Redirecting to:", url);
-                window.location.href = url;
-                console.log("[Instagram Connect] window.location.href set");
+                // Open popup for OAuth instead of redirecting current page
+                const popup = window.open(
+                    url,
+                    "instagram_oauth",
+                    "width=600,height=700,scrollbars=yes,resizable=yes"
+                );
+
+                if (!popup) {
+                    toast.error("Popup bloqueado. Permita popups para este site.");
+                    return;
+                }
+
+                // Poll to detect when popup closes, then refetch accounts
+                const interval = setInterval(() => {
+                    if (popup.closed) {
+                        clearInterval(interval);
+                        fetchAccounts();
+                        setConnecting(null);
+                    }
+                }, 1000);
             } else {
-                console.error("[Instagram Connect] No URL in response:", data);
                 toast.error(data.error?.message || tc("error"));
             }
-        } catch (err) {
-            console.error("[Instagram Connect] Exception:", err);
+        } catch {
             toast.error(tc("error"));
         } finally {
             setConnecting(null);
