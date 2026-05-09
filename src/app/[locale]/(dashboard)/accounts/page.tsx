@@ -114,10 +114,11 @@ export default function AccountsPage() {
         try {
             const res = await fetch("/api/instagram/auth");
             const data = await res.json();
-            if (data.url) {
-                window.location.href = data.url;
+            const url = data.data?.url;
+            if (url) {
+                window.location.href = url;
             } else {
-                toast.error(data.error || tc("error"));
+                toast.error(data.error?.message || tc("error"));
             }
         } catch {
             toast.error(tc("error"));
