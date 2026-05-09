@@ -246,7 +246,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
         <Dialog open={open} onOpenChange={(v) => { if (!v) resetForm(); onOpenChange(v); }}>
             <DialogContent
                 showCloseButton={false}
-                className="max-w-[100vw] md:max-w-4xl max-h-[95vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none shadow-2xl"
+                className="w-[calc(100vw-2rem)] md:w-auto md:max-w-2xl max-h-[95vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none shadow-2xl"
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b">
