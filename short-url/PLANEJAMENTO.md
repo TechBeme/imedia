@@ -1,6 +1,6 @@
-# Planejamento: Melhorias no Link Shortener — iMedia
+# Planejamento: Melhorias no Link Shortener — somedia
 
-**Projeto:** iMedia — Social Media Management Platform  
+**Projeto:** somedia — Social Media Management Platform  
 **Fase:** 2.2 — Link Shortener Enhancements  
 **Criado:** 2026-05-09  
 **Status:** Planejamento Completo — Pronto para Execucao
@@ -9,7 +9,7 @@
 
 ## Resumo Executivo
 
-Este documento detalha todas as melhorias e novos recursos a serem implementados na ferramenta de links curtos do iMedia. O link shortener base ja foi construido na Fase 2.1 (tabelas `shortLinks`, `linkClicks`, `linkDeviceRules`, `customDomains`, redirect `/l/[slug]`, analytics basico, QR codes, dominios customizados). Este planejamento cobre **3 macro-areas** com **15 entregaveis** organizados em **5 ondas de execucao**.
+Este documento detalha todas as melhorias e novos recursos a serem implementados na ferramenta de links curtos do somedia. O link shortener base ja foi construido na Fase 2.1 (tabelas `shortLinks`, `linkClicks`, `linkDeviceRules`, `customDomains`, redirect `/l/[slug]`, analytics basico, QR codes, dominios customizados). Este planejamento cobre **3 macro-areas** com **15 entregaveis** organizados em **5 ondas de execucao**.
 
 ---
 

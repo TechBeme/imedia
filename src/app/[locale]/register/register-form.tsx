@@ -76,9 +76,9 @@ export function RegisterForm() {
             {/* Mobile logo - only shows on small screens */}
             <div className="flex lg:hidden items-center gap-3 mb-8 justify-center">
                 <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/25">
-                    <span className="text-primary-foreground font-bold text-lg">i</span>
+                    <span className="text-primary-foreground font-bold text-lg">s</span>
                 </div>
-                <span className="font-semibold text-xl tracking-tight text-foreground">iMedia</span>
+                <span className="font-semibold text-xl tracking-tight text-foreground">SoMedia</span>
             </div>
 
             <div className="space-y-2 mb-8">

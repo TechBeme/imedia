@@ -14,7 +14,7 @@ const resolveTxt = promisify(dns.resolveTxt);
 async function checkDnsTxt(domain: string, token: string): Promise<boolean> {
     try {
         const records = await resolveTxt(domain);
-        const expected = `imedia-verify=${token}`;
+        const expected = `somedia-verify=${token}`;
         for (const record of records) {
             const txt = Array.isArray(record) ? record.join("") : record;
             if (txt.includes(expected)) {
@@ -40,7 +40,7 @@ async function checkDnsViaDoH(domain: string, token: string): Promise<boolean> {
         const data = (await res.json()) as {
             Answer?: Array<{ data: string }>;
         };
-        const expected = `imedia-verify=${token}`;
+        const expected = `somedia-verify=${token}`;
         for (const ans of data.Answer || []) {
             // DNS JSON responses often wrap TXT data in quotes
             const txt = ans.data.replace(/^"|"$/g, "").replace(/" "/g, "");

@@ -51,7 +51,7 @@ export function DomainCard({ domain, onDelete, onToggle, onVerify }: DomainCardP
     }
 
     function handleCopy() {
-        navigator.clipboard.writeText(`imedia-verify=${domain.verificationToken}`);
+        navigator.clipboard.writeText(`somedia-verify=${domain.verificationToken}`);
         setCopied(true);
         toast.success(t("copied"));
         setTimeout(() => setCopied(false), 2000);

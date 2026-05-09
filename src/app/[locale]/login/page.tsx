@@ -18,9 +18,9 @@ export default async function LoginPage({
                 <div className="relative z-10 flex flex-col justify-between p-12 xl:p-16 w-full">
                     <div className="flex items-center gap-3">
                         <div className="h-10 w-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">i</span>
+                            <span className="text-white font-bold text-lg">s</span>
                         </div>
-                        <span className="text-white font-semibold text-xl tracking-tight">iMedia</span>
+                        <span className="text-white font-semibold text-xl tracking-tight">SoMedia</span>
                     </div>
 
                     <div className="space-y-6 max-w-lg">
@@ -33,7 +33,7 @@ export default async function LoginPage({
                     </div>
 
                     <div className="flex items-center gap-4 text-white/60 text-sm">
-                        <span>2026 iMedia</span>
+                        <span>2026 SoMedia</span>
                         <span className="w-1 h-1 rounded-full bg-white/40" />
                         <span>{t("allRightsReserved")}</span>
                     </div>

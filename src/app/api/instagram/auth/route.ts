@@ -4,7 +4,6 @@ import { headers } from "next/headers";
 import { success, unauthorized, internalError } from "@/lib/api-response";
 import { withRateLimit } from "@/lib/api-guard";
 import { authRateLimit } from "@/lib/rate-limit";
-import { getPlatformCredentials } from "@/lib/platform-credentials";
 
 export async function GET(req: NextRequest) {
     return withRateLimit(req, authRateLimit, async () => {
@@ -15,10 +14,8 @@ export async function GET(req: NextRequest) {
             return unauthorized();
         }
 
-        // Try per-user credentials first
-        const userCreds = await getPlatformCredentials(session.user.id, "instagram");
-        const appId = userCreds?.appId || process.env.INSTAGRAM_APP_ID;
-        const redirectUri = userCreds?.redirectUri || process.env.INSTAGRAM_REDIRECT_URI;
+        const appId = process.env.INSTAGRAM_APP_ID;
+        const redirectUri = process.env.INSTAGRAM_REDIRECT_URI;
 
         if (!appId || !redirectUri) {
             return internalError("Instagram not configured");

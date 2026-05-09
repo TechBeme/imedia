@@ -22,7 +22,7 @@
     "is_brownfield": true,
     "needs_codebase_map": false,
     "has_git": true,
-    "project_path": "/home/ubuntu/work/imedia",
+    "project_path": "/home/ubuntu/work/somedia",
     "agents_installed": false,
     "missing_agents": [
         "gsd-project-researcher",

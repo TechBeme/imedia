@@ -1,8 +1,8 @@
-# iMedia — Social Media Management Platform
+# somedia — Social Media Management Platform
 
 ## What This Is
 
-iMedia is a unified social media management platform built as a Next.js web application. It allows a single user (the owner) to connect, manage, publish, schedule, and analyze content across multiple social networks — starting with Instagram (Meta), then expanding to YouTube, TikTok, and X (Twitter). The app features a polished dashboard UI, secure authentication, i18n support (pt-BR, en, es), and a robust scheduling engine that falls back to an internal cron-based executor when platforms do not support native scheduling.
+somedia is a unified social media management platform built as a Next.js web application. It allows a single user (the owner) to connect, manage, publish, schedule, and analyze content across multiple social networks — starting with Instagram (Meta), then expanding to YouTube, TikTok, and X (Twitter). The app features a polished dashboard UI, secure authentication, i18n support (pt-BR, en, es), and a robust scheduling engine that falls back to an internal cron-based executor when platforms do not support native scheduling.
 
 ## Core Value
 
@@ -50,7 +50,7 @@ The owner can compose once and publish or schedule everywhere — with full visi
 - **Brownfield project**: Codebase already initialized with Next.js 16, React 19, TypeScript, Drizzle ORM, Neon Postgres, better-auth, next-intl, shadcn/ui, Tailwind v4, Motion, recharts
 - **Instagram OAuth partially implemented**: Auth flow, callback, disconnect, and social-accounts listing API exist — BUT currently uses global env vars for App ID/Secret. Must be refactored to use per-user credentials from the database.
 - **Platform credentials architecture**: New `platformCredentials` table stores each user's App ID/Secret per platform, encrypted at rest. OAuth flows read credentials from DB, not env vars.
-- **Design system**: `design-system/imedia/MASTER.md` defines colors, typography, spacing
+- **Design system**: `design-system/somedia/MASTER.md` defines colors, typography, spacing
 - **Database**: 8 tables defined in `src/db/schema.ts` (user, session, account, verification, socialAccounts, etc.)
 - **Deployment target**: Vercel (serverless), Neon (Postgres), no GitHub repo link
 - **Security priority**: Owner-only access; all social tokens AND platform app credentials encrypted at rest; OAuth state validation; CSRF protection

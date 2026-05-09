@@ -16,11 +16,11 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: { default: "iMedia", template: "%s | iMedia" },
+  title: { default: "SoMedia", template: "%s | SoMedia" },
   description: "Gerencie todas as suas redes sociais em um so lugar",
   keywords: ["social media", "gerenciador", "instagram", "facebook", "threads", "marketing"],
-  authors: [{ name: "iMedia" }],
-  metadataBase: new URL("https://imedia.app"),
+  authors: [{ name: "SoMedia" }],
+  metadataBase: new URL("https://somedia.techbe.me"),
 };
 
 export const viewport: Viewport = {

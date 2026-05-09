@@ -8,7 +8,7 @@ export default defineConfig({
     workers: process.env.CI ? 1 : undefined,
     reporter: "list",
     use: {
-        baseURL: process.env.TEST_BASE_URL || "https://imedia.techbe.me",
+        baseURL: process.env.TEST_BASE_URL || "https://somedia.techbe.me",
         trace: "on-first-retry",
         screenshot: "only-on-failure",
     },

@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, typecheck, test]
     env:
-      NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL || 'https://imedia.techbe.me' }}
+      NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL || 'https://somedia.techbe.me' }}
       SOCIAL_TOKEN_ENCRYPTION_KEY: ${{ secrets.SOCIAL_TOKEN_ENCRYPTION_KEY || 'test-key-for-ci-32bytes-long!!' }}
     steps:
       - uses: actions/checkout@v4

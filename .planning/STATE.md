@@ -1,4 +1,4 @@
-# Project State: iMedia
+# Project State: somedia
 
 **Last updated:** 2026-05-04
 **Current phase:** Phase 2.1 — Link Shortener (SHIPPED — PR #1)

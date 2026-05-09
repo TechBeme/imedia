@@ -1,7 +1,7 @@
-# Roadmap: iMedia
+# Roadmap: somedia
 
 **Created:** 2026-05-04
-**Project:** iMedia — Social Media Management Platform
+**Project:** somedia — Social Media Management Platform
 **Granularity:** Standard (10 phases)
 **Execution:** Parallel where possible
 

@@ -5,10 +5,10 @@ last_mapped: 2026-05-04
 # Directory Structure
 
 ```
-imedia/
+somedia/
 ├── .planning/codebase/          ← This codebase map
 ├── design-system/
-│   └── imedia/
+│   └── somedia/
 │       ├── MASTER.md            ← Design system spec (colors, typography, spacing)
 │       └── pages/               ← Per-page design overrides (empty)
 ├── messages/

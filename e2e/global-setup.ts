@@ -3,9 +3,9 @@
  */
 import { request } from "@playwright/test";
 
-const TEST_EMAIL = "test@imedia.local";
+const TEST_EMAIL = "test@somedia.local";
 const TEST_PASSWORD = "TestPassword123!";
-const BASE_URL = process.env.TEST_BASE_URL || "https://imedia.techbe.me";
+const BASE_URL = process.env.TEST_BASE_URL || "https://somedia.techbe.me";
 
 async function globalSetup() {
     const apiContext = await request.newContext({ baseURL: BASE_URL });

@@ -1,4 +1,4 @@
-# iMedia
+# SoMedia
 
 A modern social media management and link shortening platform built with Next.js, TypeScript, and PostgreSQL.
 
@@ -79,7 +79,7 @@ src/
 ```bash
 # Clone the repository
 git clone <repo-url>
-cd imedia
+cd somedia
 
 # Install dependencies
 npm install

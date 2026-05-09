@@ -73,9 +73,9 @@ export function Sidebar({ className }: { className?: string }) {
                     className="flex items-center gap-2.5 cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-lg"
                 >
                     <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 transition-transform duration-200 group-hover:scale-105">
-                        <span className="text-primary-foreground font-bold text-sm">i</span>
+                        <span className="text-primary-foreground font-bold text-sm">s</span>
                     </div>
-                    <span className="text-lg font-semibold tracking-tight font-heading">iMedia</span>
+                    <span className="text-lg font-semibold tracking-tight font-heading">somedia</span>
                 </Link>
             </div>
 
@@ -170,9 +170,9 @@ export function MobileSidebar() {
                 <div className="flex h-16 items-center px-5">
                     <Link href={`/${locale}/dashboard`} className="flex items-center gap-2.5 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-lg">
                         <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-                            <span className="text-primary-foreground font-bold text-sm">i</span>
+                            <span className="text-primary-foreground font-bold text-sm">s</span>
                         </div>
-                        <span className="text-lg font-semibold tracking-tight font-heading">iMedia</span>
+                        <span className="text-lg font-semibold tracking-tight font-heading">SoMedia</span>
                     </Link>
                 </div>
                 <nav className="flex-1 space-y-0.5 px-3 py-2">

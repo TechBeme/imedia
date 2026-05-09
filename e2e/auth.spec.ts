@@ -1,8 +1,8 @@
 import { test, expect, request } from "@playwright/test";
 
-const TEST_EMAIL = "test@imedia.local";
+const TEST_EMAIL = "test@somedia.local";
 const TEST_PASSWORD = "TestPassword123!";
-const BASE_URL = process.env.TEST_BASE_URL || "https://imedia.techbe.me";
+const BASE_URL = process.env.TEST_BASE_URL || "https://somedia.techbe.me";
 
 test.describe("Auth Flow", () => {
     test.beforeEach(async ({ page }) => {
@@ -63,7 +63,7 @@ test.describe("Auth Flow", () => {
         expect(response?.status()).toBe(200);
 
         // Verify dashboard loaded (check for sidebar or header, not just "Dashboard" text)
-        await expect(page.locator("text=iMedia").first()).toBeVisible();
+        await expect(page.locator("text=somedia").first()).toBeVisible();
 
         await context.close();
     });
@@ -80,7 +80,7 @@ test.describe("Auth Flow", () => {
         await expect(page).toHaveURL(/\/pt-BR\/dashboard/);
 
         // Verify dashboard loaded
-        await expect(page.locator("text=iMedia").first()).toBeVisible();
+        await expect(page.locator("text=somedia").first()).toBeVisible();
     });
 
     test("login with invalid credentials shows error", async ({ page }) => {

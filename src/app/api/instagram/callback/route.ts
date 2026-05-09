@@ -6,7 +6,6 @@ import { headers } from "next/headers";
 import { eq, and } from "drizzle-orm";
 import { withRateLimit } from "@/lib/api-guard";
 import { authRateLimit } from "@/lib/rate-limit";
-import { getPlatformCredentials } from "@/lib/platform-credentials";
 
 export async function GET(req: NextRequest) {
     return withRateLimit(req, authRateLimit, async () => {
@@ -35,11 +34,9 @@ export async function GET(req: NextRequest) {
         }
 
         try {
-            // Try per-user credentials first, fallback to env vars
-            const userCreds = await getPlatformCredentials(session.user.id, "instagram");
-            const appId = userCreds?.appId || process.env.INSTAGRAM_APP_ID!;
-            const appSecret = userCreds?.appSecret || process.env.INSTAGRAM_APP_SECRET!;
-            const redirectUri = userCreds?.redirectUri || process.env.INSTAGRAM_REDIRECT_URI!;
+            const appId = process.env.INSTAGRAM_APP_ID!;
+            const appSecret = process.env.INSTAGRAM_APP_SECRET!;
+            const redirectUri = process.env.INSTAGRAM_REDIRECT_URI!;
 
             // 1. Exchange code for access token
             const tokenUrl = new URL("https://graph.facebook.com/v18.0/oauth/access_token");

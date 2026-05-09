@@ -1,4 +1,4 @@
-# Requirements: iMedia
+# Requirements: somedia
 
 **Defined:** 2026-05-04
 **Core Value:** The owner can compose once and publish or schedule everywhere — with full visibility into performance analytics and account health across all connected platforms.

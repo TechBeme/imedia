@@ -101,14 +101,14 @@ export function DomainForm({ onSuccess }: DomainFormProps) {
                                         <div>
                                             <p className="text-xs text-muted-foreground">{t("txtRecord")}</p>
                                             <code className="text-sm font-mono">
-                                                imedia-verify={result.verificationToken}
+                                                somedia-verify={result.verificationToken}
                                             </code>
                                         </div>
                                         <Button
                                             variant="ghost"
                                             size="sm"
                                             onClick={() =>
-                                                handleCopy(`imedia-verify=${result.verificationToken}`)
+                                                handleCopy(`somedia-verify=${result.verificationToken}`)
                                             }
                                             className="cursor-pointer gap-1"
                                         >

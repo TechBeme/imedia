@@ -105,7 +105,7 @@ The `posts` and `scheduled_posts` tables exist, but:
 The media page has hardcoded English strings ("Media Library", "Upload") while all other pages are fully internationalized.
 
 ### Design System Drift
-**File:** `design-system/imedia/MASTER.md`
+**File:** `design-system/somedia/MASTER.md`
 
 The design system specifies a rose/pink primary color (`#E11D48`) and rose-tinted background (`#FFF1F2`), but the actual CSS in `globals.css` uses blue (`#2563eb`) with neutral grays. The design system is not being followed.
 

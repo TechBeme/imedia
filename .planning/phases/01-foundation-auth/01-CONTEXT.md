@@ -94,7 +94,7 @@ This phase secures the application foundation before any feature work begins. It
 - Credential-aware OAuth flows — read App ID/Secret from DB per user
 
 ### Design System
-- `design-system/imedia/MASTER.md` — Color palette, typography, spacing
+- `design-system/somedia/MASTER.md` — Color palette, typography, spacing
 
 ## Specific Ideas
 
