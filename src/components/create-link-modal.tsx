@@ -244,7 +244,11 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
 
     return (
         <Dialog open={open} onOpenChange={(v) => { if (!v) resetForm(); onOpenChange(v); }}>
-            <DialogContent showCloseButton={false} className="w-full !max-w-[calc(100%-2rem)] md:!max-w-4xl max-h-[95vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none shadow-2xl">
+            <DialogContent
+                showCloseButton={false}
+                className="max-h-[95vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none shadow-2xl"
+                style={{ maxWidth: "min(calc(100% - 2rem), 896px)", width: "100%" }}
+            >
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
