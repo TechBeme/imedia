@@ -493,11 +493,12 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                 <div className="relative">
                   <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Select onValueChange={(v) => {
-                    if (!v) return;
-                    if (v === "__create_tag__") {
+                    const value = v ?? "";
+                    if (!value) return;
+                    if (value === "__create_tag__") {
                       setShowCreateTag(true);
                     } else {
-                      toggleTagId(v);
+                      toggleTagId(value);
                     }
                   }}>
                     <SelectTrigger className="rounded-lg h-10 pl-9 text-sm">

@@ -218,17 +218,6 @@
         "shortUrl": "Configuracion de Enlaces Cortos",
         "shortUrlDescription": "Configura redirecciones predeterminadas para tus enlaces cortos"
     },
-    "links.settings": {
-        "title": "Configuracion de Enlaces Cortos",
-        "description": "Configura el comportamiento predeterminado de tus enlaces cortos",
-        "redirects": "Redirecciones",
-        "redirectsDescription": "Define URLs de redireccion predeterminadas para enlaces expirados o no encontrados",
-        "defaultExpiredRedirectUrl": "URL de redireccion predeterminada para expirados",
-        "defaultExpiredRedirectUrlHelp": "Redirige usuarios aqui cuando un enlace expire y no haya redireccion por enlace definida",
-        "notFoundRedirectUrl": "URL de redireccion para no encontrado",
-        "notFoundRedirectUrlHelp": "Redirige usuarios aqui cuando un enlace corto no exista",
-        "saveSuccess": "Configuracion guardada exitosamente!"
-    },
     "history": {
         "title": "Historial",
         "platform": "PLATAFORMA",
@@ -254,7 +243,7 @@
         "topPerformingPosts": "Posts Mas Destacados"
     },
     "links": {
-        "title": "Enlaces Cortos",
+        "title": "Titulo",
         "subtitle": "Gestiona tus enlaces cortos con funciones avanzadas",
         "create": "Crear Enlace",
         "createNewLink": "Crear Nuevo Enlace",
@@ -264,7 +253,6 @@
         "slug": "Slug personalizado",
         "slugPlaceholder": "mi-enlace",
         "slugHelp": "Dejalo en blanco para generar automaticamente",
-        "title": "Titulo",
         "titlePlaceholder": "Titulo del enlace (opcional)",
         "description": "Descripcion",
         "descriptionPlaceholder": "Descripcion del enlace (opcional)",
@@ -371,6 +359,17 @@
             "ogTitle": "Titulo",
             "ogDescription": "Descripcion",
             "ogImageUrl": "URL de imagen"
+        },
+        "settings": {
+            "title": "Configuracion de Enlaces Cortos",
+            "description": "Configura el comportamiento predeterminado de tus enlaces cortos",
+            "redirects": "Redirecciones",
+            "redirectsDescription": "Define URLs de redireccion predeterminadas para enlaces expirados o no encontrados",
+            "defaultExpiredRedirectUrl": "URL de redireccion predeterminada para expirados",
+            "defaultExpiredRedirectUrlHelp": "Redirige usuarios aqui cuando un enlace expire y no haya redireccion por enlace definida",
+            "notFoundRedirectUrl": "URL de redireccion para no encontrado",
+            "notFoundRedirectUrlHelp": "Redirige usuarios aqui cuando un enlace corto no exista",
+            "saveSuccess": "Configuracion guardada exitosamente!"
         }
     },
     "linkAnalytics": {

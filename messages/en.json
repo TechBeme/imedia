@@ -218,17 +218,6 @@
         "shortUrl": "Short URL Settings",
         "shortUrlDescription": "Configure default redirects for your short links"
     },
-    "links.settings": {
-        "title": "Short URL Settings",
-        "description": "Configure default behavior for your short links",
-        "redirects": "Redirects",
-        "redirectsDescription": "Set default redirect URLs for expired or not-found links",
-        "defaultExpiredRedirectUrl": "Default expired redirect URL",
-        "defaultExpiredRedirectUrlHelp": "Redirect users here when a link expires and no per-link redirect is set",
-        "notFoundRedirectUrl": "Not found redirect URL",
-        "notFoundRedirectUrlHelp": "Redirect users here when a short link does not exist",
-        "saveSuccess": "Settings saved successfully!"
-    },
     "history": {
         "title": "History",
         "platform": "PLATFORM",
@@ -254,7 +243,7 @@
         "topPerformingPosts": "Top Performing Posts"
     },
     "links": {
-        "title": "Short Links",
+        "title": "Title",
         "subtitle": "Manage your short links with advanced features",
         "create": "Create Link",
         "createNewLink": "Create New Link",
@@ -264,7 +253,6 @@
         "slug": "Custom slug",
         "slugPlaceholder": "my-link",
         "slugHelp": "Leave blank to auto-generate",
-        "title": "Title",
         "titlePlaceholder": "Link title (optional)",
         "description": "Description",
         "descriptionPlaceholder": "Link description (optional)",
@@ -371,6 +359,17 @@
             "ogTitle": "Title",
             "ogDescription": "Description",
             "ogImageUrl": "Image URL"
+        },
+        "settings": {
+            "title": "Short URL Settings",
+            "description": "Configure default behavior for your short links",
+            "redirects": "Redirects",
+            "redirectsDescription": "Set default redirect URLs for expired or not-found links",
+            "defaultExpiredRedirectUrl": "Default expired redirect URL",
+            "defaultExpiredRedirectUrlHelp": "Redirect users here when a link expires and no per-link redirect is set",
+            "notFoundRedirectUrl": "Not found redirect URL",
+            "notFoundRedirectUrlHelp": "Redirect users here when a short link does not exist",
+            "saveSuccess": "Settings saved successfully!"
         }
     },
     "linkAnalytics": {
