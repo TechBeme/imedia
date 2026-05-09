@@ -247,7 +247,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
             <DialogContent
                 showCloseButton={false}
                 className="max-h-[95vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none shadow-2xl"
-                style={{ maxWidth: "min(calc(100% - 2rem), 896px)", width: "100%" }}
+                style={{ maxWidth: "min(calc(100% - 2rem), 896px)", width: "100%", display: "block" }}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b">
