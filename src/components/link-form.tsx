@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import {
     Dialog,
@@ -12,8 +12,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+
+interface DomainOption {
+    id: string;
+    domain: string;
+    isVerified: boolean;
+}
 
 interface LinkFormData {
     id?: string;
@@ -22,6 +35,7 @@ interface LinkFormData {
     password: string;
     expiresAt: string;
     isActive: boolean;
+    domain: string;
 }
 
 interface LinkFormProps {
@@ -41,7 +55,39 @@ export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkForm
     const [password, setPassword] = useState(initialData?.password || "");
     const [expiresAt, setExpiresAt] = useState(initialData?.expiresAt || "");
     const [isActive, setIsActive] = useState(initialData?.isActive ?? true);
+    const [domain, setDomain] = useState(initialData?.domain || "");
+    const [domains, setDomains] = useState<DomainOption[]>([]);
     const [loading, setLoading] = useState(false);
+    const [domainsLoading, setDomainsLoading] = useState(false);
+
+    useEffect(() => {
+        if (!open || isEditing) return;
+        setDomainsLoading(true);
+        fetch("/api/domains")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.data?.domains) {
+                    setDomains(
+                        data.data.domains.filter((d: DomainOption) => d.isVerified)
+                    );
+                }
+            })
+            .catch(() => {
+                // silently fail - domains are optional
+            })
+            .finally(() => setDomainsLoading(false));
+    }, [open, isEditing]);
+
+    useEffect(() => {
+        if (initialData) {
+            setOriginalUrl(initialData.originalUrl || "");
+            setSlug(initialData.slug || "");
+            setPassword(initialData.password || "");
+            setExpiresAt(initialData.expiresAt || "");
+            setIsActive(initialData.isActive ?? true);
+            setDomain(initialData.domain || "");
+        }
+    }, [initialData]);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -58,6 +104,7 @@ export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkForm
                 password: password.trim(),
                 expiresAt,
                 isActive,
+                domain,
             });
             if (!isEditing) {
                 setOriginalUrl("");
@@ -65,6 +112,7 @@ export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkForm
                 setPassword("");
                 setExpiresAt("");
                 setIsActive(true);
+                setDomain("");
             }
             onOpenChange(false);
         } catch {
@@ -117,6 +165,29 @@ export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkForm
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
+                        </div>
+                    )}
+
+                    {!isEditing && (
+                        <div className="space-y-2">
+                            <Label htmlFor="domain">{t("domain")}</Label>
+                            <Select
+                                value={domain}
+                                onValueChange={(val) => setDomain(val || "")}
+                                disabled={domainsLoading}
+                            >
+                                <SelectTrigger id="domain" className="w-full">
+                                    <SelectValue placeholder={t("domainPlaceholder")} />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="">{t("defaultDomain")}</SelectItem>
+                                    {domains.map((d) => (
+                                        <SelectItem key={d.id} value={d.domain}>
+                                            {d.domain}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                     )}
 

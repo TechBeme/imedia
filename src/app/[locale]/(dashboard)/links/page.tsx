@@ -14,6 +14,7 @@ interface LinkItem {
     originalUrl: string;
     slug: string;
     customSlug: boolean;
+    domain: string;
     isActive: boolean;
     clickCount: number;
     expiresAt: string | null;
@@ -62,6 +63,7 @@ export default function LinksPage() {
         password: string;
         expiresAt: string;
         isActive: boolean;
+        domain: string;
     }) {
         const body: Record<string, unknown> = {
             originalUrl: data.originalUrl,
@@ -69,6 +71,7 @@ export default function LinksPage() {
         if (data.slug) body.slug = data.slug;
         if (data.password) body.password = data.password;
         if (data.expiresAt) body.expiresAt = data.expiresAt;
+        if (data.domain) body.domain = data.domain;
 
         const res = await fetch("/api/links", {
             method: "POST",
@@ -92,6 +95,7 @@ export default function LinksPage() {
         password: string;
         expiresAt: string;
         isActive: boolean;
+        domain: string;
     }) {
         if (!data.id) return;
         const body: Record<string, unknown> = {};
@@ -223,6 +227,7 @@ export default function LinksPage() {
                             password: "",
                             expiresAt: editingLink.expiresAt || "",
                             isActive: editingLink.isActive,
+                            domain: editingLink.domain,
                         }
                         : undefined
                 }

@@ -251,6 +251,9 @@
         "publicSubtitle": "Pega una URL para acortar",
         "shorten": "Acortar",
         "shortenSuccess": "Enlace acortado!",
+        "domain": "Dominio",
+        "domainPlaceholder": "Selecciona un dominio",
+        "defaultDomain": "Dominio predeterminado",
         "analytics": "Estadisticas",
         "qrCode": "Codigo QR"
     },

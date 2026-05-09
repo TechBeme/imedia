@@ -251,6 +251,9 @@
         "publicSubtitle": "Cole uma URL para encurtar",
         "shorten": "Encurtar",
         "shortenSuccess": "Link encurtado!",
+        "domain": "Dominio",
+        "domainPlaceholder": "Selecione um dominio",
+        "defaultDomain": "Dominio padrao",
         "analytics": "Estatisticas",
         "qrCode": "QR Code"
     },

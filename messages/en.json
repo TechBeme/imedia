@@ -251,6 +251,9 @@
         "publicSubtitle": "Paste a URL to shorten",
         "shorten": "Shorten",
         "shortenSuccess": "Link shortened!",
+        "domain": "Domain",
+        "domainPlaceholder": "Select a domain",
+        "defaultDomain": "Default domain",
         "analytics": "Analytics",
         "qrCode": "QR Code"
     },

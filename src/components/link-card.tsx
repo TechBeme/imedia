@@ -17,6 +17,7 @@ interface LinkItem {
     originalUrl: string;
     slug: string;
     customSlug: boolean;
+    domain: string;
     isActive: boolean;
     clickCount: number;
     expiresAt: string | null;
@@ -37,7 +38,10 @@ export function LinkCard({ link, onDelete, onEdit, onToggle }: LinkCardProps) {
     const [copied, setCopied] = useState(false);
     const [qrOpen, setQrOpen] = useState(false);
 
-    const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/l/${link.slug}`;
+    const baseUrl = link.domain
+        ? `https://${link.domain}`
+        : (process.env.NEXT_PUBLIC_APP_URL || "");
+    const shortUrl = `${baseUrl}/l/${link.slug}`;
 
     async function handleCopy() {
         try {
