@@ -7,8 +7,9 @@ import { Bell, Search } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import type { Locale } from "@/lib/i18n";
 
-export function Header() {
+export function Header({ locale }: { locale: Locale }) {
     const [searchFocused, setSearchFocused] = useState(false);
     const t = useTranslations("header");
 
