@@ -1,7 +1,7 @@
 {
     "metadata": {
         "title": "SoMedia - Gerenciador de Redes Sociais",
-        "description": "Gerencie todas as suas redes sociais em um so lugar"
+        "description": "Gerencie todas as suas redes sociais em um só lugar"
     },
     "nav": {
         "dashboard": "Dashboard",
@@ -12,7 +12,7 @@
         "analytics": "Analytics",
         "media": "Midias",
         "links": "Links",
-        "settings": "Configuracoes",
+        "settings": "Configurações",
         "logout": "Sair",
         "logoutSuccess": "Sessão encerrada",
         "openMenu": "Abrir menu"
@@ -25,8 +25,8 @@
         "password": "Senha",
         "name": "Nome",
         "forgotPassword": "Esqueceu a senha?",
-        "noAccount": "Nao tem conta?",
-        "hasAccount": "Ja tem conta?",
+        "noAccount": "Não tem conta?",
+        "hasAccount": "Já tem conta?",
         "loginTitle": "Bem-vindo de volta",
         "loginSubtitle": "Entre para gerenciar suas redes sociais",
         "registerTitle": "Criar conta",
@@ -40,8 +40,8 @@
         "registerSuccess": "Conta criada com sucesso!",
         "creatingAccount": "Criando conta...",
         "namePlaceholder": "Seu nome",
-        "loginHeroTitle": "Gerencie todas as suas redes sociais em um so lugar",
-        "loginHeroDescription": "Conecte Instagram, YouTube, TikTok e X. Agende posts, acompanhe metricas e cresca sua audiencia com inteligencia.",
+        "loginHeroTitle": "Gerencie todas as suas redes sociais em um só lugar",
+        "loginHeroDescription": "Conecte Instagram, YouTube, TikTok e X. Agende posts, acompanhe métricas e cresca sua audiencia com inteligencia.",
         "allRightsReserved": "Todos os direitos reservados",
         "forgotPasswordTitle": "Recuperar senha",
         "forgotPasswordSubtitle": "Digite seu e-mail para receber o link de recuperacao",
@@ -53,11 +53,11 @@
         "newPassword": "Nova senha",
         "confirmPassword": "Confirmar senha",
         "resetPassword": "Redefinir senha",
-        "passwordsDoNotMatch": "As senhas nao coincidem",
+        "passwordsDoNotMatch": "As senhas não coincidem",
         "invalidToken": "Link invalido ou expirado",
         "requestNewLink": "Solicitar novo link",
         "passwordResetSuccess": "Senha redefinida com sucesso!",
-        "agreeToTerms": "Ao criar uma conta, voce concorda com os",
+        "agreeToTerms": "Ao criar uma conta, você concorda com os",
         "termsOfService": "Termos de Uso",
         "and": "e",
         "privacyPolicy": "Politica de Privacidade"
@@ -73,11 +73,11 @@
         "last30Days": "Ultimos 30 dias",
         "addWidget": "Adicionar widget",
         "export": "Exportar",
-        "vsLastPeriod": "vs. periodo anterior",
+        "vsLastPeriod": "vs. período anterior",
         "totalProfit": "Lucro Total",
         "profit": "Lucro",
         "mostDayActive": "Dia Mais Ativo",
-        "repeatCustomerRate": "Taxa de Retencao",
+        "repeatCustomerRate": "Taxa de Retenção",
         "onTrackTarget": "No caminho para a meta de 80%",
         "showDetails": "Ver detalhes",
         "bestSellingProducts": "Produtos Mais Vendidos",
@@ -90,11 +90,11 @@
         "upgradeDescription": "Atualize sua conta e desbloqueie todos os beneficios.",
         "upgradeNow": "Atualizar agora",
         "aiAssistant": "Assistente de IA",
-        "moreOptions": "Mais opcoes",
+        "moreOptions": "Mais opções",
         "retailers": "Varejistas",
         "distributors": "Distribuidores",
         "wholesalers": "Atacadistas",
-        "pageViews": "Visualizacoes",
+        "pageViews": "Visualizações",
         "visitors": "Visitantes",
         "clicks": "Cliques",
         "orders": "Pedidos",
@@ -136,7 +136,7 @@
     },
     "credentials": {
         "title": "Credenciais da Plataforma",
-        "description": "Adicione as credenciais do app da plataforma para habilitar a integracao.",
+        "description": "Adicione as credenciais do app da plataforma para habilitar a integração.",
         "addCredentials": "Adicionar credenciais",
         "platform": "Plataforma",
         "selectPlatform": "Selecione uma plataforma",
@@ -155,21 +155,21 @@
     },
     "compose": {
         "title": "Criar Post",
-        "placeholder": "O que voce quer compartilhar?",
+        "placeholder": "O que você quer compartilhar?",
         "selectPlatforms": "Selecione as plataformas",
-        "addMedia": "Adicionar midia",
+        "addMedia": "Adicionar mídia",
         "schedule": "Agendar",
         "publishNow": "Publicar agora",
         "saveDraft": "Salvar rascunho",
         "draftSaved": "Rascunho salvo",
         "published": "Publicado!",
-        "content": "Conteudo",
-        "contentRequired": "Conteudo e obrigatorio",
+        "content": "Conteúdo",
+        "contentRequired": "Conteúdo e obrigatório",
         "tooLong": "Muito longo",
         "characters": "caracteres",
         "platformsSelected": "plataformas selecionadas",
         "clickOrDrag": "Clique ou arraste arquivos aqui",
-        "imagesVideos": "Imagens, videos ate 100MB",
+        "imagesVideos": "Imagens, vídeos até 100MB",
         "scheduleForLater": "Agendar para depois",
         "publishImmediately": "Publicar imediatamente",
         "dateTimePickerSoon": "Seletor de data/hora em breve"
@@ -181,8 +181,8 @@
         "cancel": "Cancelar",
         "edit": "Editar",
         "publishNow": "Publicar agora",
-        "calendarComingSoon": "Visualizacao de calendario em breve",
-        "editComingSoon": "Edicao em breve",
+        "calendarComingSoon": "Visualização de calendario em breve",
+        "editComingSoon": "Edição em breve",
         "publishNowMock": "Publicar agora (simulacao)",
         "cancelled": "Cancelado",
         "pending": "pendente"
@@ -215,8 +215,8 @@
         "updatePassword": "Atualizar senha",
         "customDomains": "Dominios Personalizados",
         "customDomainsDescription": "Configure dominios personalizados para seus links curtos",
-        "shortUrl": "Configuracoes de Links Curtos",
-        "shortUrlDescription": "Configure redirecionamentos padrao para seus links curtos"
+        "shortUrl": "Configurações de Links Curtos",
+        "shortUrlDescription": "Configure redirecionamentos padrão para seus links curtos"
     },
     "history": {
         "title": "Historico",
@@ -239,7 +239,7 @@
         "90days": "90 dias",
         "engagementByPlatform": "Engajamento por Plataforma",
         "followerGrowth": "Crescimento de Seguidores",
-        "platformDistribution": "Distribuicao por Plataforma",
+        "platformDistribution": "Distribuição por Plataforma",
         "topPerformingPosts": "Posts Mais Performaticos"
     },
     "links": {
@@ -254,12 +254,12 @@
         "slugPlaceholder": "meu-link",
         "slugHelp": "Deixe em branco para gerar automaticamente",
         "titlePlaceholder": "Titulo do link (opcional)",
-        "description": "Descricao",
-        "descriptionPlaceholder": "Descricao do link (opcional)",
+        "description": "Descrição",
+        "descriptionPlaceholder": "Descrição do link (opcional)",
         "tags": "Tags",
         "tagsPlaceholder": "Digite uma tag e pressione Enter",
         "tagsHelp": "Ate 20 tags. Pressione Enter para adicionar.",
-        "password": "Senha de protecao",
+        "password": "Senha de proteção",
         "passwordPlaceholder": "Opcional",
         "expiresAt": "Expira em",
         "startsAt": "Inicia em",
@@ -282,9 +282,9 @@
         "noSearchResults": "Nenhum resultado encontrado",
         "tryDifferentSearch": "Tente uma busca diferente",
         "createFirst": "Crie seu primeiro link curto",
-        "urlRequired": "URL e obrigatoria",
+        "urlRequired": "URL e obrigatória",
         "invalidUrl": "URL invalida",
-        "slugTaken": "Slug ja esta em uso",
+        "slugTaken": "Slug já esta em uso",
         "createSuccess": "Link criado com sucesso!",
         "updateSuccess": "Link atualizado com sucesso!",
         "deleteSuccess": "Link excluido com sucesso!",
@@ -294,16 +294,16 @@
         "shortenSuccess": "Link encurtado!",
         "domain": "Dominio",
         "domainPlaceholder": "Selecione um dominio",
-        "defaultDomain": "Dominio padrao",
+        "defaultDomain": "Dominio padrão",
         "domainAndSecurity": "Dominio e Seguranca",
         "schedulingAndLimits": "Agendamento e Limites",
         "deviceRules": "Regras por Dispositivo",
         "addDeviceRule": "Adicionar regra",
         "deviceUrlPlaceholder": "URL para este dispositivo",
-        "basicInfo": "Informacoes Basicas",
-        "searchPlaceholder": "Buscar por slug, URL, titulo ou tag...",
-        "linkNotFound": "Link nao encontrado",
-        "analytics": "Estatisticas",
+        "basicInfo": "Informações Basicas",
+        "searchPlaceholder": "Buscar por slug, URL, título ou tag...",
+        "linkNotFound": "Link não encontrado",
+        "analytics": "Estatísticas",
         "qrCode": "QR Code",
         "folder": "Pasta",
         "noFolder": "Sem pasta",
@@ -311,12 +311,12 @@
         "ogHelp": "Personalize como seu link aparece ao ser compartilhado nas redes sociais",
         "ogTitle": "Titulo OG",
         "ogTitlePlaceholder": "Titulo para compartilhamento social",
-        "ogDescription": "Descricao OG",
-        "ogDescriptionPlaceholder": "Descricao para compartilhamento social",
+        "ogDescription": "Descrição OG",
+        "ogDescriptionPlaceholder": "Descrição para compartilhamento social",
         "ogImageUrl": "URL da Imagem OG",
         "expiredRedirectUrl": "URL de redirecionamento ao expirar",
         "expiredRedirectUrlPlaceholder": "https://exemplo.com/expirado",
-        "expiredRedirectUrlHelp": "Redirecione usuarios aqui quando o link expirar (sobrescreve a configuracao global)",
+        "expiredRedirectUrlHelp": "Redirecione usuários aqui quando o link expirar (sobrescreve a configuração global)",
         "all": "Todos",
         "allLinks": "Todos os links",
         "sortBy": "Ordenar por",
@@ -324,12 +324,12 @@
         "sortCreatedAtAsc": "Mais antigos",
         "sortClicksDesc": "Mais cliques",
         "sortClicksAsc": "Menos cliques",
-        "sortVisitorsDesc": "Mais visitantes unicos",
+        "sortVisitorsDesc": "Mais visitantes únicos",
         "sortSlugAsc": "Slug (A-Z)",
         "filterByStatus": "Filtrar por status",
         "filterByTags": "Filtrar por tags",
         "clearFilters": "Limpar filtros",
-        "uniqueVisitors": "Visitantes unicos",
+        "uniqueVisitors": "Visitantes únicos",
         "downloadCsv": "Baixar CSV",
         "createLinkModal": {
             "title": "Links",
@@ -344,36 +344,36 @@
             "tags": "Tags",
             "createTag": "Criar tag",
             "folder": "Pasta",
-            "description": "Descricao interna",
-            "advancedConfig": "Configuracoes avancadas",
+            "description": "Descrição interna",
+            "advancedConfig": "Configurações avancadas",
             "password": "Senha",
-            "expiration": "Expiracao",
+            "expiration": "Expiração",
             "startsAt": "Inicia em",
             "expiresAt": "Expira em",
             "maxClicks": "Maximo de cliques",
             "expiredRedirectUrl": "URL de redirecionamento ao expirar",
             "qrCode": "QR Code",
-            "linkPreview": "Pre-visualizacao",
+            "linkPreview": "Pre-visualização",
             "cancel": "Cancelar",
             "createLink": "Criar link",
             "ogTitle": "Titulo",
-            "ogDescription": "Descricao",
+            "ogDescription": "Descrição",
             "ogImageUrl": "URL da imagem"
         },
         "settings": {
-            "title": "Configuracoes de Links Curtos",
-            "description": "Configure o comportamento padrao dos seus links curtos",
+            "title": "Configurações de Links Curtos",
+            "description": "Configure o comportamento padrão dos seus links curtos",
             "redirects": "Redirecionamentos",
-            "redirectsDescription": "Defina URLs de redirecionamento padrao para links expirados ou nao encontrados",
-            "defaultExpiredRedirectUrl": "URL de redirecionamento padrao para expirados",
-            "defaultExpiredRedirectUrlHelp": "Redirecione usuarios aqui quando um link expirar e nenhum redirecionamento por link estiver definido",
-            "notFoundRedirectUrl": "URL de redirecionamento para nao encontrado",
-            "notFoundRedirectUrlHelp": "Redirecione usuarios aqui quando um link curto nao existir",
-            "saveSuccess": "Configuracoes salvas com sucesso!"
+            "redirectsDescription": "Defina URLs de redirecionamento padrão para links expirados ou não encontrados",
+            "defaultExpiredRedirectUrl": "URL de redirecionamento padrão para expirados",
+            "defaultExpiredRedirectUrlHelp": "Redirecione usuários aqui quando um link expirar e nenhum redirecionamento por link estiver definido",
+            "notFoundRedirectUrl": "URL de redirecionamento para não encontrado",
+            "notFoundRedirectUrlHelp": "Redirecione usuários aqui quando um link curto não existir",
+            "saveSuccess": "Configurações salvas com sucesso!"
         }
     },
     "linkAnalytics": {
-        "title": "Estatisticas do Link",
+        "title": "Estatísticas do Link",
         "totalClicks": "Total de Cliques",
         "uniqueClicks": "Cliques Unicos",
         "clicksToday": "Cliques Hoje",
@@ -399,16 +399,16 @@
         "device": "Dispositivo",
         "browser": "Navegador",
         "os": "SO",
-        "referrer": "Referencia",
+        "referrer": "Referência",
         "ip": "IP",
         "time": "Horario",
-        "noClicks": "Ainda nao ha cliques",
+        "noClicks": "Ainda não ha cliques",
         "last24h": "Ultimas 24 horas",
         "last7Days": "Ultimos 7 dias",
         "last30Days": "Ultimos 30 dias",
         "last90Days": "Ultimos 90 dias",
         "lastYear": "Ultimo ano",
-        "allTime": "Todo o periodo"
+        "allTime": "Todo o período"
     },
     "qrCode": {
         "title": "Codigo QR",
@@ -426,11 +426,11 @@
         "status": "Status",
         "verified": "Verificado",
         "pending": "Pendente",
-        "instructions": "Instrucoes DNS",
+        "instructions": "Instruções DNS",
         "txtRecord": "Registro TXT",
         "verify": "Verificar",
         "verifySuccess": "Dominio verificado com sucesso!",
-        "verifyFailed": "Falha na verificacao do dominio",
+        "verifyFailed": "Falha na verificação do dominio",
         "delete": "Excluir",
         "deleteSuccess": "Dominio excluido com sucesso!",
         "noDomains": "Nenhum dominio configurado",
@@ -461,65 +461,65 @@
             "description": "Termos de uso do SoMedia - Gerenciador de Redes Sociais"
         },
         "title": "Termos de Uso",
-        "lastUpdated": "Ultima atualizacao: 9 de maio de 2026",
-        "backToHome": "Voltar para a pagina inicial",
+        "lastUpdated": "Ultima atualização: 9 de maio de 2026",
+        "backToHome": "Voltar para a página inicial",
         "footer": "SoMedia. Todos os direitos reservados.",
         "sections": {
             "acceptance": {
-                "heading": "1. Aceitacao dos Termos",
-                "content": "Ao acessar ou utilizar o SoMedia (\"Servico\"), voce concorda em cumprir e estar vinculado a estes Termos de Uso (\"Termos\"). Se voce nao concordar com qualquer parte destes Termos, nao podera acessar ou utilizar o Servico.\n\nEstes Termos constituem um acordo juridicamente vinculante entre voce (\"Usuario\", \"voce\" ou \"seu\") e a SoMedia (\"Empresa\", \"nos\", \"nosso\" ou \"nos\"). O uso continuado do Servico apos quaisquer alteracoes a estes Termos constitui aceitacao dessas alteracoes."
+                "heading": "1. Aceitação dos Termos",
+                "content": "Ao acessar ou utilizar o SoMedia (\"Servico\"), você concorda em cumprir e estar vinculado a estes Termos de Uso (\"Termos\"). Se você não concordar com qualquer parte destes Termos, não poderá acessar ou utilizar o Servico.\n\nEstes Termos constituem um acordo juridicamente vinculante entre você (\"Usuário\", \"você\" ou \"seu\") e a SoMedia (\"Empresa\", \"nos\", \"nosso\" ou \"nos\"). O uso continuado do Servico após quaisquer alterações a estes Termos constitui aceitação dessas alterações."
             },
             "serviceDescription": {
-                "heading": "2. Descricao do Servico",
-                "content": "O SoMedia e uma plataforma de gerenciamento de redes sociais que permite aos usuarios:\n\n- Conectar e gerenciar contas de redes sociais (Instagram, Facebook, Threads, YouTube, TikTok, X e outras);\n- Agendar, publicar e gerenciar conteudo em multiplas plataformas;\n- Acompanhar metricas e analytics de desempenho;\n- Criar e gerenciar links curtos personalizados;\n- Armazenar e organizar midias digitais;\n- Utilizar ferramentas de inteligencia artificial para auxilio na criacao de conteudo.\n\nO Servico e fornecido \"no estado em que se encontra\" e \"conforme disponivel\". Nao garantimos que o Servico sera ininterrupto, oportuno, seguro ou livre de erros."
+                "heading": "2. Descrição do Servico",
+                "content": "O SoMedia e uma plataforma de gerenciamento de redes sociais que permite aos usuários:\n\n- Conectar e gerenciar contas de redes sociais (Instagram, Facebook, Threads, YouTube, TikTok, X e outras);\n- Agendar, publicar e gerenciar conteúdo em multiplas plataformas;\n- Acompanhar métricas e analytics de desempenho;\n- Criar e gerenciar links curtos personalizados;\n- Armazenar e organizar mídias digitais;\n- Utilizar ferramentas de inteligencia artificial para auxilio na criação de conteúdo.\n\nO Servico e fornecido \"no estado em que se encontra\" e \"conforme disponível\". Não garantimos que o Servico será ininterrupto, oportuno, seguro ou livre de erros."
             },
             "accounts": {
-                "heading": "3. Contas de Usuario",
-                "content": "Para utilizar determinados recursos do Servico, voce deve criar uma conta fornecendo informacoes precisas, completas e atualizadas. Voce e responsavel por:\n\n- Manter a confidencialidade de sua senha e credenciais de acesso;\n- Todas as atividades que ocorrerem em sua conta;\n- Notificar-nos imediatamente sobre qualquer uso nao autorizado de sua conta;\n- Garantir que suas informacoes de contato estejam sempre atualizadas.\n\nReservamo-nos o direito de suspender ou encerrar contas que contenham informacoes falsas, incompletas ou desatualizadas."
+                "heading": "3. Contas de Usuário",
+                "content": "Para utilizar determinados recursos do Servico, você deve criar uma conta fornecendo informações precisas, completas e atualizadas. Você e responsavel por:\n\n- Manter a confidencialidade de sua senha e credenciais de acesso;\n- Todas as atividades que ocorrerem em sua conta;\n- Notificar-nos imediatamente sobre qualquer uso não autorizado de sua conta;\n- Garantir que suas informações de contato estejam sempre atualizadas.\n\nReservamo-nos o direito de suspender ou encerrar contas que contenham informações falsas, incompletas ou desatualizadas."
             },
             "acceptableUse": {
                 "heading": "4. Uso Aceitavel",
-                "content": "Ao utilizar o Servico, voce concorda em NAO:\n\n- Violar leis, regulamentos ou direitos de terceiros;\n- Publicar, compartilhar ou distribuir conteudo ilegal, ofensivo, difamatorio, obsceno ou que incite ao odio;\n- Utilizar o Servico para enviar spam, phishing ou qualquer forma de comunicacao nao solicitada;\n- Tentar acessar, interferir ou danificar sistemas, redes ou contas de outros usuarios;\n- Utilizar bots, scripts ou ferramentas automatizadas de maneira que viole os termos das plataformas de redes sociais conectadas;\n- Reproduzir, duplicar, copiar, vender, revender ou explorar comercialmente qualquer parte do Servico sem autorizacao expressa;\n- Contornar, desativar ou interferir em recursos de seguranca do Servico;\n- Coletar ou armazenar dados pessoais de outros usuarios sem consentimento.\n\nO descumprimento destas regras pode resultar na suspensao ou encerramento imediato de sua conta, sem reembolso."
+                "content": "Ao utilizar o Servico, você concorda em NÃO:\n\n- Violar leis, regulamentos ou direitos de terceiros;\n- Publicar, compartilhar ou distribuir conteúdo ilegal, ofensivo, difamatorio, obsceno ou que incite ao odio;\n- Utilizar o Servico para enviar spam, phishing ou qualquer forma de comunicação não solicitada;\n- Tentar acessar, interferir ou danificar sistemas, redes ou contas de outros usuários;\n- Utilizar bots, scripts ou ferramentas automatizadas de maneira que viole os termos das plataformas de redes sociais conectadas;\n- Reproduzir, duplicar, copiar, vender, revender ou explorar comercialmente qualquer parte do Servico sem autorização expressa;\n- Contornar, desativar ou interferir em recursos de seguranca do Servico;\n- Coletar ou armazenar dados pessoais de outros usuários sem consentimento.\n\nO descumprimento destas regras pode resultar na suspensão ou encerramento imediato de sua conta, sem reembolso."
             },
             "intellectualProperty": {
                 "heading": "5. Propriedade Intelectual",
-                "content": "O SoMedia e todo o seu conteudo, recursos e funcionalidades (incluindo, mas nao se limitando a, design, codigo, textos, graficos, logotipos, icones, imagens, clips de audio, downloads de software e compilacoes de dados) sao propriedade da Empresa ou de seus licenciadores e estao protegidos por leis de direitos autorais, marcas registradas e outras leis de propriedade intelectual.\n\nE concedida a voce uma licenca limitada, nao exclusiva, nao transferivel e revogavel para acessar e utilizar o Servico para fins pessoais ou comerciais internos, de acordo com estes Termos.\n\nVoce nao pode:\n- Modificar, descompilar, fazer engenharia reversa ou criar trabalhos derivados do Servico;\n- Remover avisos de direitos autorais, marcas registradas ou outros avisos de propriedade;\n- Utilizar nossas marcas registradas sem autorizacao previa por escrito."
+                "content": "O SoMedia e todo o seu conteúdo, recursos e funcionalidades (incluindo, mas não se limitando a, design, código, textos, gráficos, logotipos, ícones, imagens, clips de audio, downloads de software e compilações de dados) são propriedade da Empresa ou de seus licenciadores e estão protegidos por leis de direitos autorais, marcas registradas e outras leis de propriedade intelectual.\n\nE concedida a você uma licença limitada, não exclusiva, não transferivel e revogável para acessar e utilizar o Servico para fins pessoais ou comerciais internos, de acordo com estes Termos.\n\nVoce não pode:\n- Modificar, descompilar, fazer engenharia reversa ou criar trabalhos derivados do Servico;\n- Remover avisos de direitos autorais, marcas registradas ou outros avisos de propriedade;\n- Utilizar nossas marcas registradas sem autorização prévia por escrito."
             },
             "userContent": {
-                "heading": "6. Conteudo do Usuario",
-                "content": "Voce retem todos os direitos sobre o conteudo que cria, envia, publica ou exibe atraves do Servico (\"Conteudo do Usuario\"). Ao utilizar o Servico, voce concede a SoMedia uma licenca mundial, nao exclusiva, royalty-free, sublicenciavel e transferivel para usar, reproduzir, modificar, adaptar, publicar, traduzir e distribuir seu Conteudo do Usuario, exclusivamente para fins de operacao, melhoria e promocao do Servico.\n\nVoce declara e garante que:\n- E o proprietario ou tem as licencas, direitos, consentimentos e permissoes necessarias para usar e autorizar a SoMedia a usar seu Conteudo do Usuario;\n- Seu Conteudo do Usuario nao viola direitos de propriedade intelectual, privacidade, publicidade ou outros direitos de terceiros;\n- Seu Conteudo do Usuario esta em conformidade com os termos de uso das plataformas de redes sociais conectadas.\n\nA SoMedia nao se responsabiliza pelo Conteudo do Usuario nem endossa qualquer opiniao expressa por usuarios."
+                "heading": "6. Conteúdo do Usuário",
+                "content": "Você retem todos os direitos sobre o conteúdo que cria, envia, pública ou exibe através do Servico (\"Conteúdo do Usuário\"). Ao utilizar o Servico, você concede a SoMedia uma licença mundial, não exclusiva, royalty-free, sublicenciavel e transferivel para usar, reproduzir, modificar, adaptar, publicar, traduzir e distribuir seu Conteúdo do Usuário, exclusivamente para fins de operação, melhoria e promoção do Servico.\n\nVoce declara e garante que:\n- E o proprietario ou tem as licencas, direitos, consentimentos e permissoes necessarias para usar e autorizar a SoMedia a usar seu Conteúdo do Usuário;\n- Seu Conteúdo do Usuário não viola direitos de propriedade intelectual, privacidade, publicidade ou outros direitos de terceiros;\n- Seu Conteúdo do Usuário esta em conformidade com os termos de uso das plataformas de redes sociais conectadas.\n\nA SoMedia não se responsabiliza pelo Conteúdo do Usuário nem endossa qualquer opiniao expressa por usuários."
             },
             "thirdPartyServices": {
                 "heading": "7. Servicos de Terceiros",
-                "content": "O Servico integra-se com plataformas de terceiros, incluindo, mas nao se limitando a, Instagram, Facebook, Threads, YouTube, TikTok, X, Google e Stripe. O uso dessas integracoes esta sujeito aos termos de uso e politicas de privacidade de cada plataforma.\n\nAo conectar suas contas de redes sociais ao SoMedia, voce:\n- Autoriza o SoMedia a acessar, armazenar e utilizar seus dados de acordo com as permissoes concedidas;\n- Reconhece que o SoMedia atua como um intermediario e nao controla as plataformas de terceiros;\n- Entende que alteracoes nas APIs ou politicas das plataformas de terceiros podem afetar a funcionalidade do Servico;\n- Concorda em cumprir os termos de uso de cada plataforma conectada.\n\nA SoMedia nao se responsabiliza por alteracoes, interrupcoes ou encerramentos de servicos de terceiros."
+                "content": "O Servico integra-se com plataformas de terceiros, incluindo, mas não se limitando a, Instagram, Facebook, Threads, YouTube, TikTok, X, Google e Stripe. O uso dessas integrações esta sujeito aos termos de uso e políticas de privacidade de cada plataforma.\n\nAo conectar suas contas de redes sociais ao SoMedia, você:\n- Autoriza o SoMedia a acessar, armazenar e utilizar seus dados de acordo com as permissoes concedidas;\n- Reconhece que o SoMedia atua como um intermediario e não controla as plataformas de terceiros;\n- Entende que alterações nas APIs ou políticas das plataformas de terceiros podem afetar a funcionalidade do Servico;\n- Concorda em cumprir os termos de uso de cada plataforma conectada.\n\nA SoMedia não se responsabiliza por alterações, interrupções ou encerramentos de serviços de terceiros."
             },
             "payments": {
                 "heading": "8. Pagamentos e Assinaturas",
-                "content": "Determinados recursos do Servico podem exigir pagamento. Ao adquirir uma assinatura ou servico pago, voce concorda com os seguintes termos:\n\n- Todos os precos sao exibidos na moeda indicada e podem estar sujeitos a impostos aplicaveis;\n- As assinaturas sao renovadas automaticamente no final de cada periodo de cobranca, a menos que canceladas;\n- Voce pode cancelar sua assinatura a qualquer momento atraves das configuracoes da conta;\n- Nao sao realizados reembolsos parciais por periodos nao utilizados, salvo disposicao em contrario da lei aplicavel;\n- Reservamo-nos o direito de alterar os precos mediante notificacao previa de 30 dias;\n- Falhas no pagamento podem resultar na suspensao ou downgrade de sua conta.\n\nOs pagamentos sao processados por provedores de pagamento de terceiros (Stripe). Ao efetuar um pagamento, voce tambem concorda com os termos do provedor de pagamento."
+                "content": "Determinados recursos do Servico podem exigir pagamento. Ao adquirir uma assinatura ou serviço pago, você concorda com os seguintes termos:\n\n- Todos os precos são exibidos na moeda indicada e podem estar sujeitos a impostos aplicaveis;\n- As assinaturas são renovadas automaticamente no final de cada período de cobranca, a menos que canceladas;\n- Você pode cancelar sua assinatura a qualquer momento através das configurações da conta;\n- Não são realizados reembolsos parciais por períodos não utilizados, salvo disposição em contrario da lei aplicavel;\n- Reservamo-nos o direito de alterar os precos mediante notificação prévia de 30 dias;\n- Falhas no pagamento podem resultar na suspensão ou downgrade de sua conta.\n\nOs pagamentos são processados por provedores de pagamento de terceiros (Stripe). Ao efetuar um pagamento, você também concorda com os termos do provedor de pagamento."
             },
             "liability": {
                 "heading": "9. Limitacao de Responsabilidade",
-                "content": "Na extensao maxima permitida pela lei aplicavel, a SoMedia, seus diretores, funcionarios, parceiros, agentes, fornecedores ou afiliados nao serao responsaveis por quaisquer danos indiretos, incidentais, especiais, consequenciais ou punitivos, incluindo, sem limitacao, perda de lucros, dados, uso, boa vontade ou outras perdas intangiveis, resultantes de:\n\n- Seu acesso ou uso, ou incapacidade de acessar ou usar o Servico;\n- Qualquer conduta ou conteudo de terceiros no Servico;\n- Qualquer conteudo obtido do Servico;\n- Acesso nao autorizado, uso ou alteracao de suas transmissoes ou conteudo;\n- Erros, omissoes, interrupcoes, defeitos, atrasos ou falhas no Servico;\n- Virus ou outros codigos maliciosos transmitidos atraves do Servico.\n\nEm nenhuma circunstancia a responsabilidade total da SoMedia excedera o valor pago por voce ao Servico nos 12 meses anteriores ao evento que deu origem a responsabilidade, ou cem reais (R$ 100,00), o que for maior."
+                "content": "Na extensão maxima permitida pela lei aplicavel, a SoMedia, seus diretores, funcionarios, parceiros, agentes, fornecedores ou afiliados não serão responsaveis por quaisquer danos indiretos, incidentais, especiais, consequenciais ou punitivos, incluindo, sem limitação, perda de lucros, dados, uso, boa vontade ou outras perdas intangiveis, resultantes de:\n\n- Seu acesso ou uso, ou incapacidade de acessar ou usar o Servico;\n- Qualquer conduta ou conteúdo de terceiros no Servico;\n- Qualquer conteúdo obtido do Servico;\n- Acesso não autorizado, uso ou alteração de suas transmissoes ou conteúdo;\n- Erros, omissoes, interrupções, defeitos, atrasos ou falhas no Servico;\n- Virus ou outros codigos maliciosos transmitidos através do Servico.\n\nEm nenhuma circunstancia a responsabilidade total da SoMedia excedera o valor pago por você ao Servico nos 12 meses anteriores ao evento que deu origem a responsabilidade, ou cem reais (R$ 100,00), o que for maior."
             },
             "indemnification": {
                 "heading": "10. Indenizacao",
-                "content": "Voce concorda em defender, indenizar e isentar a SoMedia, seus diretores, funcionarios, parceiros, agentes, fornecedores e afiliados de e contra quaisquer reclamacoes, responsabilidades, danos, perdas, custos e despesas (incluindo honorarios advocaticos razoaveis) decorrentes de ou relacionados a:\n\n- Seu uso do Servico;\n- Seu Conteudo do Usuario;\n- Sua violacao destes Termos;\n- Sua violacao de quaisquer direitos de terceiros, incluindo direitos de propriedade intelectual, privacidade ou publicidade;\n- Sua conduta em violacao da lei aplicavel.\n\nEsta obrigacao de indenizacao sobrevivera a rescisao destes Termos e ao seu uso do Servico."
+                "content": "Você concorda em defender, indenizar e isentar a SoMedia, seus diretores, funcionarios, parceiros, agentes, fornecedores e afiliados de e contra quaisquer reclamacoes, responsabilidades, danos, perdas, custos e despesas (incluindo honorários advocaticos razoáveis) decorrentes de ou relacionados a:\n\n- Seu uso do Servico;\n- Seu Conteúdo do Usuário;\n- Sua violacao destes Termos;\n- Sua violacao de quaisquer direitos de terceiros, incluindo direitos de propriedade intelectual, privacidade ou publicidade;\n- Sua conduta em violacao da lei aplicavel.\n\nEsta obrigação de indenizacao sobrevivera a rescisao destes Termos e ao seu uso do Servico."
             },
             "termination": {
                 "heading": "11. Rescisao",
-                "content": "Podemos suspender ou encerrar sua conta e acesso ao Servico imediatamente, sem aviso previo ou responsabilidade, por qualquer motivo, incluindo, sem limitacao, violacao destes Termos.\n\nVoce pode encerrar sua conta a qualquer momento atraves das configuracoes da conta ou entrando em contato conosco.\n\nApos a rescisao:\n- Seu direito de usar o Servico cessara imediatamente;\n- Podemos excluir ou arquivar seu Conteudo do Usuario, conforme descrito em nossa Politica de Privacidade;\n- Disposicoes que, por sua natureza, devem sobreviver a rescisao (incluindo, sem limitacao, disposicoes sobre propriedade intelectual, indenizacao, limitacao de responsabilidade e lei aplicavel) permanecerao em vigor."
+                "content": "Podemos suspender ou encerrar sua conta e acesso ao Servico imediatamente, sem aviso prévio ou responsabilidade, por qualquer motivo, incluindo, sem limitação, violacao destes Termos.\n\nVoce pode encerrar sua conta a qualquer momento através das configurações da conta ou entrando em contato conosco.\n\nApos a rescisao:\n- Seu direito de usar o Servico cessara imediatamente;\n- Podemos excluir ou arquivar seu Conteúdo do Usuário, conforme descrito em nossa Politica de Privacidade;\n- Disposições que, por sua natureza, devem sobreviver a rescisao (incluindo, sem limitação, disposições sobre propriedade intelectual, indenizacao, limitação de responsabilidade e lei aplicavel) permanecerao em vigor."
             },
             "governingLaw": {
-                "heading": "12. Lei Aplicavel e Jurisdicao",
-                "content": "Estes Termos serao regidos e interpretados de acordo com as leis da Republica Federativa do Brasil, sem consideracao aos seus conflitos de principios legais.\n\nQualquer disputa, controversia ou reclamacao decorrente de ou relacionada a estes Termos ou ao uso do Servico sera submetida a jurisdicao exclusiva dos tribunais da Comarca de Sao Paulo, Estado de Sao Paulo, Brasil.\n\nVoce concorda que qualquer acao judicial deve ser iniciada no prazo de um (1) ano apos o surgimento da causa de acao."
+                "heading": "12. Lei Aplicavel e Jurisdição",
+                "content": "Estes Termos serão regidos e interpretados de acordo com as leis da Republica Federativa do Brasil, sem consideração aos seus conflitos de principios legais.\n\nQualquer disputa, controversia ou reclamação decorrente de ou relacionada a estes Termos ou ao uso do Servico será submetida a jurisdição exclusiva dos tribunais da Comarca de São Paulo, Estado de São Paulo, Brasil.\n\nVoce concorda que qualquer ação judicial deve ser iniciada no prazo de um (1) ano após o surgimento da causa de ação."
             },
             "general": {
-                "heading": "13. Disposicoes Gerais",
-                "content": "Estes Termos constituem o acordo integral entre voce e a SoMedia em relacao ao uso do Servico e substituem todos os acordos anteriores ou contemporaneos, escritos ou verbais.\n\nSe qualquer disposicao destes Termos for considerada invalida, ilegal ou inexequivel, as demais disposicoes permanecerao em pleno vigor e efeito.\n\nNossa falha em exercer ou fazer cumprir qualquer direito ou disposicao destes Termos nao constituira renuncia a tal direito ou disposicao.\n\nVoce nao pode ceder ou transferir estes Termos, por forca da lei ou de outra forma, sem nosso consentimento previo por escrito. Podemos ceder ou transferir estes Termos livremente.\n\nAs notificacoes podem ser enviadas por e-mail ou publicadas no Servico."
+                "heading": "13. Disposições Gerais",
+                "content": "Estes Termos constituem o acordo integral entre você e a SoMedia em relação ao uso do Servico e substituem todos os acordos anteriores ou contemporaneos, escritos ou verbais.\n\nSe qualquer disposição destes Termos for considerada invalida, ilegal ou inexequivel, as demais disposições permanecerao em pleno vigor e efeito.\n\nNossa falha em exercer ou fazer cumprir qualquer direito ou disposição destes Termos não constituira renuncia a tal direito ou disposição.\n\nVoce não pode ceder ou transferir estes Termos, por força da lei ou de outra forma, sem nosso consentimento prévio por escrito. Podemos ceder ou transferir estes Termos livremente.\n\nAs notificações podem ser enviadas por e-mail ou publicadas no Servico."
             },
             "contact": {
                 "heading": "14. Contato",
-                "content": "Se voce tiver duvidas, preocupacoes ou solicitacoes relacionadas a estes Termos de Uso, entre em contato conosco:\n\nE-mail: legal@somedia.techbe.me\n\nEndereco:\nSoMedia\nRua Exemplo, 123\nSao Paulo, SP, 01000-000\nBrasil\n\nResponderemos em ate 30 (trinta) dias uteis."
+                "content": "Se você tiver duvidas, preocupacoes ou solicitacoes relacionadas a estes Termos de Uso, entre em contato conosco:\n\nE-mail: legal@somedia.techbe.me\n\nEndereco:\nSoMedia\nRua Exemplo, 123\nSao Paulo, SP, 01000-000\nBrasil\n\nResponderemos em até 30 (trinta) dias uteis."
             }
         }
     },
@@ -529,13 +529,13 @@
             "description": "Conheca como o SoMedia coleta, usa e protege seus dados pessoais."
         },
         "title": "Politica de Privacidade",
-        "lastUpdated": "Ultima atualizacao: 9 de maio de 2026",
-        "backToHome": "Voltar para a pagina inicial",
+        "lastUpdated": "Ultima atualização: 9 de maio de 2026",
+        "backToHome": "Voltar para a página inicial",
         "footer": "SoMedia. Todos os direitos reservados.",
         "sections": {
             "intro": {
                 "heading": "1. Introducao",
-                "content": "A SoMedia (SoMedia Tech, doravante 'SoMedia', 'nos', 'nosso' ou 'plataforma') valoriza a privacidade dos seus usuarios. Esta Politica de Privacidade descreve como coletamos, usamos, armazenamos, compartilhamos e protegemos suas informacoes pessoais quando voce utiliza nossa plataforma de gerenciamento de redes sociais e encurtamento de links disponivel em https://somedia.techbe.me (o 'Servico').\n\nAo acessar ou utilizar o Servico, voce concorda com os termos desta Politica de Privacidade. Se nao concordar, por favor, nao utilize nossa plataforma."
+                "content": "A SoMedia (SoMedia Tech, doravante 'SoMedia', 'nos', 'nosso' ou 'plataforma') valoriza a privacidade dos seus usuários. Esta Politica de Privacidade descreve como coletamos, usamos, armazenamos, compartilhamos e protegemos suas informações pessoais quando você utiliza nossa plataforma de gerenciamento de redes sociais e encurtamento de links disponível em https://somedia.techbe.me (o 'Servico').\n\nAo acessar ou utilizar o Servico, você concorda com os termos desta Politica de Privacidade. Se não concordar, por favor, não utilize nossa plataforma."
             },
             "controller": {
                 "heading": "2. Controlador de Dados",
@@ -543,55 +543,55 @@
             },
             "dataCollected": {
                 "heading": "3. Dados que Coletamos",
-                "content": "Coletamos os seguintes tipos de dados pessoais:\n\n3.1. Dados de Cadastro\n- Nome completo\n- Endereco de e-mail\n- Foto de perfil (quando fornecida ou obtida via OAuth)\n\n3.2. Dados de Autenticacao\n- Credenciais de login (senhas criptografadas com bcrypt)\n- Tokens de sessao\n- Dados de autenticacao OAuth (Google)\n\n3.3. Dados de Contas Sociais\nQuando voce conecta contas de redes sociais (Instagram, Facebook, Threads, YouTube, TikTok, X), coletamos:\n- ID da conta na plataforma\n- Nome de usuario e nome de exibicao\n- Foto de perfil\n- Tokens de acesso e refresh (armazenados criptografados)\n- Metadados publicos (numero de seguidores, etc.)\n\n3.4. Dados de Credenciais de API\n- App ID / Client ID das plataformas sociais (armazenados criptografados)\n- App Secret / Client Secret (armazenados criptografados)\n- URIs de redirecionamento configuradas\n\n3.5. Dados de Links Encurtados\n- URL original\n- Slug personalizado\n- Titulo, descricao e imagens Open Graph\n- Dados de cliques (IP, pais, cidade, dispositivo, navegador, sistema operacional, idioma, fuso horario, referenciador)\n\n3.6. Dados de Midia\n- Arquivos de midia enviados para a biblioteca (armazenados na Vercel Blob)\n- Metadados dos arquivos (tipo MIME, tamanho, dimensoes)\n\n3.7. Dados de Posts e Agendamentos\n- Conteudo dos posts\n- URLs de midia associadas\n- Plataformas de destino\n- Data e hora de agendamento\n- Status de publicacao\n\n3.8. Dados de Uso e Analytics\n- Endereco IP\n- User-Agent do navegador\n- Dados de geolocalizacao aproximada\n- Padroes de uso da plataforma\n\n3.9. Dados de Pagamento (quando aplicavel)\n- Informacoes de assinatura e faturamento\n- Historico de pagamentos (processados via Stripe)\n\n3.10. Dados de Webhooks\n- Eventos recebidos de plataformas terceiras (payloads completos para auditoria e idempotencia)"
+                "content": "Coletamos os seguintes tipos de dados pessoais:\n\n3.1. Dados de Cadastro\n- Nome completo\n- Endereco de e-mail\n- Foto de perfil (quando fornecida ou obtida via OAuth)\n\n3.2. Dados de Autenticação\n- Credenciais de login (senhas criptografadas com bcrypt)\n- Tokens de sessão\n- Dados de autenticação OAuth (Google)\n\n3.3. Dados de Contas Sociais\nQuando você conecta contas de redes sociais (Instagram, Facebook, Threads, YouTube, TikTok, X), coletamos:\n- ID da conta na plataforma\n- Nome de usuário e nome de exibição\n- Foto de perfil\n- Tokens de acesso e refresh (armazenados criptografados)\n- Metadados públicos (número de seguidores, etc.)\n\n3.4. Dados de Credenciais de API\n- App ID / Client ID das plataformas sociais (armazenados criptografados)\n- App Secret / Client Secret (armazenados criptografados)\n- URIs de redirecionamento configuradas\n\n3.5. Dados de Links Encurtados\n- URL original\n- Slug personalizado\n- Titulo, descrição e imagens Open Graph\n- Dados de cliques (IP, país, cidade, dispositivo, navegador, sistema operacional, idioma, fuso horario, referenciador)\n\n3.6. Dados de Mídia\n- Arquivos de mídia enviados para a biblioteca (armazenados na Vercel Blob)\n- Metadados dos arquivos (tipo MIME, tamanho, dimensoes)\n\n3.7. Dados de Posts e Agendamentos\n- Conteúdo dos posts\n- URLs de mídia associadas\n- Plataformas de destino\n- Data e hora de agendamento\n- Status de publicação\n\n3.8. Dados de Uso e Analytics\n- Endereco IP\n- User-Agent do navegador\n- Dados de geolocalização aproximada\n- Padroes de uso da plataforma\n\n3.9. Dados de Pagamento (quando aplicavel)\n- Informações de assinatura e faturamento\n- Historico de pagamentos (processados via Stripe)\n\n3.10. Dados de Webhooks\n- Eventos recebidos de plataformas terceiras (payloads completos para auditoria e idempotencia)"
             },
             "purposes": {
                 "heading": "4. Finalidades do Tratamento",
-                "content": "Utilizamos seus dados pessoais para as seguintes finalidades:\n\n4.1. Prestacao do Servico\n- Criar e gerenciar sua conta\n- Autenticar seu acesso a plataforma\n- Conectar e gerenciar suas contas de redes sociais\n- Permitir o agendamento e publicacao de posts\n- Fornecer analytics de links encurtados\n- Armazenar e gerenciar sua biblioteca de midia\n\n4.2. Comunicacao\n- Enviar notificacoes sobre posts agendados\n- Alertas de seguranca e alteracoes na conta\n- Responder a solicitacoes de suporte\n\n4.3. Melhoria do Servico\n- Analisar padroes de uso para melhorar a plataforma\n- Identificar e corrigir problemas tecnicos\n- Desenvolver novos recursos\n\n4.4. Seguranca e Cumprimento Legal\n- Prevenir fraudes e abusos\n- Cumprir obrigacoes legais e regulamentares\n- Resolver disputas e fazer cumprir nossos termos"
+                "content": "Utilizamos seus dados pessoais para as seguintes finalidades:\n\n4.1. Prestacao do Servico\n- Criar e gerenciar sua conta\n- Autenticar seu acesso a plataforma\n- Conectar e gerenciar suas contas de redes sociais\n- Permitir o agendamento e publicação de posts\n- Fornecer analytics de links encurtados\n- Armazenar e gerenciar sua biblioteca de mídia\n\n4.2. Comunicação\n- Enviar notificações sobre posts agendados\n- Alertas de seguranca e alterações na conta\n- Responder a solicitacoes de suporte\n\n4.3. Melhoria do Servico\n- Analisar padrões de uso para melhorar a plataforma\n- Identificar e corrigir problemas técnicos\n- Desenvolver novos recursos\n\n4.4. Seguranca e Cumprimento Legal\n- Prevenir fraudes e abusos\n- Cumprir obrigações legais e regulamentares\n- Resolver disputas e fazer cumprir nossos termos"
             },
             "legalBasis": {
                 "heading": "5. Base Legal para o Tratamento",
-                "content": "O tratamento dos seus dados pessoais baseia-se nas seguintes fundamentos legais, conforme a Lei Geral de Protecao de Dados (LGPD - Lei 13.709/2018) e o Regulamento Geral de Protecao de Dados (GDPR, quando aplicavel):\n\n5.1. Execucao de Contrato (Art. 7, V da LGPD / Art. 6, I(b) do GDPR)\nO tratamento e necessario para a execucao do contrato de prestacao de servicos ou para procedimentos preliminares a contratacao a pedido do titular.\n\n5.2. Consentimento (Art. 7, I da LGPD / Art. 6, I(a) do GDPR)\nPara conexao de contas de redes sociais, envio de comunicacoes de marketing e uso de cookies nao essenciais, solicitamos seu consentimento explicito, que pode ser revogado a qualquer momento.\n\n5.3. Cumprimento de Obrigacao Legal (Art. 7, II da LGPD / Art. 6, I(c) do GDPR)\nQuando necessario para cumprir obrigacoes legais, como retencao de registros fiscais.\n\n5.4. Interesse Legitimo (Art. 7, IX da LGPD / Art. 6, I(f) do GDPR)\nPara prevencao de fraudes, seguranca da plataforma e melhoria dos servicos, desde que nao prevalecam seus direitos e liberdades fundamentais.\n\n5.5. Protecao do Credito (Art. 7, V da LGPD)\nPara avaliacao de risco e concessao de credito, quando aplicavel."
+                "content": "O tratamento dos seus dados pessoais baseia-se nas seguintes fundamentos legais, conforme a Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018) e o Regulamento Geral de Proteção de Dados (GDPR, quando aplicavel):\n\n5.1. Execução de Contrato (Art. 7, V da LGPD / Art. 6, I(b) do GDPR)\nO tratamento e necessario para a execução do contrato de prestacao de serviços ou para procedimentos preliminares a contratação a pedido do titular.\n\n5.2. Consentimento (Art. 7, I da LGPD / Art. 6, I(a) do GDPR)\nPara conexão de contas de redes sociais, envio de comunicações de marketing e uso de cookies não essenciais, solicitamos seu consentimento explícito, que pode ser revogado a qualquer momento.\n\n5.3. Cumprimento de Obrigação Legal (Art. 7, II da LGPD / Art. 6, I(c) do GDPR)\nQuando necessario para cumprir obrigações legais, como retenção de registros fiscais.\n\n5.4. Interesse Legitimo (Art. 7, IX da LGPD / Art. 6, I(f) do GDPR)\nPara prevenção de fraudes, seguranca da plataforma e melhoria dos serviços, desde que não prevalecam seus direitos e liberdades fundamentais.\n\n5.5. Proteção do Credito (Art. 7, V da LGPD)\nPara avaliação de risco e concessao de crédito, quando aplicavel."
             },
             "dataSharing": {
                 "heading": "6. Compartilhamento de Dados",
-                "content": "Podemos compartilhar seus dados pessoais nas seguintes situacoes:\n\n6.1. Provedores de Servico\nUtilizamos provedores terceirizados para hospedagem, processamento de pagamentos, armazenamento de arquivos e analytics. Esses provedores tem acesso limitado aos dados estritamente necessarios para executar suas funcoes e estao contratualmente obrigados a proteger seus dados:\n\n- Vercel (hospedagem e blob storage)\n- Neon (banco de dados PostgreSQL)\n- Stripe (processamento de pagamentos)\n- Upstash (rate limiting via Redis)\n- Google (autenticacao OAuth)\n\n6.2. Plataformas de Redes Sociais\nAo conectar suas contas, compartilhamos dados necessarios com as respectivas plataformas (Meta, Google, TikTok, X) para permitir a publicacao de conteudo. Cada plataforma possui sua propria politica de privacidade.\n\n6.3. Obrigacoes Legais\nPodemos divulgar dados pessoais quando exigido por lei, ordem judicial ou solicitacao governamental valida.\n\n6.4. Transferencias de Negocios\nEm caso de fusao, aquisicao ou venda de ativos, seus dados podem ser transferidos como parte do negocio, com notificacao previa.\n\n6.5. Nao Vendemos Dados\nNao vendemos, alugamos ou comercializamos seus dados pessoais a terceiros para fins de marketing."
+                "content": "Podemos compartilhar seus dados pessoais nas seguintes situações:\n\n6.1. Provedores de Servico\nUtilizamos provedores terceirizados para hospedagem, processamento de pagamentos, armazenamento de arquivos e analytics. Esses provedores tem acesso limitado aos dados estritamente necessarios para executar suas funções e estão contratualmente obrigados a proteger seus dados:\n\n- Vercel (hospedagem e blob storage)\n- Neon (banco de dados PostgreSQL)\n- Stripe (processamento de pagamentos)\n- Upstash (rate limiting via Redis)\n- Google (autenticação OAuth)\n\n6.2. Plataformas de Redes Sociais\nAo conectar suas contas, compartilhamos dados necessarios com as respectivas plataformas (Meta, Google, TikTok, X) para permitir a publicação de conteúdo. Cada plataforma possui sua propria política de privacidade.\n\n6.3. Obrigações Legais\nPodemos divulgar dados pessoais quando exigido por lei, ordem judicial ou solicitação governamental valida.\n\n6.4. Transferencias de Negocios\nEm caso de fusao, aquisição ou venda de ativos, seus dados podem ser transferidos como parte do negócio, com notificação prévia.\n\n6.5. Não Vendemos Dados\nNao vendemos, alugamos ou comercializamos seus dados pessoais a terceiros para fins de marketing."
             },
             "dataRetention": {
-                "heading": "7. Retencao e Exclusao de Dados",
-                "content": "Mantemos seus dados pessoais pelo tempo necessario para cumprir as finalidades descritas nesta politica, a menos que um periodo de retencao mais longo seja exigido ou permitido por lei:\n\n7.1. Dados de Conta\nRetidos enquanto sua conta estiver ativa. Apos o encerramento da conta, os dados sao excluidos ou anonimizados em ate 90 dias, exceto quando houver obrigacao legal de retencao.\n\n7.2. Dados de Links e Analytics\nRetidos pelo periodo definido pelo usuario (configuravel nas preferencias). Por padrao, dados de cliques sao mantidos por 12 meses.\n\n7.3. Dados de Webhooks\nRetidos por 24 meses para fins de auditoria e idempotencia.\n\n7.4. Dados de Pagamento\nRetidos pelo periodo exigido pela legislacao fiscal aplicavel (geralmente 5 anos no Brasil).\n\n7.5. Backups\nDados excluidos podem permanecer em backups por ate 30 dias adicionais antes da remocao completa."
+                "heading": "7. Retenção e Exclusão de Dados",
+                "content": "Mantemos seus dados pessoais pelo tempo necessario para cumprir as finalidades descritas nesta política, a menos que um período de retenção mais longo seja exigido ou permitido por lei:\n\n7.1. Dados de Conta\nRetidos enquanto sua conta estiver ativa. Apos o encerramento da conta, os dados são excluidos ou anonimizados em até 90 dias, exceto quando houver obrigação legal de retenção.\n\n7.2. Dados de Links e Analytics\nRetidos pelo período definido pelo usuário (configuravel nas preferencias). Por padrão, dados de cliques são mantidos por 12 meses.\n\n7.3. Dados de Webhooks\nRetidos por 24 meses para fins de auditoria e idempotencia.\n\n7.4. Dados de Pagamento\nRetidos pelo período exigido pela legislação fiscal aplicavel (geralmente 5 anos no Brasil).\n\n7.5. Backups\nDados excluidos podem permanecer em backups por até 30 dias adicionais antes da remocao completa."
             },
             "userRights": {
                 "heading": "8. Seus Direitos",
-                "content": "De acordo com a LGPD e o GDPR, voce possui os seguintes direitos sobre seus dados pessoais:\n\n8.1. Direitos LGPD (Brasil)\n- Confirmacao da existencia de tratamento\n- Acesso aos dados\n- Correcao de dados incompletos, inexatos ou desatualizados\n- Anonimizacao, bloqueio ou eliminacao de dados desnecessarios, excessivos ou tratados em desconformidade com a lei\n- Portabilidade dos dados a outro fornecedor de servico ou produto\n- Eliminacao dos dados pessoais tratados com o consentimento\n- Informacao sobre entidades publicas e privadas com as quais compartilhamos dados\n- Informacao sobre a possibilidade de nao fornecer consentimento e sobre as consequencias da negativa\n- Revogacao do consentimento\n\n8.2. Direitos GDPR (Uniao Europeia)\n- Direito de acesso (Art. 15)\n- Direito de retificacao (Art. 16)\n- Direito ao esquecimento (Art. 17)\n- Direito a restricao de tratamento (Art. 18)\n- Direito a portabilidade (Art. 20)\n- Direito de oposicao (Art. 21)\n- Direitos relacionados a tomada de decisao automatizada (Art. 22)\n\n8.3. Como Exercer seus Direitos\nPara exercer qualquer um desses direitos, entre em contato pelo e-mail privacy@somedia.techbe.me. Responderemos em ate 15 dias (LGPD) ou 30 dias (GDPR). Podemos solicitar verificacao de identidade antes de processar sua solicitacao."
+                "content": "De acordo com a LGPD e o GDPR, você possui os seguintes direitos sobre seus dados pessoais:\n\n8.1. Direitos LGPD (Brasil)\n- Confirmação da existência de tratamento\n- Acesso aos dados\n- Correção de dados incompletos, inexatos ou desatualizados\n- Anonimizacao, bloqueio ou eliminação de dados desnecessarios, excessivos ou tratados em desconformidade com a lei\n- Portabilidade dos dados a outro fornecedor de serviço ou produto\n- Eliminação dos dados pessoais tratados com o consentimento\n- Informação sobre entidades públicas e privadas com as quais compartilhamos dados\n- Informação sobre a possibilidade de não fornecer consentimento e sobre as consequencias da negativa\n- Revogacao do consentimento\n\n8.2. Direitos GDPR (Uniao Europeia)\n- Direito de acesso (Art. 15)\n- Direito de retificacao (Art. 16)\n- Direito ao esquecimento (Art. 17)\n- Direito a restricao de tratamento (Art. 18)\n- Direito a portabilidade (Art. 20)\n- Direito de oposicao (Art. 21)\n- Direitos relacionados a tomada de decisão automatizada (Art. 22)\n\n8.3. Como Exercer seus Direitos\nPara exercer qualquer um desses direitos, entre em contato pelo e-mail privacy@somedia.techbe.me. Responderemos em até 15 dias (LGPD) ou 30 dias (GDPR). Podemos solicitar verificação de identidade antes de processar sua solicitação."
             },
             "cookies": {
                 "heading": "9. Cookies e Tecnologias Semelhantes",
-                "content": "Utilizamos cookies e tecnologias similares para melhorar sua experiencia, analisar o uso da plataforma e personalizar conteudo:\n\n9.1. Cookies Essenciais\nNecessarios para o funcionamento basico da plataforma, como autenticacao e seguranca. Nao podem ser desativados.\n\n9.2. Cookies de Preferencias\nLembram suas escolhas de idioma, tema e outras configuracoes personalizadas.\n\n9.3. Cookies de Analytics\nUtilizados para entender como os usuarios interagem com a plataforma, identificar problemas e melhorar o servico.\n\n9.4. Cookies de Marketing\nUtilizados para entregar anuncios relevantes e medir a eficacia de campanhas (quando aplicavel).\n\n9.5. Gerenciamento de Cookies\nVoce pode gerenciar suas preferencias de cookies atraves das configuracoes do seu navegador. Note que a desativacao de cookies essenciais pode comprometer o funcionamento da plataforma."
+                "content": "Utilizamos cookies e tecnologias similares para melhorar sua experiencia, analisar o uso da plataforma e personalizar conteúdo:\n\n9.1. Cookies Essenciais\nNecessarios para o funcionamento basico da plataforma, como autenticação e seguranca. Não podem ser desativados.\n\n9.2. Cookies de Preferencias\nLembram suas escolhas de idioma, tema e outras configurações personalizadas.\n\n9.3. Cookies de Analytics\nUtilizados para entender como os usuários interagem com a plataforma, identificar problemas e melhorar o serviço.\n\n9.4. Cookies de Marketing\nUtilizados para entregar anuncios relevantes e medir a eficácia de campanhas (quando aplicavel).\n\n9.5. Gerenciamento de Cookies\nVoce pode gerenciar suas preferencias de cookies através das configurações do seu navegador. Note que a desativação de cookies essenciais pode comprometer o funcionamento da plataforma."
             },
             "security": {
                 "heading": "10. Seguranca dos Dados",
-                "content": "Implementamos medidas tecnicas e organizacionais apropriadas para proteger seus dados pessoais contra acesso nao autorizado, alteracao, divulgacao ou destruicao:\n\n10.1. Criptografia\n- Dados sensiveis (tokens de acesso, credenciais de API) sao criptografados em repouso\n- Comunicacao com a plataforma e protegida por TLS/SSL (HTTPS)\n\n10.2. Autenticacao\n- Senhas armazenadas com bcrypt (hashing adaptativo)\n- Suporte a autenticacao de dois fatores (quando habilitada)\n- Sessoes com expiracao automatica\n\n10.3. Controle de Acesso\n- Acesso aos dados restrito a pessoal autorizado\n- Logs de auditoria para rastreamento de atividades\n- Rate limiting para prevenir abusos\n\n10.4. Backups\n- Backups regulares e criptografados\n- Testes periodicos de recuperacao\n\n10.5. Limitacoes\nEmbora nos esforcemos para proteger seus dados, nenhum metodo de transmissao ou armazenamento eletronico e 100% seguro. Nao podemos garantir seguranca absoluta."
+                "content": "Implementamos medidas técnicas e organizacionais apropriadas para proteger seus dados pessoais contra acesso não autorizado, alteração, divulgação ou destruicao:\n\n10.1. Criptografia\n- Dados sensiveis (tokens de acesso, credenciais de API) são criptografados em repouso\n- Comunicação com a plataforma e protegida por TLS/SSL (HTTPS)\n\n10.2. Autenticação\n- Senhas armazenadas com bcrypt (hashing adaptativo)\n- Suporte a autenticação de dois fatores (quando habilitada)\n- Sessoes com expiração automatica\n\n10.3. Controle de Acesso\n- Acesso aos dados restrito a pessoal autorizado\n- Logs de auditoria para rastreamento de atividades\n- Rate limiting para prevenir abusos\n\n10.4. Backups\n- Backups regulares e criptografados\n- Testes periodicos de recuperacao\n\n10.5. Limitacoes\nEmbora nos esforcemos para proteger seus dados, nenhum metodo de transmissão ou armazenamento eletronico e 100% seguro. Não podemos garantir seguranca absoluta."
             },
             "internationalTransfers": {
                 "heading": "11. Transferencias Internacionais de Dados",
-                "content": "Seus dados pessoais podem ser transferidos e processados em paises diferentes daquele em que voce reside. Nossos provedores de servico (Vercel, Neon, Stripe) operam em varios paises, incluindo os Estados Unidos.\n\nQuando transferimos dados para fora do Brasil ou da Uniao Europeia, garantimos que as transferencias sejam realizadas com salvaguardas adequadas, incluindo:\n\n- Clausulas contratuais padrao aprovadas pela Comissao Europeia\n- Certificacoes de adequacao (Privacy Shield, quando aplicavel)\n- Medidas tecnicas e organizacionais para garantir um nivel de protecao equivalente\n\nAo utilizar nosso Servico, voce consente com essas transferencias internacionais."
+                "content": "Seus dados pessoais podem ser transferidos e processados em países diferentes daquele em que você reside. Nossos provedores de serviço (Vercel, Neon, Stripe) operam em varios países, incluindo os Estados Unidos.\n\nQuando transferimos dados para fora do Brasil ou da Uniao Europeia, garantimos que as transferencias sejam realizadas com salvaguardas adequadas, incluindo:\n\n- Clausulas contratuais padrão aprovadas pela Comissao Europeia\n- Certificacoes de adequação (Privacy Shield, quando aplicavel)\n- Medidas técnicas e organizacionais para garantir um nivel de proteção equivalente\n\nAo utilizar nosso Servico, você consente com essas transferencias internacionais."
             },
             "children": {
                 "heading": "12. Privacidade de Criancas",
-                "content": "Nosso Servico nao e destinado a menores de 13 anos. Nao coletamos intencionalmente dados pessoais de criancas menores de 13 anos. Se voce e pai, mae ou responsavel e acredita que seu filho nos forneceu dados pessoais, entre em contato imediatamente pelo e-mail privacy@somedia.techbe.me para que possamos remover essas informacoes.\n\nPara usuarios entre 13 e 18 anos, recomendamos supervisao dos pais ou responsaveis legais."
+                "content": "Nosso Servico não e destinado a menores de 13 anos. Não coletamos intencionalmente dados pessoais de criancas menores de 13 anos. Se você e pai, mãe ou responsavel e acredita que seu filho nos forneceu dados pessoais, entre em contato imediatamente pelo e-mail privacy@somedia.techbe.me para que possamos remover essas informações.\n\nPara usuários entre 13 e 18 anos, recomendamos supervisao dos país ou responsaveis legais."
             },
             "thirdPartyLinks": {
                 "heading": "13. Links para Sites de Terceiros",
-                "content": "Nosso Servico pode conter links para sites, servicos ou aplicativos de terceiros que nao sao operados por nos. Nao temos controle sobre o conteudo e as praticas de privacidade desses sites e nao assumimos responsabilidade por suas politicas.\n\nRecomendamos que voce revise a politica de privacidade de cada site que visitar, especialmente ao conectar contas de redes sociais (Instagram, Facebook, YouTube, TikTok, X, Threads), pois cada plataforma possui suas proprias praticas de privacidade."
+                "content": "Nosso Servico pode conter links para sites, serviços ou aplicativos de terceiros que não são operados por nos. Não temos controle sobre o conteúdo e as práticas de privacidade desses sites e não assumimos responsabilidade por suas políticas.\n\nRecomendamos que você revise a política de privacidade de cada site que visitar, especialmente ao conectar contas de redes sociais (Instagram, Facebook, YouTube, TikTok, X, Threads), pois cada plataforma possui suas proprias práticas de privacidade."
             },
             "changes": {
-                "heading": "14. Alteracoes nesta Politica",
-                "content": "Podemos atualizar esta Politica de Privacidade periodicamente para refletir mudancas em nossas praticas, na legislacao ou nos servicos oferecidos.\n\nNotificaremos voce sobre alteracoes materiais por:\n- E-mail para o endereco cadastrado\n- Aviso na plataforma ao fazer login\n- Atualizacao da data de 'Ultima atualizacao' no topo desta pagina\n\nAlteracoes entram em vigor imediatamente apos a publicacao, a menos que especificado de outra forma. O uso continuado do Servico apos as alteracoes constitui aceitacao da nova politica."
+                "heading": "14. Alterações nesta Politica",
+                "content": "Podemos atualizar esta Politica de Privacidade periodicamente para refletir mudancas em nossas práticas, na legislação ou nos serviços oferecidos.\n\nNotificaremos você sobre alterações materiais por:\n- E-mail para o endereço cadastrado\n- Aviso na plataforma ao fazer login\n- Atualização da data de 'Ultima atualização' no topo desta página\n\nAlteracoes entram em vigor imediatamente após a publicação, a menos que especificado de outra forma. O uso continuado do Servico após as alterações constitui aceitação da nova política."
             },
             "contact": {
                 "heading": "15. Entre em Contato",
-                "content": "Se voce tiver duvidas, preocupacoes ou solicitacoes relacionadas a esta Politica de Privacidade ou ao tratamento dos seus dados pessoais, entre em contato conosco:\n\nE-mail: privacy@somedia.techbe.me\nWebsite: https://somedia.techbe.me\n\nPara questoes relacionadas a protecao de dados no Brasil, voce tambem pode entrar em contato com a Autoridade Nacional de Protecao de Dados (ANPD):\nWebsite: https://www.gov.br/anpd\n\nPara questoes na Uniao Europeia, voce pode contatar a autoridade de protecao de dados do seu pais de residencia."
+                "content": "Se você tiver duvidas, preocupacoes ou solicitacoes relacionadas a esta Politica de Privacidade ou ao tratamento dos seus dados pessoais, entre em contato conosco:\n\nE-mail: privacy@somedia.techbe.me\nWebsite: https://somedia.techbe.me\n\nPara questoes relacionadas a proteção de dados no Brasil, você também pode entrar em contato com a Autoridade Nacional de Proteção de Dados (ANPD):\nWebsite: https://www.gov.br/anpd\n\nPara questoes na Uniao Europeia, você pode contatar a autoridade de proteção de dados do seu país de residencia."
             }
         }
     }
