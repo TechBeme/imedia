@@ -493,18 +493,18 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                                 <div className="relative">
                                     <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                     <Select onValueChange={(v) => {
-                                        if (typeof v !== "string") return;
-                                        if (!v) return;
-                                        if (v === "__create_tag__") {
+                                        const value = (v ?? "") as string;
+                                        if (!value) return;
+                                        if (value === "__create_tag__") {
                                             setShowCreateTag(true);
                                         } else {
-                                            toggleTagId(v);
+                                            toggleTagId(value);
                                         }
                                     }}>
                                         <SelectTrigger className="rounded-lg h-10 pl-9 text-sm">
                                             <SelectValue placeholder={tm("tags")} />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent side="bottom" align="start" sideOffset={4}>
                                             {availableTags.map((tag) => (
                                                 <SelectItem key={tag.id} value={tag.id}>
                                                     <div className="flex items-center gap-2">
@@ -554,7 +554,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                                         <SelectTrigger className="rounded-lg h-10 pl-9 text-sm bg-background">
                                             <SelectValue placeholder={tm("folder")} />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent side="bottom" align="start" sideOffset={4}>
                                             <SelectItem value="">{tm("folder")}</SelectItem>
                                             {folders.map((f) => (
                                                 <SelectItem key={f.id} value={f.id}>{f.name}</SelectItem>
