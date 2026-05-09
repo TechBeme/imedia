@@ -1,7 +1,6 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useRouter, usePathname } from "@/i18n/routing";
 import { locales, type Locale } from "@/lib/i18n";
 import {
     DropdownMenu,
@@ -10,8 +9,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-// Globe icon imported but used via localeFlags
-// import { Globe } from "lucide-react";
 
 const localeLabels: Record<Locale, string> = {
     "pt-BR": "Português",
@@ -26,13 +23,17 @@ const localeFlags: Record<Locale, string> = {
 };
 
 export function LanguageSwitcher() {
-    const router = useRouter();
-    const pathname = usePathname();
     const currentLocale = useLocale();
     const t = useTranslations("common");
 
     function switchLocale(locale: Locale) {
-        router.replace(pathname, { locale });
+        // usePathname() from next-intl may include the locale prefix in some
+        // configurations. We read window.location.pathname directly and strip
+        // the locale prefix manually to build a clean path for the target locale.
+        const currentPath = window.location.pathname;
+        const pathWithoutLocale = currentPath.replace(/^\/(pt-BR|en|es)(\/|$)/, "/") || "/";
+        const newPath = `/${locale}${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`;
+        window.location.href = newPath;
     }
 
     return (
