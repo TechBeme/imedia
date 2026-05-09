@@ -246,7 +246,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
         <Dialog open={open} onOpenChange={(v) => { if (!v) resetForm(); onOpenChange(v); }}>
             <DialogContent
                 showCloseButton={false}
-                className="max-w-full md:max-w-4xl max-h-[95vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none shadow-2xl"
+                className="max-w-[100vw] md:max-w-4xl max-h-[95vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none shadow-2xl"
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b">
@@ -274,7 +274,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="flex flex-col md:flex-row">
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-[1fr_288px]">
                     {/* Left column - Main form */}
                     <div className="flex-1 p-6 space-y-5 min-w-0">
                         {/* Destination URL */}
