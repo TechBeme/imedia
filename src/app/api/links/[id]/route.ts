@@ -2,18 +2,30 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { db } from "@/db";
-import { shortLinks } from "@/db/schema";
+import { shortLinks, linkDeviceRules } from "@/db/schema";
 import { success, error, unauthorized, notFound } from "@/lib/api-response";
 import { withRateLimit } from "@/lib/api-guard";
 import { apiRateLimit } from "@/lib/rate-limit";
 import { getSession } from "@/lib/session";
 import { eq, and } from "drizzle-orm";
 
+const deviceRuleSchema = z.object({
+    os: z.enum(["android", "ios", "windows", "macos", "linux", "other"]),
+    url: z.string().url("Invalid device URL"),
+    priority: z.number().int().min(0).max(100).optional(),
+});
+
 const updateLinkSchema = z.object({
     originalUrl: z.string().url("Invalid URL").optional(),
+    title: z.string().max(200).optional().nullable(),
+    description: z.string().max(1000).optional().nullable(),
+    tags: z.array(z.string().max(50)).max(20).optional().nullable(),
     isActive: z.boolean().optional(),
     password: z.string().min(4).max(100).optional().nullable(),
+    startsAt: z.string().datetime().optional().nullable(),
     expiresAt: z.string().datetime().optional().nullable(),
+    maxClicks: z.number().int().min(1).optional().nullable(),
+    deviceRules: z.array(deviceRuleSchema).max(10).optional().nullable(),
 });
 
 async function getOwnedLink(linkId: string, userId: string) {
@@ -41,7 +53,12 @@ export async function GET(
             return notFound();
         }
 
-        return success({ link });
+        const rules = await db
+            .select()
+            .from(linkDeviceRules)
+            .where(eq(linkDeviceRules.linkId, id));
+
+        return success({ link: { ...link, deviceRules: rules } });
     });
 }
 
@@ -78,6 +95,15 @@ export async function PUT(
         if (parsed.data.originalUrl !== undefined) {
             updates.originalUrl = parsed.data.originalUrl;
         }
+        if (parsed.data.title !== undefined) {
+            updates.title = parsed.data.title;
+        }
+        if (parsed.data.description !== undefined) {
+            updates.description = parsed.data.description;
+        }
+        if (parsed.data.tags !== undefined) {
+            updates.tags = parsed.data.tags;
+        }
         if (parsed.data.isActive !== undefined) {
             updates.isActive = parsed.data.isActive;
         }
@@ -86,10 +112,18 @@ export async function PUT(
                 ? await bcrypt.hash(parsed.data.password, 10)
                 : null;
         }
+        if (parsed.data.startsAt !== undefined) {
+            updates.startsAt = parsed.data.startsAt
+                ? new Date(parsed.data.startsAt)
+                : null;
+        }
         if (parsed.data.expiresAt !== undefined) {
             updates.expiresAt = parsed.data.expiresAt
                 ? new Date(parsed.data.expiresAt)
                 : null;
+        }
+        if (parsed.data.maxClicks !== undefined) {
+            updates.maxClicks = parsed.data.maxClicks;
         }
         updates.updatedAt = new Date();
 
@@ -98,6 +132,21 @@ export async function PUT(
             .set(updates)
             .where(eq(shortLinks.id, id))
             .returning();
+
+        // Update device rules if provided
+        if (parsed.data.deviceRules !== undefined && parsed.data.deviceRules !== null) {
+            await db.delete(linkDeviceRules).where(eq(linkDeviceRules.linkId, id));
+            if (parsed.data.deviceRules.length > 0) {
+                await db.insert(linkDeviceRules).values(
+                    parsed.data.deviceRules.map((rule) => ({
+                        linkId: id,
+                        os: rule.os,
+                        url: rule.url,
+                        priority: rule.priority ?? 0,
+                    }))
+                );
+            }
+        }
 
         return success({ link: updated });
     });

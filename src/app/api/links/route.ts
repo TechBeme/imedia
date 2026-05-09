@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { db } from "@/db";
-import { shortLinks, customDomains } from "@/db/schema";
+import { shortLinks, customDomains, linkDeviceRules } from "@/db/schema";
 import { success, error, unauthorized } from "@/lib/api-response";
 import { withRateLimit } from "@/lib/api-guard";
 import { apiRateLimit } from "@/lib/rate-limit";
@@ -14,6 +14,12 @@ import {
 } from "@/lib/links";
 import { eq, desc, and } from "drizzle-orm";
 
+const deviceRuleSchema = z.object({
+    os: z.enum(["android", "ios", "windows", "macos", "linux", "other"]),
+    url: z.string().url("Invalid device URL"),
+    priority: z.number().int().min(0).max(100).optional(),
+});
+
 const createLinkSchema = z.object({
     originalUrl: z.string().url("Invalid URL"),
     slug: z
@@ -22,9 +28,15 @@ const createLinkSchema = z.object({
         .min(3)
         .max(50)
         .optional(),
+    title: z.string().max(200).optional(),
+    description: z.string().max(1000).optional(),
+    tags: z.array(z.string().max(50)).max(20).optional(),
     password: z.string().min(4).max(100).optional(),
-    expiresAt: z.string().datetime().optional(),
     domain: z.string().min(1).optional(),
+    startsAt: z.string().datetime().optional(),
+    expiresAt: z.string().datetime().optional(),
+    maxClicks: z.number().int().min(1).optional(),
+    deviceRules: z.array(deviceRuleSchema).max(10).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -46,9 +58,20 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const { originalUrl, slug: customSlug, password, expiresAt, domain: customDomain } = parsed.data;
+        const {
+            originalUrl,
+            slug: customSlug,
+            title,
+            description,
+            tags,
+            password,
+            domain: customDomain,
+            startsAt,
+            expiresAt,
+            maxClicks,
+            deviceRules: rules,
+        } = parsed.data;
 
-        // Get session if available (optional auth)
         const session = await getSession();
 
         let domainValue = "";
@@ -106,10 +129,27 @@ export async function POST(req: NextRequest) {
                 slug,
                 customSlug: isCustom,
                 domain: domainValue,
+                title: title || null,
+                description: description || null,
+                tags: tags || null,
                 password: hashedPassword,
+                startsAt: startsAt ? new Date(startsAt) : null,
                 expiresAt: expiresAt ? new Date(expiresAt) : null,
+                maxClicks: maxClicks || null,
             })
             .returning();
+
+        // Insert device rules if provided
+        if (rules && rules.length > 0) {
+            await db.insert(linkDeviceRules).values(
+                rules.map((rule) => ({
+                    linkId: link.id,
+                    os: rule.os,
+                    url: rule.url,
+                    priority: rule.priority ?? 0,
+                }))
+            );
+        }
 
         const baseUrl = domainValue
             ? `https://${domainValue}`
@@ -123,7 +163,12 @@ export async function POST(req: NextRequest) {
             shortUrl,
             customSlug: link.customSlug,
             domain: link.domain,
+            title: link.title,
+            description: link.description,
+            tags: link.tags,
+            startsAt: link.startsAt,
             expiresAt: link.expiresAt,
+            maxClicks: link.maxClicks,
             createdAt: link.createdAt,
         });
     });
@@ -142,6 +187,27 @@ export async function GET(req: NextRequest) {
             .where(eq(shortLinks.userId, session.user.id))
             .orderBy(desc(shortLinks.createdAt));
 
-        return success({ links });
+        // Fetch device rules for each link
+        const linkIds = links.map((l) => l.id);
+        const rules = linkIds.length > 0
+            ? await db.select().from(linkDeviceRules).where(
+                eq(linkDeviceRules.linkId, linkIds[0])
+            )
+            : [];
+
+        // Group rules by linkId
+        const rulesByLink = new Map<string, typeof rules>();
+        for (const rule of rules) {
+            const existing = rulesByLink.get(rule.linkId) || [];
+            existing.push(rule);
+            rulesByLink.set(rule.linkId, existing);
+        }
+
+        const linksWithRules = links.map((link) => ({
+            ...link,
+            deviceRules: rulesByLink.get(link.id) || [],
+        }));
+
+        return success({ links: linksWithRules });
     });
 }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { shortLinks } from "@/db/schema";
+import { shortLinks, linkDeviceRules } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { error } from "@/lib/api-response";
 import { withRateLimit } from "@/lib/api-guard";
@@ -100,6 +100,30 @@ async function getLinkBySlug(slug: string, domain: string) {
     return results[0] || null;
 }
 
+function detectOS(userAgent: string): string {
+    const ua = userAgent.toLowerCase();
+    if (ua.includes("android")) return "android";
+    if (ua.includes("iphone") || ua.includes("ipad") || ua.includes("ipod")) return "ios";
+    if (ua.includes("windows")) return "windows";
+    if (ua.includes("macintosh") || ua.includes("mac os")) return "macos";
+    if (ua.includes("linux")) return "linux";
+    return "other";
+}
+
+async function getDeviceRules(linkId: string) {
+    return db
+        .select()
+        .from(linkDeviceRules)
+        .where(eq(linkDeviceRules.linkId, linkId))
+        .orderBy(linkDeviceRules.priority);
+}
+
+function resolveRedirectUrl(link: typeof shortLinks.$inferSelect, userAgent: string): string {
+    const os = detectOS(userAgent);
+    // Device rules are resolved at redirect time via getDeviceRules
+    return link.originalUrl;
+}
+
 export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ slug: string }> }
@@ -125,9 +149,23 @@ export async function GET(
             );
         }
 
+        if (link.startsAt && new Date() < new Date(link.startsAt)) {
+            return new NextResponse(
+                errorHtml("Link Not Active Yet", "This link is not active yet. Please check back later."),
+                { status: 403, headers: { "Content-Type": "text/html" } }
+            );
+        }
+
         if (link.expiresAt && new Date() > new Date(link.expiresAt)) {
             return new NextResponse(
                 errorHtml("Link Expired", "This link has expired and is no longer available."),
+                { status: 410, headers: { "Content-Type": "text/html" } }
+            );
+        }
+
+        if (link.maxClicks !== null && link.clickCount >= link.maxClicks) {
+            return new NextResponse(
+                errorHtml("Link Limit Reached", "This link has reached its maximum number of clicks."),
                 { status: 410, headers: { "Content-Type": "text/html" } }
             );
         }
@@ -139,9 +177,19 @@ export async function GET(
             });
         }
 
+        // Resolve device-specific URL
+        let redirectUrl = link.originalUrl;
+        const userAgent = req.headers.get("user-agent") || "";
+        const os = detectOS(userAgent);
+        const deviceRules = await getDeviceRules(link.id);
+        const matchingRule = deviceRules.find((r) => r.os === os);
+        if (matchingRule) {
+            redirectUrl = matchingRule.url;
+        }
+
         // Record click and redirect
         await recordClick(link.id, req);
-        return NextResponse.redirect(link.originalUrl, 302);
+        return NextResponse.redirect(redirectUrl, 302);
     });
 }
 
@@ -170,6 +218,13 @@ export async function POST(
             );
         }
 
+        if (link.startsAt && new Date() < new Date(link.startsAt)) {
+            return new NextResponse(
+                errorHtml("Link Not Active Yet", "This link is not active yet. Please check back later."),
+                { status: 403, headers: { "Content-Type": "text/html" } }
+            );
+        }
+
         if (link.expiresAt && new Date() > new Date(link.expiresAt)) {
             return new NextResponse(
                 errorHtml("Link Expired", "This link has expired and is no longer available."),
@@ -177,12 +232,29 @@ export async function POST(
             );
         }
 
+        if (link.maxClicks !== null && link.clickCount >= link.maxClicks) {
+            return new NextResponse(
+                errorHtml("Link Limit Reached", "This link has reached its maximum number of clicks."),
+                { status: 410, headers: { "Content-Type": "text/html" } }
+            );
+        }
+
         const formData = await req.formData();
         const password = formData.get("password") as string;
 
+        // Resolve device-specific URL
+        let redirectUrl = link.originalUrl;
+        const userAgent = req.headers.get("user-agent") || "";
+        const os = detectOS(userAgent);
+        const deviceRules = await getDeviceRules(link.id);
+        const matchingRule = deviceRules.find((r) => r.os === os);
+        if (matchingRule) {
+            redirectUrl = matchingRule.url;
+        }
+
         if (!link.password) {
             await recordClick(link.id, req);
-            return NextResponse.redirect(link.originalUrl, 302);
+            return NextResponse.redirect(redirectUrl, 302);
         }
 
         const valid = await bcrypt.compare(password, link.password);
@@ -194,6 +266,6 @@ export async function POST(
         }
 
         await recordClick(link.id, req);
-        return NextResponse.redirect(link.originalUrl, 302);
+        return NextResponse.redirect(redirectUrl, 302);
     });
 }

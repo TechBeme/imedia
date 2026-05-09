@@ -228,8 +228,13 @@ export const shortLinks = pgTable(
         slug: text("slug").notNull().unique(),
         customSlug: boolean("custom_slug").notNull().default(false),
         domain: text("domain").notNull().default(""),
+        title: text("title"),
+        description: text("description"),
         password: text("password"),
+        tags: text("tags").array(),
+        startsAt: timestamp("starts_at"),
         expiresAt: timestamp("expires_at"),
+        maxClicks: integer("max_clicks"),
         isActive: boolean("is_active").notNull().default(true),
         clickCount: integer("click_count").notNull().default(0),
         createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -240,6 +245,24 @@ export const shortLinks = pgTable(
         index("short_links_user_idx").on(table.userId),
         index("short_links_domain_idx").on(table.domain),
         index("short_links_active_idx").on(table.isActive),
+    ]
+);
+
+export const linkDeviceRules = pgTable(
+    "link_device_rules",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        linkId: uuid("link_id")
+            .notNull()
+            .references(() => shortLinks.id, { onDelete: "cascade" }),
+        os: text("os").notNull(), // android, ios, windows, macos, linux, other
+        url: text("url").notNull(),
+        priority: integer("priority").notNull().default(0),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("link_device_rules_link_idx").on(table.linkId),
+        index("link_device_rules_os_idx").on(table.os),
     ]
 );
 
