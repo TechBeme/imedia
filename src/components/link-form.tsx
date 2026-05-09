@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, startTransition } from "react";
 import { useTranslations } from "next-intl";
 import {
     Dialog,
@@ -50,12 +50,14 @@ export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkForm
     const tc = useTranslations("common");
     const isEditing = !!initialData?.id;
 
-    const [originalUrl, setOriginalUrl] = useState(initialData?.originalUrl || "");
-    const [slug, setSlug] = useState(initialData?.slug || "");
-    const [password, setPassword] = useState(initialData?.password || "");
-    const [expiresAt, setExpiresAt] = useState(initialData?.expiresAt || "");
-    const [isActive, setIsActive] = useState(initialData?.isActive ?? true);
-    const [domain, setDomain] = useState(initialData?.domain || "");
+    const formKey = useMemo(() => initialData?.id || "new", [initialData?.id]);
+
+    const [originalUrl, setOriginalUrl] = useState(() => initialData?.originalUrl || "");
+    const [slug, setSlug] = useState(() => initialData?.slug || "");
+    const [password, setPassword] = useState(() => initialData?.password || "");
+    const [expiresAt, setExpiresAt] = useState(() => initialData?.expiresAt || "");
+    const [isActive, setIsActive] = useState(() => initialData?.isActive ?? true);
+    const [domain, setDomain] = useState(() => initialData?.domain || "");
     const [domains, setDomains] = useState<DomainOption[]>([]);
     const [loading, setLoading] = useState(false);
     const [domainsLoading, setDomainsLoading] = useState(false);
@@ -63,14 +65,14 @@ export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkForm
     useEffect(() => {
         if (!open || isEditing) return;
         let cancelled = false;
-        setDomainsLoading(true);
+        startTransition(() => setDomainsLoading(true));
         fetch("/api/domains")
             .then((res) => res.json())
             .then((data) => {
                 if (cancelled) return;
                 if (data.data?.domains) {
-                    setDomains(
-                        data.data.domains.filter((d: DomainOption) => d.isVerified)
+                    startTransition(() =>
+                        setDomains(data.data.domains.filter((d: DomainOption) => d.isVerified))
                     );
                 }
             })
@@ -78,26 +80,10 @@ export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkForm
                 // silently fail - domains are optional
             })
             .finally(() => {
-                if (!cancelled) setDomainsLoading(false);
+                if (!cancelled) startTransition(() => setDomainsLoading(false));
             });
         return () => { cancelled = true; };
     }, [open, isEditing]);
-
-    // Initialize form from initialData using a ref to avoid setState in effect
-    const initialDataRef = React.useRef(initialData);
-    const [initialized, setInitialized] = useState(false);
-    useEffect(() => {
-        if (initialData && !initialized) {
-            initialDataRef.current = initialData;
-            setOriginalUrl(initialData.originalUrl || "");
-            setSlug(initialData.slug || "");
-            setPassword(initialData.password || "");
-            setExpiresAt(initialData.expiresAt || "");
-            setIsActive(initialData.isActive ?? true);
-            setDomain(initialData.domain || "");
-            setInitialized(true);
-        }
-    }, [initialData, initialized]);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -134,7 +120,7 @@ export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkForm
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent key={formKey} className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>
                         {isEditing ? t("edit") : t("create")}
