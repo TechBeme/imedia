@@ -1,6 +1,7 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { locales, type Locale } from "@/lib/i18n";
 import {
     DropdownMenu,
@@ -22,14 +23,20 @@ const localeFlags: Record<Locale, string> = {
     es: "🇪🇸",
 };
 
+function getLocaleFromPath(pathname: string): Locale {
+    const segment = pathname.split("/")[1];
+    return locales.includes(segment as Locale) ? (segment as Locale) : "pt-BR";
+}
+
 export function LanguageSwitcher() {
-    const currentLocale = useLocale();
+    const [currentLocale, setCurrentLocale] = useState<Locale>("pt-BR");
     const t = useTranslations("common");
 
+    useEffect(() => {
+        setCurrentLocale(getLocaleFromPath(window.location.pathname));
+    }, []);
+
     function switchLocale(locale: Locale) {
-        // usePathname() from next-intl may include the locale prefix in some
-        // configurations. We read window.location.pathname directly and strip
-        // the locale prefix manually to build a clean path for the target locale.
         const currentPath = window.location.pathname;
         const pathWithoutLocale = currentPath.replace(/^\/(pt-BR|en|es)(\/|$)/, "/") || "/";
         const newPath = `/${locale}${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`;
@@ -39,18 +46,19 @@ export function LanguageSwitcher() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger
-                render={
+                render={(props) => (
                     <Button
+                        {...props}
                         variant="ghost"
                         size="sm"
                         className="h-9 gap-2 rounded-xl cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50 px-3"
                         aria-label={t("switchLanguage")}
-                    />
-                }
-            >
-                <span className="text-base leading-none">{localeFlags[currentLocale as Locale]}</span>
-                <span className="hidden sm:inline text-sm">{localeLabels[currentLocale as Locale]}</span>
-            </DropdownMenuTrigger>
+                    >
+                        <span className="text-base leading-none">{localeFlags[currentLocale as Locale]}</span>
+                        <span className="hidden sm:inline text-sm">{localeLabels[currentLocale as Locale]}</span>
+                    </Button>
+                )}
+            />
             <DropdownMenuContent align="end" className="rounded-xl">
                 {locales.map((locale) => (
                     <DropdownMenuItem

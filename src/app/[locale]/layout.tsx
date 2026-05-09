@@ -14,7 +14,7 @@ export default async function LocaleLayout({
     const messages = await getMessages({ locale });
 
     return (
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages} locale={locale}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                 {children}
                 <Toaster position="top-right" richColors />
