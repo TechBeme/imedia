@@ -13,7 +13,7 @@ import {
 import { Globe, Check } from "lucide-react";
 
 const localeLabels: Record<Locale, string> = {
-    "pt-BR": "Português (Brasil)",
+    "pt-BR": "Português",
     en: "English",
     es: "Español",
 };
@@ -55,11 +55,11 @@ export function LanguageSwitcher() {
                         className="flex items-center gap-2 cursor-pointer"
                     >
                         <span className="text-base leading-none">{localeFlags[locale]}</span>
-                        <span className={locale === currentLocale ? "text-red-500 font-medium" : ""}>
+                        <span className={locale === currentLocale ? "text-primary font-medium" : ""}>
                             {localeLabels[locale]}
                         </span>
                         {locale === currentLocale && (
-                            <Check className="ml-auto h-4 w-4 text-red-500" />
+                            <Check className="ml-auto h-4 w-4 text-primary" />
                         )}
                     </DropdownMenuItem>
                 ))}
