@@ -282,7 +282,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
               <Label className="text-sm font-medium">{t("shortUrl")}</Label>
             </div>
             <div className="flex gap-2">
-              <Select value={domain} onValueChange={setDomain}>
+              <Select value={domain} onValueChange={(v) => setDomain(v ?? "")}>
                 <SelectTrigger className="w-[140px] rounded-lg">
                   <SelectValue placeholder={t("defaultDomain")} />
                 </SelectTrigger>
@@ -348,7 +348,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="folder">{t("folder")}</Label>
-                      <Select value={folderId} onValueChange={setFolderId}>
+                      <Select value={folderId} onValueChange={(v) => setFolderId(v ?? "")}>
                         <SelectTrigger className="rounded-lg">
                           <SelectValue placeholder={t("noFolder")} />
                         </SelectTrigger>
@@ -466,7 +466,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                         <div key={index} className="flex items-center gap-2">
                           <Select
                             value={rule.os}
-                            onValueChange={(v) => handleUpdateDeviceRule(index, "os", v)}
+                            onValueChange={(v) => handleUpdateDeviceRule(index, "os", v ?? "")}
                           >
                             <SelectTrigger className="w-[140px] rounded-lg">
                               <SelectValue />
