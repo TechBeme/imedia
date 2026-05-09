@@ -32,9 +32,7 @@ export function LanguageSwitcher() {
     const t = useTranslations("common");
 
     function switchLocale(locale: Locale) {
-        const newPath = pathname.replace(`/${currentLocale}`, `/${locale}`);
-        router.push(newPath);
-        router.refresh();
+        router.replace(pathname, { locale });
     }
 
     return (

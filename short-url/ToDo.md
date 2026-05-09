@@ -34,8 +34,8 @@ Título e descrição externos Open Graph/Prévia
 Senha
 Redirecionamento por device, OS, etc
 Lista de domínios/adicionar novo domínio
-URL de redirecionamento caso o linha tenha expirado
+URL de redirecionamento caso o link tenha expirado
 
 Configs:
-URL default de redirecionamento caso o linha tenha expirado
+URL default de redirecionamento caso o link tenha expirado
 URL de redirecionamento em links not found
