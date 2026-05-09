@@ -38,16 +38,18 @@ export function LanguageSwitcher() {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-9 gap-2 rounded-xl cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50 px-3"
-                    aria-label={t("switchLanguage")}
-                >
-                    <span className="text-base leading-none">{localeFlags[currentLocale as Locale]}</span>
-                    <span className="hidden sm:inline text-sm">{localeLabels[currentLocale as Locale]}</span>
-                </Button>
+            <DropdownMenuTrigger
+                render={
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-9 gap-2 rounded-xl cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50 px-3"
+                        aria-label={t("switchLanguage")}
+                    />
+                }
+            >
+                <span className="text-base leading-none">{localeFlags[currentLocale as Locale]}</span>
+                <span className="hidden sm:inline text-sm">{localeLabels[currentLocale as Locale]}</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="rounded-xl">
                 {locales.map((locale) => (
