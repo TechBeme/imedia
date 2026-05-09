@@ -38,55 +38,49 @@ export async function GET(req: NextRequest) {
             const appSecret = process.env.INSTAGRAM_APP_SECRET!;
             const redirectUri = process.env.INSTAGRAM_REDIRECT_URI!;
 
-            // 1. Exchange code for access token
-            const tokenUrl = new URL("https://graph.facebook.com/v18.0/oauth/access_token");
-            tokenUrl.searchParams.set("client_id", appId);
-            tokenUrl.searchParams.set("client_secret", appSecret);
-            tokenUrl.searchParams.set("redirect_uri", redirectUri);
-            tokenUrl.searchParams.set("code", code);
+            // 1. Exchange code for short-lived access token
+            const tokenForm = new URLSearchParams();
+            tokenForm.set("client_id", appId);
+            tokenForm.set("client_secret", appSecret);
+            tokenForm.set("grant_type", "authorization_code");
+            tokenForm.set("redirect_uri", redirectUri);
+            tokenForm.set("code", code);
 
-            const tokenResponse = await fetch(tokenUrl.toString());
+            const tokenResponse = await fetch("https://api.instagram.com/oauth/access_token", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: tokenForm.toString(),
+            });
             const tokenData = await tokenResponse.json();
 
             if (!tokenData.access_token) {
-                throw new Error(tokenData.error?.message || "Failed to get access token");
+                throw new Error(tokenData.error_message || "Failed to get access token");
             }
 
-            const accessToken = tokenData.access_token;
+            const shortLivedToken = tokenData.access_token;
+            const igUserId = tokenData.user_id;
 
-            // 2. Get user's Facebook pages
-            const pagesRes = await fetch(
-                `https://graph.facebook.com/v18.0/me/accounts?access_token=${accessToken}`
-            );
-            const pagesData = await pagesRes.json();
+            // 2. Exchange for long-lived access token
+            const longLivedUrl = new URL("https://graph.instagram.com/access_token");
+            longLivedUrl.searchParams.set("grant_type", "ig_exchange_token");
+            longLivedUrl.searchParams.set("client_secret", appSecret);
+            longLivedUrl.searchParams.set("access_token", shortLivedToken);
 
-            if (!pagesData.data || pagesData.data.length === 0) {
-                throw new Error("No Facebook pages found");
-            }
+            const longLivedRes = await fetch(longLivedUrl.toString());
+            const longLivedData = await longLivedRes.json();
 
-            const page = pagesData.data[0];
-            const pageAccessToken = page.access_token;
-            const pageId = page.id;
+            const accessToken = longLivedData.access_token || shortLivedToken;
+            const expiresIn = longLivedData.expires_in || 5184000; // ~60 days default
 
-            // 3. Get Instagram Business Account connected to the page
-            const igRes = await fetch(
-                `https://graph.facebook.com/v18.0/${pageId}?fields=instagram_business_account&access_token=${pageAccessToken}`
-            );
-            const igData = await igRes.json();
+            // 3. Get Instagram account info
+            const igInfoUrl = new URL(`https://graph.instagram.com/${igUserId}`);
+            igInfoUrl.searchParams.set("fields", "username,account_type,media_count");
+            igInfoUrl.searchParams.set("access_token", accessToken);
 
-            if (!igData.instagram_business_account) {
-                throw new Error("No Instagram Business Account connected to this page");
-            }
-
-            const igBusinessId = igData.instagram_business_account.id;
-
-            // 4. Get Instagram account info
-            const igInfoRes = await fetch(
-                `https://graph.facebook.com/v18.0/${igBusinessId}?fields=username,profile_picture_url&access_token=${pageAccessToken}`
-            );
+            const igInfoRes = await fetch(igInfoUrl.toString());
             const igInfo = await igInfoRes.json();
 
-            // 5. Save to database
+            // 4. Save to database
             const existing = await db
                 .select()
                 .from(socialAccounts)
@@ -102,12 +96,11 @@ export async function GET(req: NextRequest) {
                 await db
                     .update(socialAccounts)
                     .set({
-                        providerAccountId: igBusinessId,
+                        providerAccountId: String(igUserId),
                         username: igInfo.username,
                         displayName: igInfo.username,
-                        profilePicture: igInfo.profile_picture_url,
-                        accessToken: pageAccessToken,
-                        expiresAt: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // ~60 days
+                        accessToken: accessToken,
+                        expiresAt: new Date(Date.now() + expiresIn * 1000),
                         isActive: true,
                         updatedAt: new Date(),
                     })
@@ -116,12 +109,11 @@ export async function GET(req: NextRequest) {
                 await db.insert(socialAccounts).values({
                     userId: session.user.id,
                     platform: "instagram",
-                    providerAccountId: igBusinessId,
+                    providerAccountId: String(igUserId),
                     username: igInfo.username,
                     displayName: igInfo.username,
-                    profilePicture: igInfo.profile_picture_url,
-                    accessToken: pageAccessToken,
-                    expiresAt: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+                    accessToken: accessToken,
+                    expiresAt: new Date(Date.now() + expiresIn * 1000),
                     isActive: true,
                 });
             }
