@@ -33,11 +33,35 @@ export async function GET(
 
         // Parse date range from query params
         const { searchParams } = new URL(req.url);
+        const preset = searchParams.get("preset") as "24h" | "7d" | "30d" | "90d" | "1y" | "all" | null;
         const fromParam = searchParams.get("from");
         const toParam = searchParams.get("to");
 
         let dateRange: { from: Date; to: Date } | undefined;
-        if (fromParam && toParam) {
+        const now = new Date();
+
+        if (preset && preset !== "all") {
+            const to = new Date(now);
+            const from = new Date(now);
+            switch (preset) {
+                case "24h":
+                    from.setHours(from.getHours() - 24);
+                    break;
+                case "7d":
+                    from.setDate(from.getDate() - 7);
+                    break;
+                case "30d":
+                    from.setDate(from.getDate() - 30);
+                    break;
+                case "90d":
+                    from.setDate(from.getDate() - 90);
+                    break;
+                case "1y":
+                    from.setFullYear(from.getFullYear() - 1);
+                    break;
+            }
+            dateRange = { from, to };
+        } else if (fromParam && toParam) {
             const from = new Date(fromParam);
             const to = new Date(toParam);
             // Limit range to max 365 days

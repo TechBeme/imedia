@@ -26,21 +26,33 @@ import {
     Smartphone,
     Monitor,
     Laptop,
-    Tablet,
     Globe,
     Tag,
     Link2,
     Calendar,
     Hash,
     Shield,
-    ChevronDown,
-    ChevronUp,
+    Folder,
+    Image,
+    ExternalLink,
+    Share2,
 } from "lucide-react";
 
 interface DomainOption {
     id: string;
     domain: string;
     isVerified: boolean;
+}
+
+interface FolderOption {
+    id: string;
+    name: string;
+}
+
+interface TagOption {
+    id: string;
+    name: string;
+    color: string | null;
 }
 
 export interface DeviceRule {
@@ -56,13 +68,19 @@ interface LinkFormData {
     title: string;
     description: string;
     tags: string[];
+    tagIds: string[];
     password: string;
     domain: string;
+    folderId: string;
     startsAt: string;
     expiresAt: string;
     maxClicks: string;
     isActive: boolean;
     deviceRules: DeviceRule[];
+    ogTitle: string;
+    ogDescription: string;
+    ogImageUrl: string;
+    expiredRedirectUrl: string;
 }
 
 interface LinkCreateFormProps {
@@ -90,9 +108,11 @@ export function LinkCreateForm({ initialData, onSubmit, isEditing = false }: Lin
     const [title, setTitle] = useState(initialData?.title || "");
     const [description, setDescription] = useState(initialData?.description || "");
     const [tags, setTags] = useState<string[]>(initialData?.tags || []);
+    const [tagIds, setTagIds] = useState<string[]>(initialData?.tagIds || []);
     const [tagInput, setTagInput] = useState("");
     const [password, setPassword] = useState(initialData?.password || "");
     const [domain, setDomain] = useState(initialData?.domain || "");
+    const [folderId, setFolderId] = useState(initialData?.folderId || "");
     const [startsAt, setStartsAt] = useState(initialData?.startsAt || "");
     const [expiresAt, setExpiresAt] = useState(initialData?.expiresAt || "");
     const [maxClicks, setMaxClicks] = useState(initialData?.maxClicks || "");
@@ -100,23 +120,66 @@ export function LinkCreateForm({ initialData, onSubmit, isEditing = false }: Lin
     const [deviceRules, setDeviceRules] = useState<DeviceRule[]>(
         initialData?.deviceRules || []
     );
+    const [ogTitle, setOgTitle] = useState(initialData?.ogTitle || "");
+    const [ogDescription, setOgDescription] = useState(initialData?.ogDescription || "");
+    const [ogImageUrl, setOgImageUrl] = useState(initialData?.ogImageUrl || "");
+    const [expiredRedirectUrl, setExpiredRedirectUrl] = useState(initialData?.expiredRedirectUrl || "");
+
     const [domains, setDomains] = useState<DomainOption[]>([]);
+    const [folders, setFolders] = useState<FolderOption[]>([]);
+    const [availableTags, setAvailableTags] = useState<TagOption[]>([]);
     const [loading, setLoading] = useState(false);
     const [domainsLoading, setDomainsLoading] = useState(false);
-    const [showAdvanced, setShowAdvanced] = useState(false);
 
     useEffect(() => {
         if (isEditing) return;
+        let cancelled = false;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setDomainsLoading(true);
-        fetch("/api/domains")
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.data?.domains) {
-                    setDomains(data.data.domains.filter((d: DomainOption) => d.isVerified));
+        Promise.all([
+            fetch("/api/domains").then((r) => r.json()),
+            fetch("/api/links/folders").then((r) => r.json()),
+            fetch("/api/links/tags").then((r) => r.json()),
+        ])
+            .then(([domainsData, foldersData, tagsData]) => {
+                if (cancelled) return;
+                if (domainsData.data?.domains) {
+                    setDomains(domainsData.data.domains.filter((d: DomainOption) => d.isVerified));
+                }
+                if (foldersData.data?.folders) {
+                    setFolders(foldersData.data.folders);
+                }
+                if (tagsData.data?.tags) {
+                    setAvailableTags(tagsData.data.tags);
                 }
             })
-            .catch(() => {})
-            .finally(() => setDomainsLoading(false));
+            .catch(() => { })
+            .finally(() => {
+                if (!cancelled) setDomainsLoading(false);
+            });
+        return () => { cancelled = true; };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Load folders/tags for editing mode too
+    useEffect(() => {
+        if (!isEditing) return;
+        let cancelled = false;
+        Promise.all([
+            fetch("/api/links/folders").then((r) => r.json()),
+            fetch("/api/links/tags").then((r) => r.json()),
+        ])
+            .then(([foldersData, tagsData]) => {
+                if (cancelled) return;
+                if (foldersData.data?.folders) {
+                    setFolders(foldersData.data.folders);
+                }
+                if (tagsData.data?.tags) {
+                    setAvailableTags(tagsData.data.tags);
+                }
+            })
+            .catch(() => { });
+        return () => { cancelled = true; };
     }, [isEditing]);
 
     function handleAddTag(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -132,6 +195,12 @@ export function LinkCreateForm({ initialData, onSubmit, isEditing = false }: Lin
 
     function handleRemoveTag(tag: string) {
         setTags(tags.filter((t) => t !== tag));
+    }
+
+    function toggleTagId(tagId: string) {
+        setTagIds((prev) =>
+            prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
+        );
     }
 
     function handleAddDeviceRule() {
@@ -164,13 +233,19 @@ export function LinkCreateForm({ initialData, onSubmit, isEditing = false }: Lin
                 title: title.trim(),
                 description: description.trim(),
                 tags,
+                tagIds,
                 password: password.trim(),
                 domain,
+                folderId,
                 startsAt,
                 expiresAt,
                 maxClicks,
                 isActive,
                 deviceRules: deviceRules.filter((r) => r.url.trim()),
+                ogTitle: ogTitle.trim(),
+                ogDescription: ogDescription.trim(),
+                ogImageUrl: ogImageUrl.trim(),
+                expiredRedirectUrl: expiredRedirectUrl.trim(),
             });
             router.push("/links");
         } catch {
@@ -244,11 +319,48 @@ export function LinkCreateForm({ initialData, onSubmit, isEditing = false }: Lin
                         />
                     </div>
 
+                    {/* Folder */}
+                    {folders.length > 0 && (
+                        <div className="space-y-2">
+                            <Label htmlFor="folder" className="flex items-center gap-1">
+                                <Folder className="h-3.5 w-3.5" />
+                                {t("folder")}
+                            </Label>
+                            <Select value={folderId} onValueChange={(val) => setFolderId(val || "")}>
+                                <SelectTrigger id="folder" className="w-full rounded-xl">
+                                    <SelectValue placeholder={t("noFolder")} />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="">{t("noFolder")}</SelectItem>
+                                    {folders.map((f) => (
+                                        <SelectItem key={f.id} value={f.id}>{f.name}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
+
+                    {/* Tags */}
                     <div className="space-y-2">
-                        <Label htmlFor="tags" className="flex items-center gap-1">
+                        <Label className="flex items-center gap-1">
                             <Tag className="h-3.5 w-3.5" />
                             {t("tags")}
                         </Label>
+                        {availableTags.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 mb-2">
+                                {availableTags.map((tag) => (
+                                    <Badge
+                                        key={tag.id}
+                                        variant={tagIds.includes(tag.id) ? "default" : "outline"}
+                                        className="cursor-pointer rounded-md text-xs"
+                                        style={tagIds.includes(tag.id) && tag.color ? { backgroundColor: tag.color } : undefined}
+                                        onClick={() => toggleTagId(tag.id)}
+                                    >
+                                        {tag.name}
+                                    </Badge>
+                                ))}
+                            </div>
+                        )}
                         <div className="flex flex-wrap gap-2 mb-2">
                             <AnimatePresence>
                                 {tags.map((tag) => (
@@ -271,7 +383,6 @@ export function LinkCreateForm({ initialData, onSubmit, isEditing = false }: Lin
                             </AnimatePresence>
                         </div>
                         <Input
-                            id="tags"
                             placeholder={t("tagsPlaceholder")}
                             value={tagInput}
                             onChange={(e) => setTagInput(e.target.value)}
@@ -279,6 +390,56 @@ export function LinkCreateForm({ initialData, onSubmit, isEditing = false }: Lin
                             className="rounded-xl"
                         />
                         <p className="text-xs text-muted-foreground">{t("tagsHelp")}</p>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Open Graph */}
+            <Card className="glass-card">
+                <CardHeader className="pb-4">
+                    <CardTitle className="text-base font-medium flex items-center gap-2">
+                        <Share2 className="h-4 w-4 text-primary" />
+                        {t("openGraph")}
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <p className="text-xs text-muted-foreground">{t("ogHelp")}</p>
+                    <div className="space-y-2">
+                        <Label htmlFor="ogTitle">{t("ogTitle")}</Label>
+                        <Input
+                            id="ogTitle"
+                            placeholder={t("ogTitlePlaceholder")}
+                            value={ogTitle}
+                            onChange={(e) => setOgTitle(e.target.value)}
+                            className="rounded-xl"
+                            maxLength={200}
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="ogDescription">{t("ogDescription")}</Label>
+                        <Textarea
+                            id="ogDescription"
+                            placeholder={t("ogDescriptionPlaceholder")}
+                            value={ogDescription}
+                            onChange={(e) => setOgDescription(e.target.value)}
+                            className="rounded-xl min-h-[60px] resize-none"
+                            maxLength={500}
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="ogImageUrl" className="flex items-center gap-1">
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
+                            <Image className="h-3.5 w-3.5" aria-hidden="true" />
+                            {t("ogImageUrl")}
+                        </Label>
+                        <Input
+                            id="ogImageUrl"
+                            type="url"
+                            placeholder="https://example.com/image.jpg"
+                            value={ogImageUrl}
+                            onChange={(e) => setOgImageUrl(e.target.value)}
+                            className="rounded-xl"
+                        />
                     </div>
                 </CardContent>
             </Card>
@@ -386,6 +547,22 @@ export function LinkCreateForm({ initialData, onSubmit, isEditing = false }: Lin
                             onChange={(e) => setMaxClicks(e.target.value)}
                             className="rounded-xl"
                         />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="expiredRedirectUrl" className="flex items-center gap-1">
+                            <ExternalLink className="h-3.5 w-3.5" />
+                            {t("expiredRedirectUrl")}
+                        </Label>
+                        <Input
+                            id="expiredRedirectUrl"
+                            type="url"
+                            placeholder={t("expiredRedirectUrlPlaceholder")}
+                            value={expiredRedirectUrl}
+                            onChange={(e) => setExpiredRedirectUrl(e.target.value)}
+                            className="rounded-xl"
+                        />
+                        <p className="text-xs text-muted-foreground">{t("expiredRedirectUrlHelp")}</p>
                     </div>
                 </CardContent>
             </Card>

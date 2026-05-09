@@ -8,7 +8,7 @@ export default async function DashboardLayout({
     children: React.ReactNode;
     params: Promise<{ locale: string }>;
 }) {
-    const { locale } = await params;
+    await params;
 
     return (
         <div className="min-h-screen bg-gray-50/50 dark:bg-background">

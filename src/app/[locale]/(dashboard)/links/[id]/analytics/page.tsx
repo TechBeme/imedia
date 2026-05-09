@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { motion } from "motion/react";
 import { LinkAnalytics } from "@/components/link-analytics";
-import { ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Download, Loader2 } from "lucide-react";
 
 interface LinkInfo {
     id: string;
@@ -17,29 +16,6 @@ interface LinkInfo {
     slug: string;
     clickCount: number;
     createdAt: string;
-}
-
-interface AnalyticsData {
-    totalClicks: number;
-    uniqueClicks: number;
-    clicksToday: number;
-    clicksThisWeek: number;
-    clicksOverTime: { date: string; clicks: number }[];
-    topCountries: { country: string; clicks: number }[];
-    devices: { device: string; clicks: number }[];
-    browsers: { browser: string; clicks: number }[];
-    operatingSystems: { os: string; clicks: number }[];
-    referrers: { referrer: string; clicks: number }[];
-    recentClicks: {
-        ip: string | null;
-        country: string | null;
-        city: string | null;
-        device: string | null;
-        browser: string | null;
-        os: string | null;
-        referrer: string | null;
-        clickedAt: Date;
-    }[];
 }
 
 const containerVariants = {
@@ -52,60 +28,81 @@ const itemVariants = {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" as const } },
 };
 
+type Preset = "24h" | "7d" | "30d" | "90d" | "1y" | "all";
+
 export default function LinkAnalyticsPage() {
     const t = useTranslations("linkAnalytics");
-    const tl = useTranslations("links");
     const tc = useTranslations("common");
     const router = useRouter();
     const params = useParams();
     const linkId = params.id as string;
 
     const [link, setLink] = useState<LinkInfo | null>(null);
-    const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+    const [analytics, setAnalytics] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [dateRange, setDateRange] = useState<"7d" | "30d" | "90d" | "all">("30d");
+    const [preset, setPreset] = useState<Preset>("30d");
+    const [downloading, setDownloading] = useState(false);
 
     const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/l/${link?.slug || ""}`;
 
     useEffect(() => {
-        if (linkId) {
-            fetchLink();
-            fetchAnalytics();
-        }
-    }, [linkId, dateRange]);
+        if (!linkId) return;
+        let cancelled = false;
 
-    async function fetchLink() {
-        try {
-            const res = await fetch(`/api/links/${linkId}`);
-            const data = await res.json();
-            if (data.data?.link) {
-                setLink(data.data.link);
+        async function loadLink() {
+            try {
+                const res = await fetch(`/api/links/${linkId}`);
+                const data = await res.json();
+                if (!cancelled && data.data?.link) {
+                    setLink(data.data.link);
+                }
+            } catch {
+                // silently fail
             }
-        } catch {
-            // silently fail
         }
-    }
 
-    async function fetchAnalytics() {
-        setLoading(true);
-        try {
-            let url = `/api/links/${linkId}/analytics`;
-            if (dateRange !== "all") {
-                const days = dateRange === "7d" ? 7 : dateRange === "30d" ? 30 : 90;
-                const to = new Date();
-                const from = new Date();
-                from.setDate(from.getDate() - days);
-                url += `?from=${from.toISOString()}&to=${to.toISOString()}`;
+        async function loadAnalytics() {
+            if (!cancelled) setLoading(true);
+            try {
+                const url = `/api/links/${linkId}/analytics?preset=${preset}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                if (!cancelled && data.data?.analytics) {
+                    setAnalytics(data.data.analytics);
+                }
+            } catch {
+                if (!cancelled) toast.error(tc("error"));
+            } finally {
+                if (!cancelled) setLoading(false);
             }
+        }
+
+        loadLink();
+        loadAnalytics();
+
+        return () => { cancelled = true; };
+    }, [linkId, preset, tc]);
+
+    async function handleDownload() {
+        setDownloading(true);
+        try {
+            const url = `/api/links/export?linkId=${linkId}&preset=${preset}`;
             const res = await fetch(url);
-            const data = await res.json();
-            if (data.data?.analytics) {
-                setAnalytics(data.data.analytics);
-            }
+            if (!res.ok) throw new Error("Export failed");
+            const blob = await res.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = downloadUrl;
+            a.download = `analytics-${link?.slug || linkId}-${preset}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(downloadUrl);
+            toast.success(t("downloadSuccess"));
         } catch {
-            toast.error(tc("error"));
+            toast.error(t("downloadError"));
         } finally {
-            setLoading(false);
+            setDownloading(false);
         }
     }
 
@@ -117,7 +114,7 @@ export default function LinkAnalyticsPage() {
             animate="visible"
         >
             {/* Header */}
-            <motion.div variants={itemVariants} className="flex items-center gap-3">
+            <motion.div variants={itemVariants} className="flex items-center gap-3 flex-wrap">
                 <Button
                     variant="ghost"
                     size="icon"
@@ -131,7 +128,7 @@ export default function LinkAnalyticsPage() {
                         {t("title")}
                     </h1>
                     {link && (
-                        <div className="flex items-center gap-2 mt-1">
+                        <div className="flex items-center gap-2 mt-1 flex-wrap">
                             <a
                                 href={shortUrl}
                                 target="_blank"
@@ -141,18 +138,35 @@ export default function LinkAnalyticsPage() {
                                 {shortUrl.replace(/^https?:\/\//, "")}
                                 <ExternalLink className="h-3 w-3" />
                             </a>
-                            <span className="text-xs text-muted-foreground truncate">
+                            <span className="text-xs text-muted-foreground truncate max-w-[300px]">
                                 {link.originalUrl}
                             </span>
                         </div>
                     )}
                 </div>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer gap-2"
+                    onClick={handleDownload}
+                    disabled={downloading || loading}
+                >
+                    {downloading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                        <Download className="h-4 w-4" />
+                    )}
+                    {t("downloadCsv")}
+                </Button>
             </motion.div>
 
             {/* Date Range */}
             <motion.div variants={itemVariants}>
-                <Tabs value={dateRange} onValueChange={(v) => setDateRange(v as typeof dateRange)}>
-                    <TabsList className="rounded-xl">
+                <Tabs value={preset} onValueChange={(v) => setPreset(v as Preset)}>
+                    <TabsList className="rounded-xl flex-wrap h-auto gap-1">
+                        <TabsTrigger value="24h" className="rounded-lg cursor-pointer">
+                            {t("last24h")}
+                        </TabsTrigger>
                         <TabsTrigger value="7d" className="rounded-lg cursor-pointer">
                             {t("last7Days")}
                         </TabsTrigger>
@@ -161,6 +175,9 @@ export default function LinkAnalyticsPage() {
                         </TabsTrigger>
                         <TabsTrigger value="90d" className="rounded-lg cursor-pointer">
                             {t("last90Days")}
+                        </TabsTrigger>
+                        <TabsTrigger value="1y" className="rounded-lg cursor-pointer">
+                            {t("lastYear")}
                         </TabsTrigger>
                         <TabsTrigger value="all" className="rounded-lg cursor-pointer">
                             {t("allTime")}

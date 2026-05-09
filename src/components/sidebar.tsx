@@ -150,7 +150,8 @@ export function MobileSidebar() {
     const locale = useLocale();
     const pathname = usePathname();
     const router = useRouter();
-    const { data: session } = authClient.useSession();
+    // Session hook for auth state
+    authClient.useSession();
 
     async function handleLogout() {
         await authClient.signOut();
@@ -158,12 +159,6 @@ export function MobileSidebar() {
         router.push(`/${locale}/login`);
         router.refresh();
     }
-
-    const userInitials = session?.user?.name
-        ?.split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase() || "U";
 
     return (
         <Sheet>

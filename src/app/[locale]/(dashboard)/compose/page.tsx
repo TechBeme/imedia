@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator";
+// import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -57,7 +57,7 @@ const itemVariants = {
 export default function ComposePage() {
     const t = useTranslations("compose");
     const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(["instagram"]);
-    const [mediaFiles, setMediaFiles] = useState<string[]>([]);
+    const [mediaFiles] = useState<string[]>([]);
     const [isScheduling, setIsScheduling] = useState(false);
 
     const composeSchema = getComposeSchema(t);

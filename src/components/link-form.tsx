@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import {
     Dialog,
@@ -62,10 +62,12 @@ export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkForm
 
     useEffect(() => {
         if (!open || isEditing) return;
+        let cancelled = false;
         setDomainsLoading(true);
         fetch("/api/domains")
             .then((res) => res.json())
             .then((data) => {
+                if (cancelled) return;
                 if (data.data?.domains) {
                     setDomains(
                         data.data.domains.filter((d: DomainOption) => d.isVerified)
@@ -75,19 +77,27 @@ export function LinkForm({ open, onOpenChange, initialData, onSubmit }: LinkForm
             .catch(() => {
                 // silently fail - domains are optional
             })
-            .finally(() => setDomainsLoading(false));
+            .finally(() => {
+                if (!cancelled) setDomainsLoading(false);
+            });
+        return () => { cancelled = true; };
     }, [open, isEditing]);
 
+    // Initialize form from initialData using a ref to avoid setState in effect
+    const initialDataRef = React.useRef(initialData);
+    const [initialized, setInitialized] = useState(false);
     useEffect(() => {
-        if (initialData) {
+        if (initialData && !initialized) {
+            initialDataRef.current = initialData;
             setOriginalUrl(initialData.originalUrl || "");
             setSlug(initialData.slug || "");
             setPassword(initialData.password || "");
             setExpiresAt(initialData.expiresAt || "");
             setIsActive(initialData.isActive ?? true);
             setDomain(initialData.domain || "");
+            setInitialized(true);
         }
-    }, [initialData]);
+    }, [initialData, initialized]);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();

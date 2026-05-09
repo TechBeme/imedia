@@ -10,7 +10,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Globe } from "lucide-react";
+// Globe icon imported but used via localeFlags
+// import { Globe } from "lucide-react";
 
 const localeLabels: Record<Locale, string> = {
     "pt-BR": "Português",

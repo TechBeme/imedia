@@ -53,7 +53,7 @@ export function RegisterForm() {
         toast.success(t("registerSuccess"));
 
         // better-auth may return redirect info; use it or fallback
-        const redirectUrl = (result.data as any)?.url || `/${locale}/dashboard`;
+        const redirectUrl = (result.data as { url?: string } | undefined)?.url || `/${locale}/dashboard`;
         window.location.href = redirectUrl;
     }
 

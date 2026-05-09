@@ -7,7 +7,6 @@ import { eq, and } from "drizzle-orm";
 
 const intlMiddleware = createMiddleware(routing);
 
-const PUBLIC_PATHS = ["/login", "/register", "/forgot-password", "/reset-password"];
 const PROTECTED_PREFIXES = ["/dashboard", "/accounts", "/compose", "/scheduled", "/history", "/analytics", "/media", "/settings"];
 
 function getAppHost(): string {
@@ -62,7 +61,6 @@ export default async function proxy(req: NextRequest) {
     const pathWithoutLocale = localeMatch ? localeMatch[2] || "/" : pathname;
 
     const isProtected = PROTECTED_PREFIXES.some((p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(`${p}/`));
-    const isApi = pathname.startsWith("/api/");
 
     // Check auth cookie for protected routes
     if (isProtected) {

@@ -5,11 +5,9 @@ import {
     boolean,
     integer,
     jsonb,
-    serial,
     uuid,
     index,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
 
 // Better Auth tables
 export const user = pgTable("user", {
@@ -230,11 +228,16 @@ export const shortLinks = pgTable(
         domain: text("domain").notNull().default(""),
         title: text("title"),
         description: text("description"),
+        ogTitle: text("og_title"),
+        ogDescription: text("og_description"),
+        ogImageUrl: text("og_image_url"),
         password: text("password"),
         tags: text("tags").array(),
+        folderId: uuid("folder_id"),
         startsAt: timestamp("starts_at"),
         expiresAt: timestamp("expires_at"),
         maxClicks: integer("max_clicks"),
+        expiredRedirectUrl: text("expired_redirect_url"),
         isActive: boolean("is_active").notNull().default(true),
         clickCount: integer("click_count").notNull().default(0),
         createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -245,6 +248,7 @@ export const shortLinks = pgTable(
         index("short_links_user_idx").on(table.userId),
         index("short_links_domain_idx").on(table.domain),
         index("short_links_active_idx").on(table.isActive),
+        index("short_links_folder_idx").on(table.folderId),
     ]
 );
 
@@ -279,16 +283,88 @@ export const linkClicks = pgTable(
         region: text("region"),
         userAgent: text("user_agent"),
         device: text("device"),
+        deviceModel: text("device_model"),
         browser: text("browser"),
+        browserVersion: text("browser_version"),
         os: text("os"),
+        osVersion: text("os_version"),
+        language: text("language"),
+        timezone: text("timezone"),
         referrer: text("referrer"),
+        fingerprint: text("fingerprint"),
         clickedAt: timestamp("clicked_at").notNull().defaultNow(),
     },
     (table) => [
         index("link_clicks_link_idx").on(table.linkId),
         index("link_clicks_clicked_at_idx").on(table.clickedAt),
         index("link_clicks_country_idx").on(table.country),
+        index("link_clicks_fingerprint_idx").on(table.fingerprint),
     ]
+);
+
+export const linkFolders = pgTable(
+    "link_folders",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => user.id, { onDelete: "cascade" }),
+        name: text("name").notNull(),
+        color: text("color").notNull().default("#3b82f6"),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("link_folders_user_idx").on(table.userId),
+    ]
+);
+
+export const linkTags = pgTable(
+    "link_tags",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => user.id, { onDelete: "cascade" }),
+        name: text("name").notNull(),
+        color: text("color").notNull().default("#8b5cf6"),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("link_tags_user_idx").on(table.userId),
+        index("link_tags_name_idx").on(table.name),
+    ]
+);
+
+export const shortLinkTags = pgTable(
+    "short_link_tags",
+    {
+        linkId: uuid("link_id")
+            .notNull()
+            .references(() => shortLinks.id, { onDelete: "cascade" }),
+        tagId: uuid("tag_id")
+            .notNull()
+            .references(() => linkTags.id, { onDelete: "cascade" }),
+    },
+    (table) => [
+        index("short_link_tags_link_idx").on(table.linkId),
+        index("short_link_tags_tag_idx").on(table.tagId),
+    ]
+);
+
+export const userSettings = pgTable(
+    "user_settings",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .unique()
+            .references(() => user.id, { onDelete: "cascade" }),
+        defaultExpiredRedirectUrl: text("default_expired_redirect_url"),
+        notFoundRedirectUrl: text("not_found_redirect_url"),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+        updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    },
+    (table) => [index("user_settings_user_idx").on(table.userId)]
 );
 
 export const customDomains = pgTable(

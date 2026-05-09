@@ -1,50 +1,44 @@
 import { NextRequest } from "next/server";
+import { UAParser } from "ua-parser-js";
 import { db } from "@/db";
 import { shortLinks, linkClicks } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 
+function hashFingerprint(input: string): string {
+    let hash = 0;
+    for (let i = 0; i < input.length; i++) {
+        const char = input.charCodeAt(i);
+        hash = ((hash << 5) - hash + char) | 0;
+    }
+    return Math.abs(hash).toString(36).padStart(8, "0");
+}
+
 export function parseUserAgent(ua: string): {
     device: string;
+    deviceModel: string;
     browser: string;
+    browserVersion: string;
     os: string;
+    osVersion: string;
 } {
-    const lower = ua.toLowerCase();
+    const parser = new UAParser(ua);
+    const device = parser.getDevice();
+    const browser = parser.getBrowser();
+    const os = parser.getOS();
 
-    // Device
-    let device = "desktop";
-    if (/mobile|android|iphone|ipad|ipod|windows phone/.test(lower)) {
-        device = /ipad|tablet/.test(lower) ? "tablet" : "mobile";
-    }
+    const deviceType = device.type || "desktop";
+    const deviceModel = device.model
+        ? `${device.vendor || ""} ${device.model}`.trim()
+        : deviceType;
 
-    // Browser
-    let browser = "unknown";
-    if (/chrome\/|chromium\//.test(lower) && !/edg\//.test(lower)) {
-        browser = "chrome";
-    } else if (/safari\//.test(lower) && !/chrome\/|chromium\//.test(lower)) {
-        browser = "safari";
-    } else if (/firefox\//.test(lower)) {
-        browser = "firefox";
-    } else if (/edg\//.test(lower)) {
-        browser = "edge";
-    } else if (/opera|opr\//.test(lower)) {
-        browser = "opera";
-    }
-
-    // OS
-    let os = "unknown";
-    if (/windows nt/.test(lower)) {
-        os = "windows";
-    } else if (/macintosh|mac os/.test(lower)) {
-        os = "macos";
-    } else if (/linux/.test(lower)) {
-        os = "linux";
-    } else if (/android/.test(lower)) {
-        os = "android";
-    } else if (/iphone|ipad|ipod/.test(lower)) {
-        os = "ios";
-    }
-
-    return { device, browser, os };
+    return {
+        device: deviceType,
+        deviceModel: deviceModel || "unknown",
+        browser: browser.name?.toLowerCase() || "unknown",
+        browserVersion: browser.version || "unknown",
+        os: os.name?.toLowerCase() || "unknown",
+        osVersion: os.version || "unknown",
+    };
 }
 
 export async function recordClick(
@@ -55,8 +49,22 @@ export async function recordClick(
     const ip = forwarded ? forwarded.split(",")[0].trim() : "unknown";
     const userAgent = req.headers.get("user-agent") || "";
     const referrer = req.headers.get("referer") || "";
+    const acceptLanguage = req.headers.get("accept-language") || "";
 
-    const { device, browser, os } = parseUserAgent(userAgent);
+    const {
+        device,
+        deviceModel,
+        browser,
+        browserVersion,
+        os,
+        osVersion,
+    } = parseUserAgent(userAgent);
+
+    // Generate fingerprint for unique visitor tracking
+    const fingerprint = hashFingerprint(`${ip}:${userAgent}:${acceptLanguage}`);
+
+    // Extract primary language
+    const language = acceptLanguage.split(",")[0]?.split(";")[0]?.trim() || "";
 
     // Insert click record
     await db.insert(linkClicks).values({
@@ -64,9 +72,14 @@ export async function recordClick(
         ip,
         userAgent,
         device,
+        deviceModel,
         browser,
+        browserVersion,
         os,
+        osVersion,
+        language,
         referrer,
+        fingerprint,
     });
 
     // Increment click count atomically

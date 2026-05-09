@@ -39,8 +39,14 @@ export default function DomainsPage() {
     }, [tc]);
 
     useEffect(() => {
-        fetchDomains();
-    }, [fetchDomains]);
+        let cancelled = false;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        fetchDomains().then(() => {
+            if (cancelled) return;
+        });
+        return () => { cancelled = true; };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     async function handleDelete(id: string) {
         try {

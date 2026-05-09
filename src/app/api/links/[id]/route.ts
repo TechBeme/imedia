@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { db } from "@/db";
-import { shortLinks, linkDeviceRules } from "@/db/schema";
+import { shortLinks, linkDeviceRules, linkTags, shortLinkTags, linkFolders } from "@/db/schema";
 import { success, error, unauthorized, notFound } from "@/lib/api-response";
 import { withRateLimit } from "@/lib/api-guard";
 import { apiRateLimit } from "@/lib/rate-limit";
@@ -20,12 +20,18 @@ const updateLinkSchema = z.object({
     title: z.string().max(200).optional().nullable(),
     description: z.string().max(1000).optional().nullable(),
     tags: z.array(z.string().max(50)).max(20).optional().nullable(),
+    tagIds: z.array(z.string().uuid()).max(20).optional().nullable(),
     isActive: z.boolean().optional(),
     password: z.string().min(4).max(100).optional().nullable(),
     startsAt: z.string().datetime().optional().nullable(),
     expiresAt: z.string().datetime().optional().nullable(),
     maxClicks: z.number().int().min(1).optional().nullable(),
     deviceRules: z.array(deviceRuleSchema).max(10).optional().nullable(),
+    folderId: z.string().uuid().optional().nullable(),
+    ogTitle: z.string().max(200).optional().nullable(),
+    ogDescription: z.string().max(500).optional().nullable(),
+    ogImageUrl: z.string().url("Invalid image URL").optional().nullable(),
+    expiredRedirectUrl: z.string().url("Invalid redirect URL").optional().nullable(),
 });
 
 async function getOwnedLink(linkId: string, userId: string) {
@@ -58,7 +64,22 @@ export async function GET(
             .from(linkDeviceRules)
             .where(eq(linkDeviceRules.linkId, id));
 
-        return success({ link: { ...link, deviceRules: rules } });
+        const tags = await db
+            .select({ id: linkTags.id, name: linkTags.name, color: linkTags.color })
+            .from(shortLinkTags)
+            .innerJoin(linkTags, eq(shortLinkTags.tagId, linkTags.id))
+            .where(eq(shortLinkTags.linkId, id));
+
+        const folder = link.folderId
+            ? await db
+                .select()
+                .from(linkFolders)
+                .where(eq(linkFolders.id, link.folderId))
+                .limit(1)
+                .then((rows) => rows[0] || null)
+            : null;
+
+        return success({ link: { ...link, deviceRules: rules, tags, folder } });
     });
 }
 
@@ -125,6 +146,21 @@ export async function PUT(
         if (parsed.data.maxClicks !== undefined) {
             updates.maxClicks = parsed.data.maxClicks;
         }
+        if (parsed.data.folderId !== undefined) {
+            updates.folderId = parsed.data.folderId;
+        }
+        if (parsed.data.ogTitle !== undefined) {
+            updates.ogTitle = parsed.data.ogTitle;
+        }
+        if (parsed.data.ogDescription !== undefined) {
+            updates.ogDescription = parsed.data.ogDescription;
+        }
+        if (parsed.data.ogImageUrl !== undefined) {
+            updates.ogImageUrl = parsed.data.ogImageUrl;
+        }
+        if (parsed.data.expiredRedirectUrl !== undefined) {
+            updates.expiredRedirectUrl = parsed.data.expiredRedirectUrl;
+        }
         updates.updatedAt = new Date();
 
         const [updated] = await db
@@ -143,6 +179,19 @@ export async function PUT(
                         os: rule.os,
                         url: rule.url,
                         priority: rule.priority ?? 0,
+                    }))
+                );
+            }
+        }
+
+        // Update tag associations if provided
+        if (parsed.data.tagIds !== undefined && parsed.data.tagIds !== null) {
+            await db.delete(shortLinkTags).where(eq(shortLinkTags.linkId, id));
+            if (parsed.data.tagIds.length > 0) {
+                await db.insert(shortLinkTags).values(
+                    parsed.data.tagIds.map((tagId) => ({
+                        linkId: id,
+                        tagId,
                     }))
                 );
             }

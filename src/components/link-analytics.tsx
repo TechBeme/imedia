@@ -19,19 +19,40 @@ import {
     Pie,
     Cell,
 } from "recharts";
-import { MousePointerClick, Users, Calendar, BarChart3 } from "lucide-react";
+import {
+    MousePointerClick,
+    Users,
+    Calendar,
+    BarChart3,
+    Globe,
+    TrendingUp,
+} from "lucide-react";
+import { AnalyticsMap } from "./analytics-map";
+
+interface MapDataPoint {
+    country: string;
+    clicks: number;
+    lat: number;
+    lng: number;
+}
 
 interface AnalyticsData {
     totalClicks: number;
-    uniqueClicks: number;
+    uniqueVisitors: number;
     clicksToday: number;
     clicksThisWeek: number;
     clicksOverTime: { date: string; clicks: number }[];
     topCountries: { country: string; clicks: number }[];
-    devices: { device: string; clicks: number }[];
-    browsers: { browser: string; clicks: number }[];
-    operatingSystems: { os: string; clicks: number }[];
-    referrers: { referrer: string; clicks: number }[];
+    topCities: { city: string; clicks: number }[];
+    topRegions: { region: string; clicks: number }[];
+    deviceTypes: { device: string; clicks: number }[];
+    devices: { device: string; model: string | null; clicks: number }[];
+    browsers: { browser: string; version: string | null; clicks: number }[];
+    operatingSystems: { os: string; version: string | null; clicks: number }[];
+    languages: { language: string; clicks: number }[];
+    timezones: { timezone: string; clicks: number }[];
+    mapData: MapDataPoint[];
+    referrers: { referrer: string; clicks: number; uniqueVisitors: number }[];
     recentClicks: {
         ip: string | null;
         country: string | null;
@@ -92,8 +113,8 @@ export function LinkAnalytics({ analytics, loading }: LinkAnalyticsProps) {
             icon: MousePointerClick,
         },
         {
-            label: t("uniqueClicks"),
-            value: analytics.uniqueClicks,
+            label: t("uniqueVisitors"),
+            value: analytics.uniqueVisitors,
             icon: Users,
         },
         {
@@ -104,7 +125,7 @@ export function LinkAnalytics({ analytics, loading }: LinkAnalyticsProps) {
         {
             label: t("clicksThisWeek"),
             value: analytics.clicksThisWeek,
-            icon: BarChart3,
+            icon: TrendingUp,
         },
     ];
 
@@ -137,7 +158,7 @@ export function LinkAnalytics({ analytics, loading }: LinkAnalyticsProps) {
             </div>
 
             <Tabs defaultValue="overview">
-                <TabsList className="rounded-xl">
+                <TabsList className="rounded-xl flex-wrap h-auto gap-1">
                     <TabsTrigger value="overview" className="rounded-lg cursor-pointer">
                         {t("overview")}
                     </TabsTrigger>
@@ -146,6 +167,12 @@ export function LinkAnalytics({ analytics, loading }: LinkAnalyticsProps) {
                     </TabsTrigger>
                     <TabsTrigger value="technology" className="rounded-lg cursor-pointer">
                         {t("technology")}
+                    </TabsTrigger>
+                    <TabsTrigger value="audience" className="rounded-lg cursor-pointer">
+                        {t("audience")}
+                    </TabsTrigger>
+                    <TabsTrigger value="referrers" className="rounded-lg cursor-pointer">
+                        {t("referrers")}
                     </TabsTrigger>
                     <TabsTrigger value="recent" className="rounded-lg cursor-pointer">
                         {t("recentClicks")}
@@ -191,48 +218,71 @@ export function LinkAnalytics({ analytics, loading }: LinkAnalyticsProps) {
                 <TabsContent value="geography" className="space-y-4 mt-4">
                     <Card className="glass-card">
                         <CardHeader>
-                            <CardTitle className="text-base font-semibold font-heading">
-                                {t("topCountries")}
+                            <CardTitle className="text-base font-semibold font-heading flex items-center gap-2">
+                                <Globe className="h-4 w-4" />
+                                {t("accessMap")}
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <ResponsiveContainer width="100%" height={300}>
-                                <BarChart data={analytics.topCountries}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                                    <XAxis
-                                        dataKey="country"
-                                        tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                                        axisLine={false}
-                                        tickLine={false}
-                                    />
-                                    <YAxis
-                                        tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                                        axisLine={false}
-                                        tickLine={false}
-                                    />
-                                    <Tooltip contentStyle={tooltipStyle} />
-                                    <Bar dataKey="clicks" fill="hsl(var(--chart-1))" radius={[4, 4, 0, 0]} />
-                                </BarChart>
-                            </ResponsiveContainer>
+                            <AnalyticsMap data={analytics.mapData} />
                         </CardContent>
                     </Card>
+
+                    <div className="grid gap-4 lg:grid-cols-3">
+                        <BarCard title={t("topCountries")} data={analytics.topCountries} dataKey="country" />
+                        <BarCard title={t("topCities")} data={analytics.topCities} dataKey="city" />
+                        <BarCard title={t("topRegions")} data={analytics.topRegions} dataKey="region" />
+                    </div>
                 </TabsContent>
 
                 <TabsContent value="technology" className="space-y-4 mt-4">
-                    <div className="grid gap-4 lg:grid-cols-3">
-                        <PieCard
-                            title={t("devices")}
-                            data={analytics.devices}
-                        />
-                        <PieCard
-                            title={t("browsers")}
-                            data={analytics.browsers}
-                        />
-                        <PieCard
-                            title={t("operatingSystems")}
-                            data={analytics.operatingSystems}
-                        />
+                    <div className="grid gap-4 lg:grid-cols-2">
+                        <PieCard title={t("deviceTypes")} data={analytics.deviceTypes} nameKey="device" />
+                        <PieCard title={t("browsers")} data={analytics.browsers} nameKey="browser" />
                     </div>
+                    <div className="grid gap-4 lg:grid-cols-2">
+                        <PieCard title={t("operatingSystems")} data={analytics.operatingSystems} nameKey="os" />
+                        <DeviceTable title={t("devices")} data={analytics.devices} />
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="audience" className="space-y-4 mt-4">
+                    <div className="grid gap-4 lg:grid-cols-2">
+                        <BarCard title={t("languages")} data={analytics.languages} dataKey="language" />
+                        <BarCard title={t("timezones")} data={analytics.timezones} dataKey="timezone" />
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="referrers" className="space-y-4 mt-4">
+                    <Card className="glass-card">
+                        <CardHeader>
+                            <CardTitle className="text-base font-semibold font-heading">
+                                {t("referrers")}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-sm">
+                                    <thead>
+                                        <tr className="border-b border-border/40">
+                                            <th className="text-left py-2 px-3 font-medium text-muted-foreground">{t("source")}</th>
+                                            <th className="text-right py-2 px-3 font-medium text-muted-foreground">{t("clicks")}</th>
+                                            <th className="text-right py-2 px-3 font-medium text-muted-foreground">{t("uniqueVisitors")}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {analytics.referrers.map((ref, i) => (
+                                            <tr key={i} className="border-b border-border/20 hover:bg-accent/30 transition-colors">
+                                                <td className="py-2 px-3">{ref.referrer || "Direct"}</td>
+                                                <td className="py-2 px-3 text-right">{ref.clicks}</td>
+                                                <td className="py-2 px-3 text-right">{ref.uniqueVisitors}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </TabsContent>
 
                 <TabsContent value="recent" className="space-y-4 mt-4">
@@ -282,12 +332,14 @@ export function LinkAnalytics({ analytics, loading }: LinkAnalyticsProps) {
 function PieCard({
     title,
     data,
+    nameKey,
 }: {
     title: string;
     data: { device?: string; browser?: string; os?: string; clicks: number }[];
+    nameKey: "device" | "browser" | "os";
 }) {
     const chartData = data.map((d) => ({
-        name: (d.device || d.browser || d.os || "Unknown") as string,
+        name: (d[nameKey] || "Unknown") as string,
         value: d.clicks,
     }));
 
@@ -325,6 +377,85 @@ function PieCard({
                             <span className="text-xs text-muted-foreground">{item.name}</span>
                         </div>
                     ))}
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
+function BarCard({
+    title,
+    data,
+    dataKey,
+}: {
+    title: string;
+    data: { country?: string; city?: string; region?: string; language?: string; timezone?: string; clicks: number }[];
+    dataKey: "country" | "city" | "region" | "language" | "timezone";
+}) {
+    const chartData = data.map((d) => ({
+        name: (d[dataKey] || "Unknown") as string,
+        value: d.clicks,
+    }));
+
+    return (
+        <Card className="glass-card">
+            <CardHeader>
+                <CardTitle className="text-base font-semibold font-heading">{title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <ResponsiveContainer width="100%" height={220}>
+                    <BarChart data={chartData} layout="vertical">
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={false} />
+                        <XAxis type="number" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
+                        <YAxis
+                            dataKey="name"
+                            type="category"
+                            tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                            axisLine={false}
+                            tickLine={false}
+                            width={100}
+                        />
+                        <Tooltip contentStyle={tooltipStyle} />
+                        <Bar dataKey="value" fill="hsl(var(--chart-1))" radius={[0, 4, 4, 0]} />
+                    </BarChart>
+                </ResponsiveContainer>
+            </CardContent>
+        </Card>
+    );
+}
+
+function DeviceTable({
+    title,
+    data,
+}: {
+    title: string;
+    data: { device: string; model: string | null; clicks: number }[];
+}) {
+    return (
+        <Card className="glass-card">
+            <CardHeader>
+                <CardTitle className="text-base font-semibold font-heading">{title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="overflow-x-auto max-h-[260px] overflow-y-auto">
+                    <table className="w-full text-sm">
+                        <thead className="sticky top-0 bg-card">
+                            <tr className="border-b border-border/40">
+                                <th className="text-left py-2 px-3 font-medium text-muted-foreground">Device</th>
+                                <th className="text-left py-2 px-3 font-medium text-muted-foreground">Model</th>
+                                <th className="text-right py-2 px-3 font-medium text-muted-foreground">Clicks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map((d, i) => (
+                                <tr key={i} className="border-b border-border/20 hover:bg-accent/30 transition-colors">
+                                    <td className="py-2 px-3">{d.device}</td>
+                                    <td className="py-2 px-3 text-muted-foreground">{d.model || "-"}</td>
+                                    <td className="py-2 px-3 text-right">{d.clicks}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </CardContent>
         </Card>

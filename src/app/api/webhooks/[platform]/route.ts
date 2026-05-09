@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import crypto from "crypto";
 import { storeWebhookEvent, updateWebhookStatus } from "@/lib/webhook";
 import { withRateLimit } from "@/lib/api-guard";
 import { webhookRateLimit } from "@/lib/rate-limit";
@@ -10,7 +11,6 @@ const platformSchema = z.enum(["instagram", "youtube", "tiktok", "x", "facebook"
 
 function verifyInstagramSignature(body: string, signature: string | null, appSecret: string): boolean {
     if (!signature) return false;
-    const crypto = require("crypto");
     const expected = crypto
         .createHmac("sha256", appSecret)
         .update(body, "utf8")
@@ -85,7 +85,7 @@ export async function GET(
     { params }: { params: Promise<{ platform: string }> }
 ) {
     // Handle platform webhook verification challenges
-    const { platform } = await params;
+    await params;
     const { searchParams } = new URL(req.url);
     const mode = searchParams.get("hub.mode");
     const token = searchParams.get("hub.verify_token");

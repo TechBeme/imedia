@@ -101,6 +101,7 @@ export default function AccountsPage() {
     useEffect(() => {
         fetchAccounts();
         fetchCredentials();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     async function fetchAccounts() {

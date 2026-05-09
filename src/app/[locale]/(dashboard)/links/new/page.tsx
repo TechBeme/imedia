@@ -19,13 +19,19 @@ export default function NewLinkPage() {
         title: string;
         description: string;
         tags: string[];
+        tagIds: string[];
         password: string;
         domain: string;
+        folderId: string;
         startsAt: string;
         expiresAt: string;
         maxClicks: string;
         isActive: boolean;
         deviceRules: { os: string; url: string; priority: number }[];
+        ogTitle: string;
+        ogDescription: string;
+        ogImageUrl: string;
+        expiredRedirectUrl: string;
     }) {
         const body: Record<string, unknown> = {
             originalUrl: data.originalUrl,
@@ -34,12 +40,18 @@ export default function NewLinkPage() {
         if (data.title) body.title = data.title;
         if (data.description) body.description = data.description;
         if (data.tags.length > 0) body.tags = data.tags;
+        if (data.tagIds.length > 0) body.tagIds = data.tagIds;
         if (data.password) body.password = data.password;
         if (data.domain) body.domain = data.domain;
+        if (data.folderId) body.folderId = data.folderId;
         if (data.startsAt) body.startsAt = data.startsAt;
         if (data.expiresAt) body.expiresAt = data.expiresAt;
         if (data.maxClicks) body.maxClicks = parseInt(data.maxClicks, 10);
         if (data.deviceRules.length > 0) body.deviceRules = data.deviceRules;
+        if (data.ogTitle) body.ogTitle = data.ogTitle;
+        if (data.ogDescription) body.ogDescription = data.ogDescription;
+        if (data.ogImageUrl) body.ogImageUrl = data.ogImageUrl;
+        if (data.expiredRedirectUrl) body.expiredRedirectUrl = data.expiredRedirectUrl;
 
         const res = await fetch("/api/links", {
             method: "POST",

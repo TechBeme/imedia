@@ -6,8 +6,8 @@ import { error } from "@/lib/api-response";
 export async function withRateLimit(
     req: NextRequest,
     limiter: Ratelimit,
-    handler: () => Promise<NextResponse>
-): Promise<NextResponse> {
+    handler: () => Promise<NextResponse | Response>
+): Promise<NextResponse | Response> {
     const forwarded = req.headers.get("x-forwarded-for");
     const ip = forwarded ? forwarded.split(",")[0].trim() : "anonymous";
     const result = await checkRateLimit(ip, limiter);

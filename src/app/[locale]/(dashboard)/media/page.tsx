@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
 import { RiImageAddLine, RiImageLine } from "react-icons/ri";
 
 const mockMedia = [

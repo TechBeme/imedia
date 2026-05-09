@@ -4,6 +4,12 @@ import { success, error, unauthorized, notFound, internalError } from "../api-re
 
 describe("Integration Smoke Tests", () => {
     describe("Encryption", () => {
+        beforeAll(() => {
+            if (!process.env.SOCIAL_TOKEN_ENCRYPTION_KEY) {
+                process.env.SOCIAL_TOKEN_ENCRYPTION_KEY = generateEncryptionKey();
+            }
+        });
+
         it("should encrypt and decrypt data correctly", () => {
             const original = "test-token-12345";
             const encrypted = encrypt(original);
