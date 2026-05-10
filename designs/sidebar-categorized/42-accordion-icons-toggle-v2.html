@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design 42 - Accordion Icons + Toggle V2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .toggle-track {
+            width: 44px;
+            height: 24px;
+            border-radius: 9999px;
+            background-color: #e5e7eb;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .toggle-track.active {
+            background-color: #374151;
+        }
+
+        .toggle-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 9999px;
+            background: white;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toggle-track.active .toggle-thumb {
+            transform: translateX(20px);
+        }
+
+        .toggle-thumb svg {
+            width: 11px;
+            height: 11px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <aside class="w-64 bg-gradient-to-b from-white to-gray-50 border-r border-gray-200 flex flex-col">
+            <!-- Logo -->
+            <div class="flex items-center px-5 h-14 border-b border-gray-100">
+                <div
+                    class="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">s</span>
+                </div>
+                <span class="ml-3 text-base font-semibold text-gray-900">somedia</span>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-3 py-3 space-y-1 overflow-y-auto">
+                <!-- Dashboard -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-blue-700 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
+                    <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Dashboard
+                </a>
+
+                <!-- Analytics -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Analytics
+                </a>
+
+                <!-- Links Section -->
+                <div class="pt-1">
+                    <button
+                        class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-[18px] h-[18px] text-blue-500" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path
+                                    d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                            </svg>
+                            <span>Links</span>
+                        </div>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="ml-6 mt-0.5 space-y-0.5 border-l-2 border-blue-100 pl-3">
+                        <a href="#"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-all">
+                            <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                            </svg>
+                            Todos os Links
+                        </a>
+                        <a href="#"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-all">
+                            <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                            </svg>
+                            Tags
+                        </a>
+                        <a href="#"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-all">
+                            <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                            </svg>
+                            Pastas
+                        </a>
+                        <a href="#"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-all">
+                            <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" />
+                                <path
+                                    d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+                            </svg>
+                            Domínios
+                        </a>
+                        <a href="#"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-all">
+                            <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            Analytics
+                        </a>
+                        <a href="#"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-all">
+                            <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Eventos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Redes Sociais Section -->
+                <div class="pt-1">
+                    <button
+                        class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-[18px] h-[18px] text-purple-500" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path
+                                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                            </svg>
+                            <span>Redes Sociais</span>
+                        </div>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="ml-6 mt-0.5 space-y-0.5 border-l-2 border-purple-100 pl-3">
+                        <a href="#"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:text-purple-600 hover:bg-gradient-to-r hover:from-purple-50 hover:to-transparent transition-all">
+                            <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                            </svg>
+                            Conectar Contas
+                        </a>
+                        <a href="#"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:text-purple-600 hover:bg-gradient-to-r hover:from-purple-50 hover:to-transparent transition-all">
+                            <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            Analytics Social
+                        </a>
+                        <a href="#"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:text-purple-600 hover:bg-gradient-to-r hover:from-purple-50 hover:to-transparent transition-all">
+                            <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Mídias Publicadas
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Bottom: TUDO em 1 linha -->
+            <div class="px-3 pb-3 border-t border-gray-100 pt-3 space-y-2">
+                <!-- Linha 1: Theme toggle + Globe + Flag -->
+                <div class="flex items-center justify-center gap-2 px-2 py-1.5 rounded-lg bg-gray-50">
+                    <!-- Theme toggle slide -->
+                    <div class="toggle-track" id="themeToggle">
+                        <div class="toggle-thumb">
+                            <svg id="themeIcon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                style="color:#f59e0b">
+                                <circle cx="12" cy="12" r="5" />
+                                <path
+                                    d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="w-px h-4 bg-gray-300"></div>
+                    <!-- Globe + Flag -->
+                    <button
+                        class="flex items-center gap-1 px-2 py-1 rounded-md text-sm text-gray-600 hover:bg-white hover:shadow-sm transition-all">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" />
+                            <path
+                                d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+                        </svg>
+                        <span class="text-base leading-none">🇧🇷</span>
+                    </button>
+                </div>
+
+                <!-- Profile -->
+                <button
+                    class="w-full flex items-center gap-3 rounded-xl p-2.5 hover:bg-gray-50 transition-colors cursor-pointer">
+                    <div
+                        class="h-9 w-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-medium">
+                        JD</div>
+                    <div class="flex-1 text-left min-w-0">
+                        <p class="text-sm font-medium truncate text-gray-900">João Dias</p>
+                        <p class="text-xs text-gray-400 truncate">joao@exemplo.com</p>
+                    </div>
+                    <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path d="M5 15l7-7 7 7" />
+                    </svg>
+                </button>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-8">
+            <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
+            <p class="text-gray-500 mt-2">Conteúdo da página aqui</p>
+        </main>
+    </div>
+
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        const icon = document.getElementById('themeIcon');
+        let isDark = false;
+        toggle.addEventListener('click', () => {
+            isDark = !isDark;
+            toggle.classList.toggle('active', isDark);
+            if (isDark) {
+                icon.innerHTML = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+                icon.style.color = '#a78bfa';
+            } else {
+                icon.innerHTML = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
+                icon.style.color = '#f59e0b';
+            }
+        });
+    </script>
+</body>
+
+</html>
