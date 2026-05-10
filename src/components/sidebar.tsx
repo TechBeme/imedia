@@ -104,11 +104,7 @@ function ThemeToggleSlide() {
 // --- Nav Data ---
 const linkSubItems = [
     { key: "allLinks", href: "/links", icon: "list" },
-    { key: "tags", href: "/links/tags", icon: "tag" },
-    { key: "folders", href: "/links/folders", icon: "folder" },
-    { key: "domains", href: "/domains", icon: "globe" },
-    { key: "analytics", href: "/analytics/links", icon: "barChart" },
-    { key: "events", href: "/links/events", icon: "calendar" },
+    { key: "domains", href: "/settings/domains", icon: "globe" },
     { key: "shortUrl", href: "/settings/short-url", icon: "link" },
 ];
 
@@ -117,7 +113,6 @@ const socialSubItems = [
     { key: "compose", href: "/compose", icon: "edit" },
     { key: "scheduled", href: "/scheduled", icon: "clock" },
     { key: "history", href: "/history", icon: "history" },
-    { key: "analytics", href: "/analytics/social", icon: "barChart" },
 ];
 
 // Small icons for sub-items
