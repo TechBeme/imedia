@@ -301,6 +301,20 @@ export default function AccountsPage() {
                         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                             {/* Profile Header */}
                             <div className="p-8 border-b border-slate-100">
+                                <div className="flex justify-end mb-2">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={handleDisconnect}
+                                        disabled={disconnecting}
+                                        className="rounded-xl text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+                                    >
+                                        {disconnecting ? (
+                                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                        ) : null}
+                                        Desconectar conta
+                                    </Button>
+                                </div>
                                 <div className="flex items-start gap-8">
                                     {/* Avatar with gradient ring */}
                                     <div className="h-28 w-28 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-1 shrink-0">
@@ -328,10 +342,6 @@ export default function AccountsPage() {
                                             <h2 className="text-2xl font-light text-slate-800">
                                                 {displayProfile.username || "techbeme"}
                                             </h2>
-                                            <span className="px-3 py-1 text-sm font-medium bg-emerald-50 text-emerald-700 rounded-lg flex items-center gap-2 border border-emerald-200">
-                                                <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                                                Conectado
-                                            </span>
                                         </div>
 
                                         <div className="flex gap-8 mb-4">
@@ -456,21 +466,7 @@ export default function AccountsPage() {
                                 )}
                             </div>
 
-                            {/* Footer */}
-                            <div className="px-8 py-4 border-t border-slate-100 flex justify-end">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={handleDisconnect}
-                                    disabled={disconnecting}
-                                    className="rounded-xl text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-                                >
-                                    {disconnecting ? (
-                                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                                    ) : null}
-                                    Desconectar conta
-                                </Button>
-                            </div>
+
                         </div>
                     )}
                 </div>

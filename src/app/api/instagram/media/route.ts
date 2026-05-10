@@ -62,6 +62,7 @@ export async function GET(req: NextRequest) {
 
             const profileRes = await fetch(profileUrl.toString(), { next: { revalidate: 60 } });
             const profileData = await profileRes.json();
+            console.log("[instagram/media] profile response:", JSON.stringify(profileData));
 
             // Fetch media
             const mediaUrl = new URL(`https://graph.instagram.com/${providerAccountId}/media`);
@@ -71,6 +72,7 @@ export async function GET(req: NextRequest) {
 
             const mediaRes = await fetch(mediaUrl.toString(), { next: { revalidate: 60 } });
             const mediaData = await mediaRes.json();
+            console.log("[instagram/media] media response:", JSON.stringify({ count: mediaData.data?.length, error: mediaData.error }));
 
             const media: InstagramMedia[] = mediaData.data || [];
 
