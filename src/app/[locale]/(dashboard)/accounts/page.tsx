@@ -107,6 +107,7 @@ export default function AccountsPage() {
     const [loading, setLoading] = useState(true);
     const [connecting, setConnecting] = useState(false);
     const [disconnecting, setDisconnecting] = useState(false);
+    const [apiError, setApiError] = useState<string | null>(null);
 
     useEffect(() => {
         fetchAccounts();
@@ -147,12 +148,18 @@ export default function AccountsPage() {
         try {
             const res = await fetch("/api/instagram/media");
             const data = await res.json();
+            console.log("[fetchInstagramMedia] response:", data);
             if (data.data) {
                 setProfile(data.data.profile);
                 setMedia(data.data.media || []);
+                setApiError(null);
+            } else if (data.error) {
+                setApiError(data.error.message || "Erro ao buscar dados do Instagram");
+                console.error("[fetchInstagramMedia] API error:", data.error);
             }
         } catch (err) {
             console.error("Failed to fetch Instagram media:", err);
+            setApiError("Falha na conexao com o Instagram");
         }
     }
 
@@ -217,8 +224,8 @@ export default function AccountsPage() {
     const isConnected = !!instagramAccount;
 
     const displayProfile: InstagramProfile = profile || {
-        username: instagramAccount?.username || "techbeme",
-        name: instagramAccount?.displayName || "Tech Beme",
+        username: instagramAccount?.username || null,
+        name: instagramAccount?.displayName || null,
         mediaCount: 0,
         followersCount: 0,
         followsCount: 0,
@@ -255,8 +262,8 @@ export default function AccountsPage() {
                                 <button
                                     key={platform.key}
                                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
-                                            ? `${platform.bgColor} ${platform.color} ${platform.borderColor} border`
-                                            : "text-slate-500 hover:bg-slate-100"
+                                        ? `${platform.bgColor} ${platform.color} ${platform.borderColor} border`
+                                        : "text-slate-500 hover:bg-slate-100"
                                         } ${!isActive ? "opacity-60" : ""}`}
                                     disabled={!isActive}
                                 >
@@ -315,6 +322,11 @@ export default function AccountsPage() {
                                         Desconectar conta
                                     </Button>
                                 </div>
+                                {apiError && (
+                                    <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
+                                        <strong>Erro ao carregar dados:</strong> {apiError}. Tente reconectar sua conta.
+                                    </div>
+                                )}
                                 <div className="flex items-start gap-8">
                                     {/* Avatar with gradient ring */}
                                     <div className="h-28 w-28 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-1 shrink-0">
@@ -340,7 +352,7 @@ export default function AccountsPage() {
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-4 mb-3 flex-wrap">
                                             <h2 className="text-2xl font-light text-slate-800">
-                                                {displayProfile.username || "techbeme"}
+                                                {displayProfile.username || instagramAccount?.username || "—"}
                                             </h2>
                                         </div>
 
@@ -367,7 +379,7 @@ export default function AccountsPage() {
 
                                         <div>
                                             <p className="font-semibold text-slate-800">
-                                                {displayProfile.name || displayProfile.username || "Tech Beme"}
+                                                {displayProfile.name || displayProfile.username || instagramAccount?.displayName || "—"}
                                             </p>
                                             {displayProfile.biography && (
                                                 <p className="text-sm text-slate-600 mt-1 whitespace-pre-line">
