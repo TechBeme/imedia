@@ -100,7 +100,7 @@ export async function GET(req: NextRequest) {
                         providerAccountId: String(igUserId),
                         username: igInfo.username,
                         displayName: igInfo.username,
-                        accessToken: accessToken,
+                        accessToken: encrypt(accessToken),
                         expiresAt: new Date(Date.now() + expiresIn * 1000),
                         isActive: true,
                         updatedAt: new Date(),
@@ -113,7 +113,7 @@ export async function GET(req: NextRequest) {
                     providerAccountId: String(igUserId),
                     username: igInfo.username,
                     displayName: igInfo.username,
-                    accessToken: accessToken,
+                    accessToken: encrypt(accessToken),
                     expiresAt: new Date(Date.now() + expiresIn * 1000),
                     isActive: true,
                 });
