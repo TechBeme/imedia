@@ -52,7 +52,9 @@ export async function GET(req: NextRequest) {
             console.log("[instagram/callback] step 1 token response:", JSON.stringify(tokenData));
 
             if (!tokenData.access_token) {
-                throw new Error(tokenData.error_message || tokenData.error?.message || "Failed to get access token");
+                const errMsg = tokenData.error_message || tokenData.error?.message || JSON.stringify(tokenData);
+                console.error("[instagram/callback] token exchange failed:", errMsg);
+                throw new Error(`Token exchange failed: ${errMsg}`);
             }
 
             const accessToken = tokenData.access_token;
