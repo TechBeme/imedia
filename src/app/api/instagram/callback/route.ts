@@ -39,46 +39,45 @@ export async function GET(req: NextRequest) {
             const appSecret = process.env.INSTAGRAM_APP_SECRET!;
             const redirectUri = process.env.INSTAGRAM_REDIRECT_URI!;
 
-            // 1. Exchange code for short-lived access token
-            const tokenForm = new URLSearchParams();
-            tokenForm.set("client_id", appId);
-            tokenForm.set("client_secret", appSecret);
-            tokenForm.set("grant_type", "authorization_code");
-            tokenForm.set("redirect_uri", redirectUri);
-            tokenForm.set("code", code);
+            // 1. Exchange code for access token via Facebook Graph API (new Instagram API)
+            const tokenUrl = new URL("https://graph.facebook.com/v22.0/oauth/access_token");
+            tokenUrl.searchParams.set("client_id", appId);
+            tokenUrl.searchParams.set("client_secret", appSecret);
+            tokenUrl.searchParams.set("grant_type", "authorization_code");
+            tokenUrl.searchParams.set("redirect_uri", redirectUri);
+            tokenUrl.searchParams.set("code", code);
 
-            const tokenResponse = await fetch("https://api.instagram.com/oauth/access_token", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: tokenForm.toString(),
-            });
+            const tokenResponse = await fetch(tokenUrl.toString());
             const tokenData = await tokenResponse.json();
-            console.log("[instagram/callback] step 1 token response:", JSON.stringify({ hasToken: !!tokenData.access_token, hasUserId: !!tokenData.user_id, error: tokenData.error_message }));
+            console.log("[instagram/callback] step 1 token response:", JSON.stringify({ hasToken: !!tokenData.access_token, error: tokenData.error?.message }));
 
             if (!tokenData.access_token) {
-                throw new Error(tokenData.error_message || "Failed to get access token");
+                throw new Error(tokenData.error?.message || "Failed to get access token");
             }
 
-            const shortLivedToken = tokenData.access_token;
-            const igUserId = tokenData.user_id;
+            const accessToken = tokenData.access_token;
+            const expiresIn = tokenData.expires_in || 5184000;
 
-            // 2. Exchange for long-lived access token via Facebook Graph API
-            const longLivedUrl = new URL("https://graph.facebook.com/v22.0/oauth/access_token");
-            longLivedUrl.searchParams.set("grant_type", "fb_exchange_token");
-            longLivedUrl.searchParams.set("client_id", appId);
-            longLivedUrl.searchParams.set("client_secret", appSecret);
-            longLivedUrl.searchParams.set("fb_exchange_token", shortLivedToken);
+            // 2. Get Instagram account info via Facebook Graph API
+            // First, get the user's Instagram Business/Creator account ID
+            const meUrl = new URL("https://graph.facebook.com/v22.0/me");
+            meUrl.searchParams.set("fields", "id,instagram_business_account");
+            meUrl.searchParams.set("access_token", accessToken);
 
-            const longLivedRes = await fetch(longLivedUrl.toString());
-            const longLivedData = await longLivedRes.json();
-            console.log("[instagram/callback] step 2 long-lived token:", JSON.stringify({ hasToken: !!longLivedData.access_token, error: longLivedData.error?.message }));
+            const meRes = await fetch(meUrl.toString());
+            const meData = await meRes.json();
+            console.log("[instagram/callback] step 2 me response:", JSON.stringify({ userId: meData.id, igBusinessId: meData.instagram_business_account?.id, error: meData.error?.message }));
 
-            const accessToken = longLivedData.access_token || shortLivedToken;
-            const expiresIn = longLivedData.expires_in || 5184000; // ~60 days default
+            const igBusinessId = meData.instagram_business_account?.id;
+            const fbUserId = meData.id;
 
-            // 3. Get Instagram account info via Facebook Graph API
-            const igInfoUrl = new URL(`https://graph.facebook.com/v22.0/${igUserId}`);
-            igInfoUrl.searchParams.set("fields", "username,account_type,media_count,name,profile_picture_url");
+            if (!igBusinessId) {
+                throw new Error("Conta do Instagram nao e Business ou Creator. Conecte uma conta profissional.");
+            }
+
+            // 3. Get Instagram account details
+            const igInfoUrl = new URL(`https://graph.facebook.com/v22.0/${igBusinessId}`);
+            igInfoUrl.searchParams.set("fields", "username,name,media_count,followers_count,follows_count,biography,website,profile_picture_url");
             igInfoUrl.searchParams.set("access_token", accessToken);
 
             const igInfoRes = await fetch(igInfoUrl.toString());
@@ -101,9 +100,10 @@ export async function GET(req: NextRequest) {
                 await db
                     .update(socialAccounts)
                     .set({
-                        providerAccountId: String(igUserId),
+                        providerAccountId: String(igBusinessId),
                         username: igInfo.username,
-                        displayName: igInfo.username,
+                        displayName: igInfo.name || igInfo.username,
+                        profilePicture: igInfo.profile_picture_url || null,
                         accessToken: encrypt(accessToken),
                         expiresAt: new Date(Date.now() + expiresIn * 1000),
                         isActive: true,
@@ -114,9 +114,10 @@ export async function GET(req: NextRequest) {
                 await db.insert(socialAccounts).values({
                     userId: session.user.id,
                     platform: "instagram",
-                    providerAccountId: String(igUserId),
+                    providerAccountId: String(igBusinessId),
                     username: igInfo.username,
-                    displayName: igInfo.username,
+                    displayName: igInfo.name || igInfo.username,
+                    profilePicture: igInfo.profile_picture_url || null,
                     accessToken: encrypt(accessToken),
                     expiresAt: new Date(Date.now() + expiresIn * 1000),
                     isActive: true,
