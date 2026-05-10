@@ -49,19 +49,7 @@ export async function GET(req: NextRequest) {
 
     const providerAccountId = account.providerAccountId;
 
-    // Test 1: Basic Display API (graph.instagram.com)
-    const bdProfileUrl = `https://graph.instagram.com/${providerAccountId}?fields=username,account_type,media_count&access_token=${accessToken}`;
-    const bdMediaUrl = `https://graph.instagram.com/${providerAccountId}/media?fields=id,caption,media_type,media_url,permalink,timestamp&limit=3&access_token=${accessToken}`;
-
-    const [bdProfileRes, bdMediaRes] = await Promise.all([
-        fetch(bdProfileUrl),
-        fetch(bdMediaUrl),
-    ]);
-
-    const bdProfile = await bdProfileRes.json();
-    const bdMedia = await bdMediaRes.json();
-
-    // Test 2: Facebook Graph API (graph.facebook.com) - new Instagram API
+    // Test: Facebook Graph API v22.0 (new Instagram API)
     const fbProfileUrl = `https://graph.facebook.com/v22.0/${providerAccountId}?fields=username,name,media_count,followers_count,follows_count,biography,website,profile_picture_url&access_token=${accessToken}`;
     const fbMediaUrl = `https://graph.facebook.com/v22.0/${providerAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count&limit=3&access_token=${accessToken}`;
 
@@ -82,10 +70,6 @@ export async function GET(req: NextRequest) {
             hasAccessToken: !!account.accessToken,
             tokenSource,
             tokenPrefix: accessToken ? accessToken.substring(0, 20) + "..." : null,
-        },
-        basicDisplay: {
-            profile: bdProfile,
-            media: bdMedia,
         },
         facebookGraph: {
             profile: fbProfile,

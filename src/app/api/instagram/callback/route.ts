@@ -61,11 +61,12 @@ export async function GET(req: NextRequest) {
             const shortLivedToken = tokenData.access_token;
             const igUserId = tokenData.user_id;
 
-            // 2. Exchange for long-lived access token
-            const longLivedUrl = new URL("https://graph.instagram.com/access_token");
-            longLivedUrl.searchParams.set("grant_type", "ig_exchange_token");
+            // 2. Exchange for long-lived access token via Facebook Graph API
+            const longLivedUrl = new URL("https://graph.facebook.com/v22.0/oauth/access_token");
+            longLivedUrl.searchParams.set("grant_type", "fb_exchange_token");
+            longLivedUrl.searchParams.set("client_id", appId);
             longLivedUrl.searchParams.set("client_secret", appSecret);
-            longLivedUrl.searchParams.set("access_token", shortLivedToken);
+            longLivedUrl.searchParams.set("fb_exchange_token", shortLivedToken);
 
             const longLivedRes = await fetch(longLivedUrl.toString());
             const longLivedData = await longLivedRes.json();
@@ -73,9 +74,9 @@ export async function GET(req: NextRequest) {
             const accessToken = longLivedData.access_token || shortLivedToken;
             const expiresIn = longLivedData.expires_in || 5184000; // ~60 days default
 
-            // 3. Get Instagram account info
-            const igInfoUrl = new URL(`https://graph.instagram.com/${igUserId}`);
-            igInfoUrl.searchParams.set("fields", "username,account_type,media_count");
+            // 3. Get Instagram account info via Facebook Graph API
+            const igInfoUrl = new URL(`https://graph.facebook.com/v22.0/${igUserId}`);
+            igInfoUrl.searchParams.set("fields", "username,account_type,media_count,name,profile_picture_url");
             igInfoUrl.searchParams.set("access_token", accessToken);
 
             const igInfoRes = await fetch(igInfoUrl.toString());
