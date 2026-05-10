@@ -254,11 +254,10 @@ export default function AccountsPage() {
                             return (
                                 <button
                                     key={platform.key}
-                                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                                        isActive
+                                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
                                             ? `${platform.bgColor} ${platform.color} ${platform.borderColor} border`
                                             : "text-slate-500 hover:bg-slate-100"
-                                    } ${!isActive ? "opacity-60" : ""}`}
+                                        } ${!isActive ? "opacity-60" : ""}`}
                                     disabled={!isActive}
                                 >
                                     <Icon className="h-4 w-4" />

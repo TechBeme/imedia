@@ -212,48 +212,6 @@ export function Sidebar({ className }: { className?: string }) {
                     {t("analytics")}
                 </Link>
 
-                {/* Links Accordion */}
-                <div className="pt-1">
-                    <button
-                        onClick={() => setLinksOpen(!linksOpen)}
-                        className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all cursor-pointer"
-                    >
-                        <div className="flex items-center gap-3">
-                            <svg className="w-[18px] h-[18px] text-blue-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                                <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
-                            </svg>
-                            <span>{t("links")}</span>
-                        </div>
-                        {linksOpen ? (
-                            <ChevronDown className="w-4 h-4 text-gray-400" />
-                        ) : (
-                            <ChevronUp className="w-4 h-4 text-gray-400" />
-                        )}
-                    </button>
-                    {linksOpen && (
-                        <div className="ml-6 mt-0.5 space-y-0.5 border-l-2 border-blue-100 pl-3">
-                            {linkSubItems.map((item) => {
-                                const isActive = pathname.includes(item.href);
-                                return (
-                                    <Link
-                                        key={item.key}
-                                        href={`/${locale}${item.href}`}
-                                        className={cn(
-                                            "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all",
-                                            isActive
-                                                ? "text-blue-700 bg-gradient-to-r from-blue-50 to-transparent"
-                                                : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent"
-                                        )}
-                                    >
-                                        <SubIcon name={item.icon} colorClass="text-blue-400" />
-                                        {t(item.key)}
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
-
                 {/* Redes Sociais Accordion */}
                 <div className="pt-1">
                     <button
@@ -288,6 +246,48 @@ export function Sidebar({ className }: { className?: string }) {
                                         )}
                                     >
                                         <SubIcon name={item.icon} colorClass="text-purple-400" />
+                                        {t(item.key)}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+
+                {/* Links Accordion */}
+                <div className="pt-1">
+                    <button
+                        onClick={() => setLinksOpen(!linksOpen)}
+                        className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all cursor-pointer"
+                    >
+                        <div className="flex items-center gap-3">
+                            <svg className="w-[18px] h-[18px] text-blue-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                            </svg>
+                            <span>{t("links")}</span>
+                        </div>
+                        {linksOpen ? (
+                            <ChevronDown className="w-4 h-4 text-gray-400" />
+                        ) : (
+                            <ChevronUp className="w-4 h-4 text-gray-400" />
+                        )}
+                    </button>
+                    {linksOpen && (
+                        <div className="ml-6 mt-0.5 space-y-0.5 border-l-2 border-blue-100 pl-3">
+                            {linkSubItems.map((item) => {
+                                const isActive = pathname.includes(item.href);
+                                return (
+                                    <Link
+                                        key={item.key}
+                                        href={`/${locale}${item.href}`}
+                                        className={cn(
+                                            "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all",
+                                            isActive
+                                                ? "text-blue-700 bg-gradient-to-r from-blue-50 to-transparent"
+                                                : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent"
+                                        )}
+                                    >
+                                        <SubIcon name={item.icon} colorClass="text-blue-400" />
                                         {t(item.key)}
                                     </Link>
                                 );
@@ -396,46 +396,6 @@ export function MobileSidebar() {
                     </Link>
                     <div className="pt-1">
                         <button
-                            onClick={() => setLinksOpen(!linksOpen)}
-                            className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all cursor-pointer"
-                        >
-                            <div className="flex items-center gap-3">
-                                <svg className="w-[18px] h-[18px] text-blue-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                                    <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
-                                </svg>
-                                <span>{t("links")}</span>
-                            </div>
-                            {linksOpen ? (
-                                <ChevronDown className="w-4 h-4 text-gray-400" />
-                            ) : (
-                                <ChevronUp className="w-4 h-4 text-gray-400" />
-                            )}
-                        </button>
-                        {linksOpen && (
-                            <div className="ml-6 mt-0.5 space-y-0.5 border-l-2 border-blue-100 pl-3">
-                                {linkSubItems.map((item) => {
-                                    const isActive = pathname.includes(item.href);
-                                    return (
-                                        <Link
-                                            key={item.key}
-                                            href={`/${locale}${item.href}`}
-                                            className={cn(
-                                                "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all",
-                                                isActive
-                                                    ? "text-blue-700 bg-gradient-to-r from-blue-50 to-transparent"
-                                                    : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent"
-                                            )}
-                                        >
-                                            <SubIcon name={item.icon} colorClass="text-blue-400" />
-                                            {t(item.key)}
-                                        </Link>
-                                    );
-                                })}
-                            </div>
-                        )}
-                    </div>
-                    <div className="pt-1">
-                        <button
                             onClick={() => setSocialOpen(!socialOpen)}
                             className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all cursor-pointer"
                         >
@@ -467,6 +427,46 @@ export function MobileSidebar() {
                                             )}
                                         >
                                             <SubIcon name={item.icon} colorClass="text-purple-400" />
+                                            {t(item.key)}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                    <div className="pt-1">
+                        <button
+                            onClick={() => setLinksOpen(!linksOpen)}
+                            className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all cursor-pointer"
+                        >
+                            <div className="flex items-center gap-3">
+                                <svg className="w-[18px] h-[18px] text-blue-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                    <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                                </svg>
+                                <span>{t("links")}</span>
+                            </div>
+                            {linksOpen ? (
+                                <ChevronDown className="w-4 h-4 text-gray-400" />
+                            ) : (
+                                <ChevronUp className="w-4 h-4 text-gray-400" />
+                            )}
+                        </button>
+                        {linksOpen && (
+                            <div className="ml-6 mt-0.5 space-y-0.5 border-l-2 border-blue-100 pl-3">
+                                {linkSubItems.map((item) => {
+                                    const isActive = pathname.includes(item.href);
+                                    return (
+                                        <Link
+                                            key={item.key}
+                                            href={`/${locale}${item.href}`}
+                                            className={cn(
+                                                "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all",
+                                                isActive
+                                                    ? "text-blue-700 bg-gradient-to-r from-blue-50 to-transparent"
+                                                    : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent"
+                                            )}
+                                        >
+                                            <SubIcon name={item.icon} colorClass="text-blue-400" />
                                             {t(item.key)}
                                         </Link>
                                     );
