@@ -53,6 +53,7 @@ export async function GET(req: NextRequest) {
                 body: tokenForm.toString(),
             });
             const tokenData = await tokenResponse.json();
+            console.log("[instagram/callback] step 1 token response:", JSON.stringify({ hasToken: !!tokenData.access_token, hasUserId: !!tokenData.user_id, error: tokenData.error_message }));
 
             if (!tokenData.access_token) {
                 throw new Error(tokenData.error_message || "Failed to get access token");
@@ -70,6 +71,7 @@ export async function GET(req: NextRequest) {
 
             const longLivedRes = await fetch(longLivedUrl.toString());
             const longLivedData = await longLivedRes.json();
+            console.log("[instagram/callback] step 2 long-lived token:", JSON.stringify({ hasToken: !!longLivedData.access_token, error: longLivedData.error?.message }));
 
             const accessToken = longLivedData.access_token || shortLivedToken;
             const expiresIn = longLivedData.expires_in || 5184000; // ~60 days default
@@ -81,6 +83,7 @@ export async function GET(req: NextRequest) {
 
             const igInfoRes = await fetch(igInfoUrl.toString());
             const igInfo = await igInfoRes.json();
+            console.log("[instagram/callback] step 3 profile info:", JSON.stringify({ username: igInfo.username, name: igInfo.name, error: igInfo.error?.message }));
 
             // 4. Save to database
             const existing = await db
