@@ -462,10 +462,12 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                                                 </Button>
                                             </div>
                                         ))}
-                                        <Button type="button" variant="outline" size="sm" className="rounded-lg gap-1 h-8 text-xs" onClick={handleAddDeviceRule}>
-                                            <Plus className="h-3.5 w-3.5" />
-                                            {t("addDeviceRule")}
-                                        </Button>
+                                        {deviceRules.length < OS_OPTIONS.length && (
+                                            <Button type="button" variant="outline" size="sm" className="rounded-lg gap-1 h-8 text-xs" onClick={handleAddDeviceRule}>
+                                                <Plus className="h-3.5 w-3.5" />
+                                                {t("addDeviceRule")}
+                                            </Button>
+                                        )}
                                     </div>
                                 </motion.div>
                             )}
