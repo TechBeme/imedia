@@ -3,10 +3,15 @@ import { getSession } from "@/lib/session";
 import { getDashboardAnalytics } from "@/lib/link-analytics";
 import DashboardContent from "./dashboard-content";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+    params,
+}: {
+    params: Promise<{ locale: string }>;
+}) {
+    const { locale } = await params;
     const session = await getSession();
     if (!session?.user?.id) {
-        redirect("/login");
+        redirect(`/${locale}/login`);
     }
 
     const analytics = await getDashboardAnalytics(session.user.id);
