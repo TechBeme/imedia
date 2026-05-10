@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { motion } from "motion/react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Heart, MessageCircle, Pencil } from "lucide-react";
 import {
     RiInstagramLine,
     RiFacebookCircleLine,
@@ -16,6 +14,29 @@ import {
     RiTiktokLine,
     RiTwitterXLine,
 } from "react-icons/ri";
+
+interface InstagramProfile {
+    username: string | null;
+    name: string | null;
+    mediaCount: number;
+    followersCount: number;
+    followsCount: number;
+    biography: string;
+    website: string;
+    profilePictureUrl: string | null;
+}
+
+interface InstagramMediaItem {
+    id: string;
+    caption: string | null;
+    media_type: "IMAGE" | "VIDEO" | "CAROUSEL_ALBUM";
+    media_url: string;
+    thumbnail_url?: string;
+    permalink: string;
+    timestamp: string;
+    like_count: number;
+    comments_count: number;
+}
 
 interface SocialAccount {
     id: string;
@@ -32,66 +53,65 @@ const platformDefs = [
         name: "Instagram",
         icon: RiInstagramLine,
         color: "text-pink-500",
-        bgColor: "bg-pink-500/10",
+        bgColor: "bg-pink-50",
+        borderColor: "border-pink-200",
     },
     {
         key: "facebook",
         name: "Facebook",
         icon: RiFacebookCircleLine,
         color: "text-blue-600",
-        bgColor: "bg-blue-600/10",
+        bgColor: "bg-slate-50",
+        borderColor: "border-slate-200",
     },
     {
         key: "threads",
         name: "Threads",
         icon: RiThreadsLine,
-        color: "text-foreground",
-        bgColor: "bg-muted",
+        color: "text-slate-700",
+        bgColor: "bg-slate-50",
+        borderColor: "border-slate-200",
     },
     {
         key: "youtube",
         name: "YouTube",
         icon: RiYoutubeLine,
         color: "text-red-500",
-        bgColor: "bg-red-500/10",
+        bgColor: "bg-slate-50",
+        borderColor: "border-slate-200",
     },
     {
         key: "tiktok",
         name: "TikTok",
         icon: RiTiktokLine,
-        color: "text-foreground",
-        bgColor: "bg-muted",
+        color: "text-slate-700",
+        bgColor: "bg-slate-50",
+        borderColor: "border-slate-200",
     },
     {
         key: "x",
         name: "X (Twitter)",
         icon: RiTwitterXLine,
-        color: "text-foreground",
-        bgColor: "bg-muted",
+        color: "text-slate-700",
+        bgColor: "bg-slate-50",
+        borderColor: "border-slate-200",
     },
 ];
-
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 12 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
-};
 
 export default function AccountsPage() {
     const t = useTranslations("accounts");
     const tc = useTranslations("common");
     const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+    const [profile, setProfile] = useState<InstagramProfile | null>(null);
+    const [media, setMedia] = useState<InstagramMediaItem[]>([]);
     const [loading, setLoading] = useState(true);
-    const [connecting, setConnecting] = useState<string | null>(null);
+    const [connecting, setConnecting] = useState(false);
+    const [disconnecting, setDisconnecting] = useState(false);
 
     useEffect(() => {
         fetchAccounts();
+        fetchInstagramMedia();
 
-        // Listen for popup OAuth completion via postMessage
         function handleMessage(event: MessageEvent) {
             if (event.data?.type === "INSTAGRAM_CONNECTED") {
                 if (event.data.success) {
@@ -100,7 +120,8 @@ export default function AccountsPage() {
                     toast.error(event.data.error || "Erro ao conectar Instagram");
                 }
                 fetchAccounts();
-                setConnecting(null);
+                fetchInstagramMedia();
+                setConnecting(false);
             }
         }
 
@@ -113,11 +134,8 @@ export default function AccountsPage() {
         try {
             const res = await fetch("/api/social-accounts");
             const data = await res.json();
-            if (data.data?.accounts) {
-                setAccounts(data.data.accounts);
-            } else if (data.accounts) {
-                setAccounts(data.accounts);
-            }
+            const list = data.data?.accounts || data.accounts || [];
+            setAccounts(list);
         } catch {
             toast.error(tc("error"));
         } finally {
@@ -125,17 +143,27 @@ export default function AccountsPage() {
         }
     }
 
-    async function handleConnect(platform: string) {
-        if (platform !== "instagram") return;
-        setConnecting(platform);
+    async function fetchInstagramMedia() {
+        try {
+            const res = await fetch("/api/instagram/media");
+            const data = await res.json();
+            if (data.data) {
+                setProfile(data.data.profile);
+                setMedia(data.data.media || []);
+            }
+        } catch (err) {
+            console.error("Failed to fetch Instagram media:", err);
+        }
+    }
 
+    async function handleConnect() {
+        setConnecting(true);
         try {
             const res = await fetch("/api/instagram/auth");
             const data = await res.json();
             const url = data.data?.url;
 
             if (url) {
-                // Open popup for OAuth instead of redirecting current page
                 const popup = window.open(
                     url,
                     "instagram_oauth",
@@ -144,125 +172,316 @@ export default function AccountsPage() {
 
                 if (!popup) {
                     toast.error("Popup bloqueado. Permita popups para este site.");
+                    setConnecting(false);
                     return;
                 }
 
-                // Poll to detect when popup closes, then refetch accounts
                 const interval = setInterval(() => {
                     if (popup.closed) {
                         clearInterval(interval);
                         fetchAccounts();
-                        setConnecting(null);
+                        fetchInstagramMedia();
+                        setConnecting(false);
                     }
                 }, 1000);
             } else {
                 toast.error(data.error?.message || tc("error"));
+                setConnecting(false);
             }
         } catch {
             toast.error(tc("error"));
-        } finally {
-            setConnecting(null);
+            setConnecting(false);
         }
     }
 
-    async function handleDisconnect(platform: string) {
-        if (platform !== "instagram") return;
-
+    async function handleDisconnect() {
+        setDisconnecting(true);
         try {
             const res = await fetch("/api/instagram/disconnect", { method: "POST" });
             if (res.ok) {
                 toast.success(t("disconnectSuccess"));
+                setProfile(null);
+                setMedia([]);
                 fetchAccounts();
             } else {
                 toast.error(t("disconnectFailed"));
             }
         } catch {
             toast.error(tc("error"));
+        } finally {
+            setDisconnecting(false);
         }
     }
 
-    function getAccount(platform: string): SocialAccount | undefined {
-        return accounts.find((a) => a.platform === platform);
-    }
+    const instagramAccount = accounts.find((a) => a.platform === "instagram" && a.isActive);
+    const isConnected = !!instagramAccount;
+
+    const displayProfile: InstagramProfile = profile || {
+        username: instagramAccount?.username || "techbeme",
+        name: instagramAccount?.displayName || "Tech Beme",
+        mediaCount: 0,
+        followersCount: 0,
+        followsCount: 0,
+        biography: "",
+        website: "",
+        profilePictureUrl: instagramAccount?.profilePicture || null,
+    };
 
     return (
         <motion.div
             className="space-y-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
         >
-            <motion.div variants={itemVariants} className="flex items-center justify-between">
+            <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
                 </div>
-            </motion.div>
+            </div>
 
-            <motion.div variants={itemVariants} className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {platformDefs.map((platform) => {
-                    const Icon = platform.icon;
-                    const account = getAccount(platform.key);
-                    const connected = !!account && account.isActive;
+            <div className="flex gap-6 items-start">
+                {/* Sidebar - Platform List */}
+                <div className="w-56 shrink-0">
+                    <h2 className="text-sm font-semibold text-slate-700 mb-3 px-2">Plataformas</h2>
+                    <div className="space-y-1">
+                        {platformDefs.map((platform) => {
+                            const Icon = platform.icon;
+                            const isActive = platform.key === "instagram";
+                            const account = accounts.find((a) => a.platform === platform.key);
+                            const connected = !!account && account.isActive;
 
-                    return (
-                        <motion.div
-                            key={platform.key}
-                            variants={itemVariants}
-                            whileHover={{ y: -2, transition: { duration: 0.2 } }}
-                        >
-                            <Card className="glass-card transition-shadow duration-200 hover:shadow-md">
-                                <CardContent className="p-5">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className={`h-12 w-12 rounded-xl ${platform.bgColor} flex items-center justify-center`}>
-                                                <Icon className={`h-6 w-6 ${platform.color}`} />
+                            return (
+                                <button
+                                    key={platform.key}
+                                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                                        isActive
+                                            ? `${platform.bgColor} ${platform.color} ${platform.borderColor} border`
+                                            : "text-slate-500 hover:bg-slate-100"
+                                    } ${!isActive ? "opacity-60" : ""}`}
+                                    disabled={!isActive}
+                                >
+                                    <Icon className="h-4 w-4" />
+                                    <span>{platform.name}</span>
+                                    {connected && (
+                                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Detail Panel - Instagram Profile */}
+                <div className="flex-1">
+                    {!isConnected ? (
+                        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-12 text-center">
+                            <div className="h-16 w-16 rounded-2xl bg-pink-50 flex items-center justify-center mx-auto mb-4">
+                                <RiInstagramLine className="h-8 w-8 text-pink-500" />
+                            </div>
+                            <h3 className="text-lg font-semibold text-slate-800 mb-2">
+                                Conecte seu Instagram
+                            </h3>
+                            <p className="text-sm text-slate-500 mb-6 max-w-sm mx-auto">
+                                Conecte sua conta do Instagram para gerenciar posts, visualizar analytics e publicar conteudo.
+                            </p>
+                            <Button
+                                onClick={handleConnect}
+                                disabled={connecting}
+                                className="rounded-xl bg-pink-500 hover:bg-pink-600 text-white"
+                            >
+                                {connecting ? (
+                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                ) : (
+                                    <RiInstagramLine className="h-4 w-4 mr-2" />
+                                )}
+                                {connecting ? "Conectando..." : "Conectar Instagram"}
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                            {/* Profile Header */}
+                            <div className="p-8 border-b border-slate-100">
+                                <div className="flex items-start gap-8">
+                                    {/* Avatar with gradient ring */}
+                                    <div className="h-28 w-28 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-1 shrink-0">
+                                        <div className="h-full w-full rounded-full bg-white p-0.5">
+                                            {displayProfile.profilePictureUrl ? (
+                                                <img
+                                                    src={displayProfile.profilePictureUrl}
+                                                    alt={displayProfile.username || "Profile"}
+                                                    className="h-full w-full rounded-full object-cover"
+                                                />
+                                            ) : (
+                                                <div className="h-full w-full rounded-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
+                                                    <span className="text-2xl font-bold text-pink-500">
+                                                        {(displayProfile.name || displayProfile.username || "U")
+                                                            .charAt(0)
+                                                            .toUpperCase()}
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-4 mb-3 flex-wrap">
+                                            <h2 className="text-2xl font-light text-slate-800">
+                                                {displayProfile.username || "techbeme"}
+                                            </h2>
+                                            <span className="px-3 py-1 text-sm font-medium bg-emerald-50 text-emerald-700 rounded-lg flex items-center gap-2 border border-emerald-200">
+                                                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                                                Conectado
+                                            </span>
+                                        </div>
+
+                                        <div className="flex gap-8 mb-4">
+                                            <div className="text-center">
+                                                <span className="font-bold text-slate-800">
+                                                    {displayProfile.mediaCount || 0}
+                                                </span>{" "}
+                                                <span className="text-slate-500">posts</span>
                                             </div>
-                                            <div>
-                                                <p className="text-base font-semibold">{platform.name}</p>
-                                                {connected && account?.username && (
-                                                    <p className="text-xs text-muted-foreground">@{account.username}</p>
-                                                )}
+                                            <div className="text-center">
+                                                <span className="font-bold text-slate-800">
+                                                    {formatCount(displayProfile.followersCount || 0)}
+                                                </span>{" "}
+                                                <span className="text-slate-500">seguidores</span>
+                                            </div>
+                                            <div className="text-center">
+                                                <span className="font-bold text-slate-800">
+                                                    {displayProfile.followsCount || 0}
+                                                </span>{" "}
+                                                <span className="text-slate-500">seguindo</span>
                                             </div>
                                         </div>
-                                        <Badge
-                                            variant={connected ? "default" : "secondary"}
-                                            className={connected ? "bg-emerald-500 hover:bg-emerald-600 rounded-lg" : "rounded-lg"}
-                                        >
-                                            {connected ? t("connected") : t("connect")}
-                                        </Badge>
+
+                                        <div>
+                                            <p className="font-semibold text-slate-800">
+                                                {displayProfile.name || displayProfile.username || "Tech Beme"}
+                                            </p>
+                                            {displayProfile.biography && (
+                                                <p className="text-sm text-slate-600 mt-1 whitespace-pre-line">
+                                                    {displayProfile.biography}
+                                                </p>
+                                            )}
+                                            {displayProfile.website && (
+                                                <a
+                                                    href={displayProfile.website}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-sm text-blue-600 hover:underline mt-1 block"
+                                                >
+                                                    {displayProfile.website}
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
-                                    <Button
-                                        variant={connected ? "outline" : "default"}
-                                        size="sm"
-                                        className="w-full rounded-xl cursor-pointer shadow-sm"
-                                        disabled={platform.key !== "instagram" || loading || connecting === platform.key}
-                                        onClick={() =>
-                                            connected
-                                                ? handleDisconnect(platform.key)
-                                                : handleConnect(platform.key)
-                                        }
-                                    >
-                                        {connecting === platform.key ? (
-                                            <Loader2 className="h-4 w-4 animate-spin" />
-                                        ) : connected ? (
-                                            t("disconnect")
-                                        ) : (
-                                            t("connect")
-                                        )}
-                                    </Button>
-                                    {platform.key !== "instagram" && (
-                                        <p className="text-xs text-muted-foreground mt-2 text-center">
-                                            {t("comingSoon")}
-                                        </p>
-                                    )}
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-                    );
-                })}
-            </motion.div>
+                                </div>
+                            </div>
 
+                            {/* Posts Grid */}
+                            <div className="p-8">
+                                <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
+                                    Publicacoes
+                                </h3>
 
+                                {media.length === 0 ? (
+                                    <div className="text-center py-12 text-slate-400">
+                                        <RiInstagramLine className="h-10 w-10 mx-auto mb-3 opacity-40" />
+                                        <p className="text-sm">Nenhuma publicacao encontrada</p>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-3 gap-4">
+                                        {media.map((item) => (
+                                            <a
+                                                key={item.id}
+                                                href={item.permalink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group relative aspect-square bg-slate-100 rounded-xl overflow-hidden cursor-pointer"
+                                            >
+                                                <img
+                                                    src={item.media_type === "VIDEO" && item.thumbnail_url
+                                                        ? item.thumbnail_url
+                                                        : item.media_url}
+                                                    alt={item.caption || "Post"}
+                                                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                    loading="lazy"
+                                                />
+
+                                                {/* Video indicator */}
+                                                {item.media_type === "VIDEO" && (
+                                                    <div className="absolute top-2 right-2">
+                                                        <svg className="h-5 w-5 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path d="M8 5v14l11-7z" />
+                                                        </svg>
+                                                    </div>
+                                                )}
+
+                                                {/* Carousel indicator */}
+                                                {item.media_type === "CAROUSEL_ALBUM" && (
+                                                    <div className="absolute top-2 right-2">
+                                                        <svg className="h-5 w-5 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7z" />
+                                                        </svg>
+                                                    </div>
+                                                )}
+
+                                                {/* Hover overlay */}
+                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-6 text-white">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <Heart className="h-5 w-5 fill-white" />
+                                                        <span className="font-semibold">{item.like_count}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <MessageCircle className="h-5 w-5 fill-white" />
+                                                        <span className="font-semibold">{item.comments_count}</span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Edit button */}
+                                                <button
+                                                    className="absolute top-2 left-2 h-8 w-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                                                    title="Editar"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        toast.info("Edicao de posts em breve!");
+                                                    }}
+                                                >
+                                                    <Pencil className="h-4 w-4 text-slate-600" />
+                                                </button>
+                                            </a>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Footer */}
+                            <div className="px-8 py-4 border-t border-slate-100 flex justify-end">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={handleDisconnect}
+                                    disabled={disconnecting}
+                                    className="rounded-xl text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+                                >
+                                    {disconnecting ? (
+                                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                    ) : null}
+                                    Desconectar conta
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
         </motion.div>
     );
+}
+
+function formatCount(n: number): string {
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+    if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+    return String(n);
 }
