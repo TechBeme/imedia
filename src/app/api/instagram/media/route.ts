@@ -63,18 +63,18 @@ export async function GET(req: NextRequest) {
 
             const providerAccountId = account.providerAccountId;
 
-            // Fetch profile info via Facebook Graph API (v22.0)
-            const profileUrl = new URL(`https://graph.facebook.com/v22.0/${providerAccountId}`);
-            profileUrl.searchParams.set("fields", "username,name,media_count,followers_count,follows_count,biography,website,profile_picture_url");
+            // Fetch profile info via Instagram Graph API (v22.0)
+            const profileUrl = new URL(`https://graph.instagram.com/v22.0/${providerAccountId}`);
+            profileUrl.searchParams.set("fields", "account_type,username,media_count");
             profileUrl.searchParams.set("access_token", accessToken);
 
             const profileRes = await fetch(profileUrl.toString(), { next: { revalidate: 60 } });
             const profileData = await profileRes.json();
             console.log("[instagram/media] profile response:", JSON.stringify(profileData));
 
-            // Fetch media via Facebook Graph API (v22.0)
-            const mediaUrl = new URL(`https://graph.facebook.com/v22.0/${providerAccountId}/media`);
-            mediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count");
+            // Fetch media via Instagram Graph API (v22.0)
+            const mediaUrl = new URL(`https://graph.instagram.com/v22.0/${providerAccountId}/media`);
+            mediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp");
             mediaUrl.searchParams.set("limit", "18");
             mediaUrl.searchParams.set("access_token", accessToken);
 
@@ -90,21 +90,21 @@ export async function GET(req: NextRequest) {
                 thumbnail_url: item.thumbnail_url,
                 permalink: item.permalink,
                 timestamp: item.timestamp,
-                like_count: item.like_count || 0,
-                comments_count: item.comments_count || 0,
+                like_count: 0,
+                comments_count: 0,
             }));
 
             return success({
                 media,
                 profile: {
                     username: profileData.username || account.username,
-                    name: profileData.name || account.displayName || profileData.username || null,
+                    name: account.displayName || profileData.username || null,
                     mediaCount: profileData.media_count || 0,
-                    followersCount: profileData.followers_count || 0,
-                    followsCount: profileData.follows_count || 0,
-                    biography: profileData.biography || "",
-                    website: profileData.website || "",
-                    profilePictureUrl: profileData.profile_picture_url || account.profilePicture || null,
+                    followersCount: 0,
+                    followsCount: 0,
+                    biography: "",
+                    website: "",
+                    profilePictureUrl: account.profilePicture || null,
                 },
             });
         } catch (err) {

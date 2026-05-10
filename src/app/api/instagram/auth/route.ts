@@ -28,9 +28,9 @@ export async function GET(req: NextRequest) {
                 JSON.stringify({ userId: session.user.id, nonce: crypto.randomUUID() })
             ).toString("base64");
 
-            const scope = "instagram_basic,instagram_content_publish,pages_read_engagement";
+            const scope = "instagram_business_basic,instagram_business_content_publish";
 
-            const authUrl = new URL("https://www.facebook.com/v22.0/dialog/oauth");
+            const authUrl = new URL("https://www.instagram.com/oauth/authorize");
             authUrl.searchParams.set("client_id", appId);
             authUrl.searchParams.set("redirect_uri", redirectUri);
             authUrl.searchParams.set("scope", scope);

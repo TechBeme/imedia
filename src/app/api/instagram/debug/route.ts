@@ -49,17 +49,17 @@ export async function GET(req: NextRequest) {
 
     const providerAccountId = account.providerAccountId;
 
-    // Test: Facebook Graph API v22.0 (new Instagram API)
-    const fbProfileUrl = `https://graph.facebook.com/v22.0/${providerAccountId}?fields=username,name,media_count,followers_count,follows_count,biography,website,profile_picture_url&access_token=${accessToken}`;
-    const fbMediaUrl = `https://graph.facebook.com/v22.0/${providerAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count&limit=3&access_token=${accessToken}`;
+    // Test: Instagram Graph API v22.0
+    const igProfileUrl = `https://graph.instagram.com/v22.0/${providerAccountId}?fields=account_type,username,media_count&access_token=${accessToken}`;
+    const igMediaUrl = `https://graph.instagram.com/v22.0/${providerAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=3&access_token=${accessToken}`;
 
-    const [fbProfileRes, fbMediaRes] = await Promise.all([
-        fetch(fbProfileUrl),
-        fetch(fbMediaUrl),
+    const [igProfileRes, igMediaRes] = await Promise.all([
+        fetch(igProfileUrl),
+        fetch(igMediaUrl),
     ]);
 
-    const fbProfile = await fbProfileRes.json();
-    const fbMedia = await fbMediaRes.json();
+    const igProfile = await igProfileRes.json();
+    const igMedia = await igMediaRes.json();
 
     return success({
         account: {
@@ -71,9 +71,9 @@ export async function GET(req: NextRequest) {
             tokenSource,
             tokenPrefix: accessToken ? accessToken.substring(0, 20) + "..." : null,
         },
-        facebookGraph: {
-            profile: fbProfile,
-            media: fbMedia,
+        instagramGraph: {
+            profile: igProfile,
+            media: igMedia,
         },
     });
 }

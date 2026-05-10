@@ -377,7 +377,7 @@ export function MobileSidebar() {
     const { data: session } = authClient.useSession();
     const [linksOpen, setLinksOpen] = useState(true);
     const [socialOpen, setSocialOpen] = useState(true);
-    const [analyticsOpen, setAnalyticsOpen] = useState(false);
+    const [analyticsOpen, setAnalyticsOpen] = useState(true);
 
     async function handleLogout() {
         await authClient.signOut();
