@@ -363,7 +363,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
         <Dialog open={open} onOpenChange={(v) => { if (!v) resetForm(); onOpenChange(v); }}>
             <DialogContent
                 showCloseButton={false}
-                className="w-full md:max-w-3xl max-h-[95vh] overflow-y-auto overflow-x-hidden p-0 gap-0 border-none shadow-2xl"
+                className="w-full md:max-w-3xl max-h-[95vh] overflow-hidden flex flex-col p-0 gap-0 border-none shadow-2xl"
             >
                 <DialogTitle className="sr-only">{tm("newLink")}</DialogTitle>
 
@@ -393,9 +393,9 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-[1fr_280px]">
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-[1fr_280px] flex-1 overflow-hidden">
                     {/* Left column - Main form */}
-                    <div className="p-5 space-y-4 min-w-0">
+                    <div className="p-5 space-y-4 min-w-0 overflow-y-auto">
                         {/* Destination URL */}
                         <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
@@ -691,7 +691,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                     </div>
 
                     {/* Right column - Sidebar */}
-                    <div className="border-l border-border/50 bg-muted/30 p-5 space-y-5 hidden md:block">
+                    <div className="border-l border-border/50 bg-muted/30 p-5 space-y-5 hidden md:block overflow-y-auto">
                         {/* QR Code */}
                         <div className="space-y-1.5">
                             <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{tm("qrCode")}</Label>
