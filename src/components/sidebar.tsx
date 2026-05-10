@@ -27,6 +27,12 @@ const localeFlags: Record<Locale, string> = {
     es: "🇪🇸",
 };
 
+const localeNames: Record<Locale, string> = {
+    "pt-BR": "Português",
+    en: "English",
+    es: "Español",
+};
+
 function getLocaleFromParams(params: Record<string, string | string[]>): Locale {
     const raw = params.locale;
     const locale = Array.isArray(raw) ? raw[0] : raw;
@@ -45,9 +51,9 @@ function LanguageSwitcherInline() {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1 px-2 py-1 rounded-md text-sm text-gray-600 hover:bg-white hover:shadow-sm transition-all cursor-pointer outline-none">
+            <DropdownMenuTrigger className="flex items-center gap-1.5 px-2 py-1 rounded-md text-sm text-gray-600 hover:bg-white hover:shadow-sm transition-all cursor-pointer outline-none">
                 <Globe className="h-4 w-4 text-gray-400" />
-                <span className="text-base leading-none">{localeFlags[currentLocale]}</span>
+                <span className="text-sm font-medium">{localeNames[currentLocale]}</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="min-w-fit whitespace-nowrap">
                 {locales.map((locale) => (
@@ -57,7 +63,7 @@ function LanguageSwitcherInline() {
                         className="flex items-center gap-2 cursor-pointer"
                     >
                         <span className="text-base leading-none">{localeFlags[locale]}</span>
-                        <span>{locale}</span>
+                        <span className="text-sm">{localeNames[locale]}</span>
                     </DropdownMenuItem>
                 ))}
             </DropdownMenuContent>
