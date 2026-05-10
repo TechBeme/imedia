@@ -441,7 +441,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                                                         <SelectValue />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        {OS_OPTIONS.map((os) => (
+                                                        {OS_OPTIONS.filter((os) => os.key === rule.os || !deviceRules.some((r, ri) => ri !== index && r.os === os.key)).map((os) => (
                                                             <SelectItem key={os.key} value={os.key}>
                                                                 <div className="flex items-center gap-2">
                                                                     <os.icon className="h-3.5 w-3.5" />
