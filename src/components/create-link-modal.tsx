@@ -42,8 +42,8 @@ import {
     ImageIcon,
     Check,
     ArrowRight,
-    Dice5,
 } from "lucide-react";
+import { FaRandom } from "react-icons/fa";
 
 interface DomainOption {
     id: string;
@@ -479,7 +479,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                                 <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{tm("shortLink")}</Label>
                                 <div className="flex items-center gap-0.5">
                                     <Button type="button" variant="ghost" size="icon" className="h-7 w-7 rounded-md" title={tm("generateRandom")} onClick={handleGenerateSlug}>
-                                        <Dice5 className="h-3.5 w-3.5 text-muted-foreground" />
+                                        <FaRandom className="h-3.5 w-3.5 text-muted-foreground" />
                                     </Button>
                                 </div>
                             </div>
