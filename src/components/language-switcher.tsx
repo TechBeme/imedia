@@ -37,6 +37,8 @@ export function LanguageSwitcher() {
     const t = useTranslations("common");
 
     function switchLocale(newLocale: Locale) {
+        // Save user preference in cookie for 1 year
+        document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
         const newPath = `/${newLocale}${pathname}`;
         window.location.href = newPath;
     }

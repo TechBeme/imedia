@@ -107,14 +107,16 @@ const linkSubItems = [
     { key: "tags", href: "/links/tags", icon: "tag" },
     { key: "folders", href: "/links/folders", icon: "folder" },
     { key: "domains", href: "/domains", icon: "globe" },
-    { key: "linkAnalytics", href: "/analytics/links", icon: "barChart" },
+    { key: "analytics", href: "/analytics/links", icon: "barChart" },
     { key: "events", href: "/links/events", icon: "calendar" },
 ];
 
 const socialSubItems = [
-    { key: "connectAccounts", href: "/accounts", icon: "userPlus" },
-    { key: "socialAnalytics", href: "/analytics/social", icon: "barChart" },
-    { key: "publishedMedia", href: "/media", icon: "image" },
+    { key: "accounts", href: "/accounts", icon: "userPlus" },
+    { key: "compose", href: "/compose", icon: "edit" },
+    { key: "scheduled", href: "/scheduled", icon: "clock" },
+    { key: "history", href: "/history", icon: "history" },
+    { key: "analytics", href: "/analytics/social", icon: "barChart" },
 ];
 
 // Small icons for sub-items
@@ -128,6 +130,9 @@ function SubIcon({ name, colorClass }: { name: string; colorClass: string }) {
         case "barChart": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>;
         case "calendar": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>;
         case "userPlus": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>;
+        case "edit": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>;
+        case "clock": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>;
+        case "history": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>;
         case "image": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>;
         default: return null;
     }
