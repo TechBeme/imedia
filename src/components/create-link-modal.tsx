@@ -203,7 +203,10 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
     }
 
     function handleAddDeviceRule() {
-        setDeviceRules([...deviceRules, { os: "android", url: "", priority: 0 }]);
+        const usedOs = new Set(deviceRules.map((r) => r.os));
+        const available = OS_OPTIONS.find((os) => !usedOs.has(os.key));
+        if (!available) return;
+        setDeviceRules([...deviceRules, { os: available.key, url: "", priority: 0 }]);
     }
 
     function handleUpdateDeviceRule(index: number, field: keyof DeviceRule, value: string | number) {
