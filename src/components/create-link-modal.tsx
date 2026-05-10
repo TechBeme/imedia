@@ -363,7 +363,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
         <Dialog open={open} onOpenChange={(v) => { if (!v) resetForm(); onOpenChange(v); }}>
             <DialogContent
                 showCloseButton={false}
-                className="w-full md:max-w-3xl h-[95vh] md:h-[85vh] overflow-hidden flex flex-col p-0 gap-0 border-none shadow-2xl"
+                className="w-full md:max-w-3xl max-h-[95vh] overflow-hidden flex flex-col p-0 gap-0 border-none shadow-2xl"
             >
                 <DialogTitle className="sr-only">{tm("newLink")}</DialogTitle>
 

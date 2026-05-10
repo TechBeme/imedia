@@ -414,6 +414,57 @@
         "lastYear": "Last year",
         "allTime": "All time"
     },
+    "tags": {
+        "title": "Tags",
+        "description": "Organize your links with tags",
+        "createTag": "Create tag",
+        "newTagPlaceholder": "Tag name",
+        "createSuccess": "Tag created successfully!",
+        "deleteSuccess": "Tag deleted successfully!",
+        "noTags": "No tags yet. Create your first tag!",
+        "links": "links"
+    },
+    "folders": {
+        "title": "Folders",
+        "description": "Organize your links into folders",
+        "createFolder": "Create folder",
+        "newFolderPlaceholder": "Folder name",
+        "createSuccess": "Folder created successfully!",
+        "deleteSuccess": "Folder deleted successfully!",
+        "noFolders": "No folders yet. Create your first folder!",
+        "links": "links"
+    },
+    "linkEvents": {
+        "title": "Events",
+        "description": "Track all link clicks and events",
+        "totalClicks": "Total Clicks",
+        "topCountry": "Top Country",
+        "topDevice": "Top Device",
+        "filter": "Filter",
+        "sort": "Sort",
+        "searchPlaceholder": "Search by link or location...",
+        "recentEvents": "Recent Events",
+        "noEvents": "No events yet",
+        "link": "Link",
+        "location": "Location",
+        "device": "Device",
+        "referrer": "Referrer",
+        "time": "Time"
+    },
+    "socialAnalytics": {
+        "title": "Social Analytics",
+        "7days": "7 days",
+        "30days": "30 days",
+        "90days": "90 days",
+        "totalEngagement": "Total Engagement",
+        "totalReach": "Total Reach",
+        "comments": "Comments",
+        "shares": "Shares",
+        "engagementByPlatform": "Engagement by Platform",
+        "followerGrowth": "Follower Growth",
+        "platformDistribution": "Platform Distribution",
+        "topPerformingPosts": "Top Performing Posts"
+    },
     "qrCode": {
         "title": "QR Code",
         "download": "Download",

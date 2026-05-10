@@ -414,6 +414,57 @@
         "lastYear": "Ultimo ano",
         "allTime": "Todo o período"
     },
+    "tags": {
+        "title": "Tags",
+        "description": "Organize seus links com tags",
+        "createTag": "Criar tag",
+        "newTagPlaceholder": "Nome da tag",
+        "createSuccess": "Tag criada com sucesso!",
+        "deleteSuccess": "Tag excluida com sucesso!",
+        "noTags": "Nenhuma tag ainda. Crie sua primeira tag!",
+        "links": "links"
+    },
+    "folders": {
+        "title": "Pastas",
+        "description": "Organize seus links em pastas",
+        "createFolder": "Criar pasta",
+        "newFolderPlaceholder": "Nome da pasta",
+        "createSuccess": "Pasta criada com sucesso!",
+        "deleteSuccess": "Pasta excluida com sucesso!",
+        "noFolders": "Nenhuma pasta ainda. Crie sua primeira pasta!",
+        "links": "links"
+    },
+    "linkEvents": {
+        "title": "Eventos",
+        "description": "Acompanhe todos os cliques e eventos dos links",
+        "totalClicks": "Total de Cliques",
+        "topCountry": "Principal Pais",
+        "topDevice": "Principal Dispositivo",
+        "filter": "Filtrar",
+        "sort": "Ordenar",
+        "searchPlaceholder": "Buscar por link ou localizacao...",
+        "recentEvents": "Eventos Recentes",
+        "noEvents": "Nenhum evento ainda",
+        "link": "Link",
+        "location": "Localizacao",
+        "device": "Dispositivo",
+        "referrer": "Referencia",
+        "time": "Horario"
+    },
+    "socialAnalytics": {
+        "title": "Analise Social",
+        "7days": "7 dias",
+        "30days": "30 dias",
+        "90days": "90 dias",
+        "totalEngagement": "Engajamento Total",
+        "totalReach": "Alcance Total",
+        "comments": "Comentarios",
+        "shares": "Compartilhamentos",
+        "engagementByPlatform": "Engajamento por Plataforma",
+        "followerGrowth": "Crescimento de Seguidores",
+        "platformDistribution": "Distribuicao por Plataforma",
+        "topPerformingPosts": "Posts Mais Performaticos"
+    },
     "qrCode": {
         "title": "Codigo QR",
         "download": "Baixar",

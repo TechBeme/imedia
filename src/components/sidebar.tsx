@@ -104,7 +104,10 @@ function ThemeToggleSlide() {
 // --- Nav Data ---
 const linkSubItems = [
     { key: "allLinks", href: "/links", icon: "list" },
-    { key: "domains", href: "/settings/domains", icon: "globe" },
+    { key: "tags", href: "/links/tags", icon: "tag" },
+    { key: "folders", href: "/links/folders", icon: "folder" },
+    { key: "events", href: "/links/events", icon: "calendar" },
+    { key: "domains", href: "/domains", icon: "globe" },
     { key: "shortUrl", href: "/settings/short-url", icon: "link" },
 ];
 
@@ -113,6 +116,12 @@ const socialSubItems = [
     { key: "compose", href: "/compose", icon: "edit" },
     { key: "scheduled", href: "/scheduled", icon: "clock" },
     { key: "history", href: "/history", icon: "history" },
+];
+
+const analyticsSubItems = [
+    { key: "overview", href: "/analytics", icon: "barChart" },
+    { key: "linkAnalytics", href: "/analytics/links", icon: "link" },
+    { key: "socialAnalytics", href: "/analytics/social", icon: "share" },
 ];
 
 // Small icons for sub-items
@@ -130,6 +139,7 @@ function SubIcon({ name, colorClass }: { name: string; colorClass: string }) {
         case "clock": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>;
         case "history": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
         case "link": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>;
+        case "share": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>;
         default: return null;
     }
 }
@@ -142,6 +152,7 @@ export function Sidebar({ className }: { className?: string }) {
     const { data: session } = authClient.useSession();
     const [linksOpen, setLinksOpen] = useState(true);
     const [socialOpen, setSocialOpen] = useState(true);
+    const [analyticsOpen, setAnalyticsOpen] = useState(false);
 
     async function handleLogout() {
         await authClient.signOut();
@@ -197,21 +208,52 @@ export function Sidebar({ className }: { className?: string }) {
                     {t("dashboard")}
                 </Link>
 
-                {/* Analytics */}
-                <Link
-                    href={`/${locale}/analytics`}
-                    className={cn(
-                        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
-                        isAnalytics
-                            ? "text-blue-700 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                {/* Analytics Accordion */}
+                <div className="pt-1">
+                    <button
+                        onClick={() => setAnalyticsOpen(!analyticsOpen)}
+                        className={cn(
+                            "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                            isAnalytics
+                                ? "text-blue-700 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100"
+                                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        )}
+                    >
+                        <div className="flex items-center gap-3">
+                            <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <span>{t("analytics")}</span>
+                        </div>
+                        {analyticsOpen ? (
+                            <ChevronDown className="w-4 h-4 text-gray-400" />
+                        ) : (
+                            <ChevronUp className="w-4 h-4 text-gray-400" />
+                        )}
+                    </button>
+                    {analyticsOpen && (
+                        <div className="ml-6 mt-0.5 space-y-0.5 border-l-2 border-blue-100 pl-3">
+                            {analyticsSubItems.map((item) => {
+                                const isActive = pathname.includes(item.href);
+                                return (
+                                    <Link
+                                        key={item.key}
+                                        href={`/${locale}${item.href}`}
+                                        className={cn(
+                                            "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all",
+                                            isActive
+                                                ? "text-blue-700 bg-gradient-to-r from-blue-50 to-transparent"
+                                                : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent"
+                                        )}
+                                    >
+                                        <SubIcon name={item.icon} colorClass="text-blue-400" />
+                                        {t(item.key)}
+                                    </Link>
+                                );
+                            })}
+                        </div>
                     )}
-                >
-                    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                        <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    {t("analytics")}
-                </Link>
+                </div>
 
                 {/* Redes Sociais Accordion */}
                 <div className="pt-1">
@@ -335,6 +377,7 @@ export function MobileSidebar() {
     const { data: session } = authClient.useSession();
     const [linksOpen, setLinksOpen] = useState(true);
     const [socialOpen, setSocialOpen] = useState(true);
+    const [analyticsOpen, setAnalyticsOpen] = useState(false);
 
     async function handleLogout() {
         await authClient.signOut();
@@ -382,20 +425,51 @@ export function MobileSidebar() {
                         </svg>
                         {t("dashboard")}
                     </Link>
-                    <Link
-                        href={`/${locale}/analytics`}
-                        className={cn(
-                            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
-                            isAnalytics
-                                ? "text-blue-700 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100"
-                                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    <div className="pt-1">
+                        <button
+                            onClick={() => setAnalyticsOpen(!analyticsOpen)}
+                            className={cn(
+                                "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                                isAnalytics
+                                    ? "text-blue-700 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100"
+                                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                            )}
+                        >
+                            <div className="flex items-center gap-3">
+                                <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                    <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                <span>{t("analytics")}</span>
+                            </div>
+                            {analyticsOpen ? (
+                                <ChevronDown className="w-4 h-4 text-gray-400" />
+                            ) : (
+                                <ChevronUp className="w-4 h-4 text-gray-400" />
+                            )}
+                        </button>
+                        {analyticsOpen && (
+                            <div className="ml-6 mt-0.5 space-y-0.5 border-l-2 border-blue-100 pl-3">
+                                {analyticsSubItems.map((item) => {
+                                    const isActive = pathname.includes(item.href);
+                                    return (
+                                        <Link
+                                            key={item.key}
+                                            href={`/${locale}${item.href}`}
+                                            className={cn(
+                                                "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all",
+                                                isActive
+                                                    ? "text-blue-700 bg-gradient-to-r from-blue-50 to-transparent"
+                                                    : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent"
+                                            )}
+                                        >
+                                            <SubIcon name={item.icon} colorClass="text-blue-400" />
+                                            {t(item.key)}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
                         )}
-                    >
-                        <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                            <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                        {t("analytics")}
-                    </Link>
+                    </div>
                     <div className="pt-1">
                         <button
                             onClick={() => setSocialOpen(!socialOpen)}

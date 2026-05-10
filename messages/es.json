@@ -414,6 +414,57 @@
         "lastYear": "Ultimo ano",
         "allTime": "Todo el periodo"
     },
+    "tags": {
+        "title": "Etiquetas",
+        "description": "Organiza tus enlaces con etiquetas",
+        "createTag": "Crear etiqueta",
+        "newTagPlaceholder": "Nombre de la etiqueta",
+        "createSuccess": "Etiqueta creada exitosamente!",
+        "deleteSuccess": "Etiqueta eliminada exitosamente!",
+        "noTags": "Ninguna etiqueta aun. Crea tu primera etiqueta!",
+        "links": "enlaces"
+    },
+    "folders": {
+        "title": "Carpetas",
+        "description": "Organiza tus enlaces en carpetas",
+        "createFolder": "Crear carpeta",
+        "newFolderPlaceholder": "Nombre de la carpeta",
+        "createSuccess": "Carpeta creada exitosamente!",
+        "deleteSuccess": "Carpeta eliminada exitosamente!",
+        "noFolders": "Ninguna carpeta aun. Crea tu primera carpeta!",
+        "links": "enlaces"
+    },
+    "linkEvents": {
+        "title": "Eventos",
+        "description": "Rastrea todos los clics y eventos de enlaces",
+        "totalClicks": "Clics Totales",
+        "topCountry": "Pais Principal",
+        "topDevice": "Dispositivo Principal",
+        "filter": "Filtrar",
+        "sort": "Ordenar",
+        "searchPlaceholder": "Buscar por enlace o ubicacion...",
+        "recentEvents": "Eventos Recientes",
+        "noEvents": "Ningun evento aun",
+        "link": "Enlace",
+        "location": "Ubicacion",
+        "device": "Dispositivo",
+        "referrer": "Referencia",
+        "time": "Hora"
+    },
+    "socialAnalytics": {
+        "title": "Analisis Social",
+        "7days": "7 dias",
+        "30days": "30 dias",
+        "90days": "90 dias",
+        "totalEngagement": "Engagement Total",
+        "totalReach": "Alcance Total",
+        "comments": "Comentarios",
+        "shares": "Compartidos",
+        "engagementByPlatform": "Engagement por Plataforma",
+        "followerGrowth": "Crecimiento de Seguidores",
+        "platformDistribution": "Distribucion por Plataforma",
+        "topPerformingPosts": "Posts Mejor Rendimiento"
+    },
     "qrCode": {
         "title": "Codigo QR",
         "download": "Descargar",
