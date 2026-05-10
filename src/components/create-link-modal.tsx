@@ -42,6 +42,7 @@ import {
     ImageIcon,
     Check,
     ArrowRight,
+    Dice5,
 } from "lucide-react";
 
 interface DomainOption {
@@ -124,10 +125,13 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
     const [showDeviceRules, setShowDeviceRules] = useState(false);
     const [showAddDomain, setShowAddDomain] = useState(false);
     const [showCreateTag, setShowCreateTag] = useState(false);
+    const [showCreateFolder, setShowCreateFolder] = useState(false);
     const [newTagName, setNewTagName] = useState("");
+    const [newFolderName, setNewFolderName] = useState("");
     const [newDomain, setNewDomain] = useState("");
     const [addingDomain, setAddingDomain] = useState(false);
     const [creatingTag, setCreatingTag] = useState(false);
+    const [creatingFolder, setCreatingFolder] = useState(false);
 
     useEffect(() => {
         if (!open) return;
@@ -176,7 +180,9 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
         setShowDeviceRules(false);
         setShowAddDomain(false);
         setShowCreateTag(false);
+        setShowCreateFolder(false);
         setNewTagName("");
+        setNewFolderName("");
         setNewDomain("");
     }
 
@@ -235,6 +241,33 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
         }
     }
 
+    async function handleCreateFolder(e: React.FormEvent) {
+        e.preventDefault();
+        if (!newFolderName.trim()) return;
+        setCreatingFolder(true);
+        try {
+            const res = await fetch("/api/links/folders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: newFolderName.trim() }),
+            });
+            const data = await res.json();
+            if (res.ok && data.data?.folder) {
+                setFolders((prev) => [...prev, data.data.folder].sort((a, b) => a.name.localeCompare(b.name)));
+                setFolderId(data.data.folder.id);
+                setNewFolderName("");
+                setShowCreateFolder(false);
+                toast.success(t("createSuccess"));
+            } else {
+                toast.error(data.error?.message || tc("error"));
+            }
+        } catch {
+            toast.error(tc("error"));
+        } finally {
+            setCreatingFolder(false);
+        }
+    }
+
     async function handleAddDomain(e: React.FormEvent) {
         e.preventDefault();
         if (!newDomain.trim()) return;
@@ -272,23 +305,24 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
         try {
             const body: Record<string, unknown> = {
                 originalUrl: originalUrl.trim(),
-                slug: slug.trim(),
-                title: title.trim(),
-                description: description.trim(),
-                tagIds,
-                password: password.trim(),
-                domain,
-                folderId,
-                startsAt,
-                expiresAt,
-                maxClicks: maxClicks ? parseInt(maxClicks, 10) : undefined,
                 isActive: true,
-                deviceRules: deviceRules.filter((r) => r.url.trim()),
-                ogTitle: ogTitle.trim(),
-                ogDescription: ogDescription.trim(),
-                ogImageUrl: ogImageUrl.trim(),
-                expiredRedirectUrl: expiredRedirectUrl.trim(),
             };
+            if (slug.trim()) body.slug = slug.trim();
+            if (title.trim()) body.title = title.trim();
+            if (description.trim()) body.description = description.trim();
+            if (tagIds.length > 0) body.tagIds = tagIds;
+            if (password.trim()) body.password = password.trim();
+            if (domain) body.domain = domain;
+            if (folderId) body.folderId = folderId;
+            if (startsAt) body.startsAt = startsAt;
+            if (expiresAt) body.expiresAt = expiresAt;
+            if (maxClicks) body.maxClicks = parseInt(maxClicks, 10);
+            const filteredDeviceRules = deviceRules.filter((r) => r.url.trim());
+            if (filteredDeviceRules.length > 0) body.deviceRules = filteredDeviceRules;
+            if (ogTitle.trim()) body.ogTitle = ogTitle.trim();
+            if (ogDescription.trim()) body.ogDescription = ogDescription.trim();
+            if (ogImageUrl.trim()) body.ogImageUrl = ogImageUrl.trim();
+            if (expiredRedirectUrl.trim()) body.expiredRedirectUrl = expiredRedirectUrl.trim();
 
             const res = await fetch("/api/links", {
                 method: "POST",
@@ -437,11 +471,8 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                             <div className="flex items-center justify-between">
                                 <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{tm("shortLink")}</Label>
                                 <div className="flex items-center gap-0.5">
-                                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7 rounded-md" title={tm("clear")} onClick={handleClearSlug}>
-                                        <X className="h-3.5 w-3.5 text-muted-foreground" />
-                                    </Button>
                                     <Button type="button" variant="ghost" size="icon" className="h-7 w-7 rounded-md" title={tm("generateRandom")} onClick={handleGenerateSlug}>
-                                        <Sparkles className="h-3.5 w-3.5 text-muted-foreground" />
+                                        <Dice5 className="h-3.5 w-3.5 text-muted-foreground" />
                                     </Button>
                                 </div>
                             </div>
@@ -504,7 +535,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                                         <SelectTrigger className="rounded-lg h-10 pl-9 text-sm">
                                             <SelectValue placeholder={tm("tags")} />
                                         </SelectTrigger>
-                                        <SelectContent side="bottom" align="start" sideOffset={4}>
+                                        <SelectContent side="bottom" align="start" sideOffset={4} alignItemWithTrigger={false}>
                                             {availableTags.map((tag) => (
                                                 <SelectItem key={tag.id} value={tag.id}>
                                                     <div className="flex items-center gap-2">
@@ -550,15 +581,29 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                                 <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{tm("folder")}</Label>
                                 <div className="relative">
                                     <Folder className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                    <Select value={folderId} onValueChange={(v) => setFolderId(v ?? "")}>
+                                    <Select value={folderId} onValueChange={(v) => {
+                                        const value = (v ?? "") as string;
+                                        if (value === "__create_folder__") {
+                                            setShowCreateFolder(true);
+                                        } else {
+                                            setFolderId(value);
+                                        }
+                                    }}>
                                         <SelectTrigger className="rounded-lg h-10 pl-9 text-sm bg-background">
                                             <SelectValue placeholder={tm("folder")} />
                                         </SelectTrigger>
-                                        <SelectContent side="bottom" align="start" sideOffset={4}>
-                                            <SelectItem value="">{tm("folder")}</SelectItem>
+                                        <SelectContent side="bottom" align="start" sideOffset={4} alignItemWithTrigger={false}>
+                                            <SelectItem value="">{tm("noFolder")}</SelectItem>
                                             {folders.map((f) => (
                                                 <SelectItem key={f.id} value={f.id}>{f.name}</SelectItem>
                                             ))}
+                                            {folders.length > 0 && <div className="border-t my-1" />}
+                                            <SelectItem value="__create_folder__">
+                                                <div className="flex items-center gap-2 text-muted-foreground">
+                                                    <Plus className="h-3.5 w-3.5" />
+                                                    {tm("createFolder")}
+                                                </div>
+                                            </SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
@@ -774,6 +819,32 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                             </Button>
                             <Button type="submit" disabled={creatingTag || !newTagName.trim()} className="rounded-lg h-8">
                                 {creatingTag ? <Loader2 className="h-4 w-4 animate-spin" /> : tm("createTag")}
+                            </Button>
+                        </div>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
+            {/* Create Folder Modal */}
+            <Dialog open={showCreateFolder} onOpenChange={setShowCreateFolder}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogTitle>{tm("createFolder")}</DialogTitle>
+                    <form onSubmit={handleCreateFolder} className="space-y-4 pt-2">
+                        <div className="space-y-1.5">
+                            <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{tm("folder")}</Label>
+                            <Input
+                                placeholder={tm("folder")}
+                                value={newFolderName}
+                                onChange={(e) => setNewFolderName(e.target.value)}
+                                className="rounded-lg h-10"
+                            />
+                        </div>
+                        <div className="flex justify-end gap-2">
+                            <Button type="button" variant="ghost" size="sm" className="rounded-lg h-8" onClick={() => setShowCreateFolder(false)}>
+                                {tm("cancel")}
+                            </Button>
+                            <Button type="submit" disabled={creatingFolder || !newFolderName.trim()} className="rounded-lg h-8">
+                                {creatingFolder ? <Loader2 className="h-4 w-4 animate-spin" /> : tm("createFolder")}
                             </Button>
                         </div>
                     </form>

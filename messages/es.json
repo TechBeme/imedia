@@ -351,6 +351,8 @@
             "addDomain": "Agregar dominio",
             "tags": "Etiquetas",
             "createTag": "Crear etiqueta",
+            "createFolder": "Crear carpeta",
+            "noFolder": "Sin carpeta",
             "folder": "Carpeta",
             "description": "Descripcion interna",
             "advancedConfig": "Configuracion avanzada",

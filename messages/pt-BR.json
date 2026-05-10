@@ -351,6 +351,8 @@
             "addDomain": "Adicionar dominio",
             "tags": "Tags",
             "createTag": "Criar tag",
+            "createFolder": "Criar pasta",
+            "noFolder": "Sem pasta",
             "folder": "Pasta",
             "description": "Descrição interna",
             "advancedConfig": "Configurações avancadas",

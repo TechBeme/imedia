@@ -351,6 +351,8 @@
             "addDomain": "Add domain",
             "tags": "Tags",
             "createTag": "Create tag",
+            "createFolder": "Create folder",
+            "noFolder": "No folder",
             "folder": "Folder",
             "description": "Internal description",
             "advancedConfig": "Advanced settings",
