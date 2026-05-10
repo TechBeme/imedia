@@ -48,25 +48,33 @@ export async function GET(req: NextRequest) {
                 return success({ media: [], profile: null });
             }
 
-            const accessToken = account.accessToken ? decrypt(account.accessToken) : null;
+            let accessToken: string | null = null;
+            if (account.accessToken) {
+                try {
+                    accessToken = decrypt(account.accessToken);
+                } catch {
+                    // Token might be stored unencrypted (legacy) - try using directly
+                    accessToken = account.accessToken;
+                }
+            }
             if (!accessToken) {
                 return success({ media: [], profile: null });
             }
 
             const providerAccountId = account.providerAccountId;
 
-            // Fetch profile info
+            // Fetch profile info (Basic Display API fields only)
             const profileUrl = new URL(`https://graph.instagram.com/${providerAccountId}`);
-            profileUrl.searchParams.set("fields", "username,account_type,media_count,followers_count,follows_count,biography,website,profile_picture_url,name");
+            profileUrl.searchParams.set("fields", "username,account_type,media_count");
             profileUrl.searchParams.set("access_token", accessToken);
 
             const profileRes = await fetch(profileUrl.toString(), { next: { revalidate: 60 } });
             const profileData = await profileRes.json();
             console.log("[instagram/media] profile response:", JSON.stringify(profileData));
 
-            // Fetch media
+            // Fetch media (Basic Display API fields only - no like_count/comments_count)
             const mediaUrl = new URL(`https://graph.instagram.com/${providerAccountId}/media`);
-            mediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count");
+            mediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp");
             mediaUrl.searchParams.set("limit", "18");
             mediaUrl.searchParams.set("access_token", accessToken);
 
@@ -74,19 +82,29 @@ export async function GET(req: NextRequest) {
             const mediaData = await mediaRes.json();
             console.log("[instagram/media] media response:", JSON.stringify({ count: mediaData.data?.length, error: mediaData.error }));
 
-            const media: InstagramMedia[] = mediaData.data || [];
+            const media: InstagramMedia[] = (mediaData.data || []).map((item: any) => ({
+                id: item.id,
+                caption: item.caption || null,
+                media_type: item.media_type,
+                media_url: item.media_url,
+                thumbnail_url: item.thumbnail_url,
+                permalink: item.permalink,
+                timestamp: item.timestamp,
+                like_count: 0,
+                comments_count: 0,
+            }));
 
             return success({
                 media,
                 profile: {
                     username: profileData.username || account.username,
-                    name: profileData.name || account.displayName,
+                    name: account.displayName || profileData.username || null,
                     mediaCount: profileData.media_count || 0,
-                    followersCount: profileData.followers_count || 0,
-                    followsCount: profileData.follows_count || 0,
-                    biography: profileData.biography || "",
-                    website: profileData.website || "",
-                    profilePictureUrl: profileData.profile_picture_url || account.profilePicture,
+                    followersCount: 0,
+                    followsCount: 0,
+                    biography: "",
+                    website: "",
+                    profilePictureUrl: account.profilePicture || null,
                 },
             });
         } catch (err) {
