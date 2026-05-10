@@ -14,14 +14,25 @@ import {
 } from "@/lib/links";
 import { eq, desc, and, sql, inArray, asc } from "drizzle-orm";
 
+const normalizeUrl = (val: unknown) => {
+    if (typeof val !== "string" || !val) return val;
+    if (!/^https?:\/\//i.test(val)) {
+        return `https://${val}`;
+    }
+    return val;
+};
+
+const urlSchema = (message: string) => z.preprocess(normalizeUrl, z.string().url(message));
+const optionalUrlSchema = (message: string) => z.preprocess(normalizeUrl, z.string().url(message).optional());
+
 const deviceRuleSchema = z.object({
     os: z.enum(["android", "ios", "windows", "macos", "linux", "other"]),
-    url: z.string().url("Invalid device URL"),
+    url: urlSchema("Invalid device URL"),
     priority: z.number().int().min(0).max(100).optional(),
 });
 
 const createLinkSchema = z.object({
-    originalUrl: z.string().url("Invalid URL"),
+    originalUrl: urlSchema("Invalid URL"),
     slug: z
         .string()
         .regex(/^[a-zA-Z0-9_-]+$/, "Invalid slug format")
@@ -32,7 +43,7 @@ const createLinkSchema = z.object({
     description: z.string().max(1000).optional(),
     ogTitle: z.string().max(200).optional(),
     ogDescription: z.string().max(500).optional(),
-    ogImageUrl: z.string().url().optional(),
+    ogImageUrl: optionalUrlSchema("Invalid image URL"),
     tags: z.array(z.string().max(50)).max(20).optional(),
     tagIds: z.array(z.string().uuid()).max(20).optional(),
     folderId: z.string().uuid().optional(),
@@ -41,7 +52,7 @@ const createLinkSchema = z.object({
     startsAt: z.string().datetime().optional(),
     expiresAt: z.string().datetime().optional(),
     maxClicks: z.number().int().min(1).optional(),
-    expiredRedirectUrl: z.string().url().optional(),
+    expiredRedirectUrl: optionalUrlSchema("Invalid redirect URL"),
     deviceRules: z.array(deviceRuleSchema).max(10).optional(),
 });
 

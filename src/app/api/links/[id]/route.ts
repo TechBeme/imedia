@@ -9,14 +9,26 @@ import { apiRateLimit } from "@/lib/rate-limit";
 import { getSession } from "@/lib/session";
 import { eq, and } from "drizzle-orm";
 
+const normalizeUrl = (val: unknown) => {
+    if (typeof val !== "string" || !val) return val;
+    if (!/^https?:\/\//i.test(val)) {
+        return `https://${val}`;
+    }
+    return val;
+};
+
+const urlSchema = (message: string) => z.preprocess(normalizeUrl, z.string().url(message));
+const optionalUrlSchema = (message: string) => z.preprocess(normalizeUrl, z.string().url(message).optional());
+const optionalNullableUrlSchema = (message: string) => z.preprocess(normalizeUrl, z.string().url(message).optional().nullable());
+
 const deviceRuleSchema = z.object({
     os: z.enum(["android", "ios", "windows", "macos", "linux", "other"]),
-    url: z.string().url("Invalid device URL"),
+    url: urlSchema("Invalid device URL"),
     priority: z.number().int().min(0).max(100).optional(),
 });
 
 const updateLinkSchema = z.object({
-    originalUrl: z.string().url("Invalid URL").optional(),
+    originalUrl: optionalUrlSchema("Invalid URL"),
     title: z.string().max(200).optional().nullable(),
     description: z.string().max(1000).optional().nullable(),
     tags: z.array(z.string().max(50)).max(20).optional().nullable(),
@@ -30,8 +42,8 @@ const updateLinkSchema = z.object({
     folderId: z.string().uuid().optional().nullable(),
     ogTitle: z.string().max(200).optional().nullable(),
     ogDescription: z.string().max(500).optional().nullable(),
-    ogImageUrl: z.string().url("Invalid image URL").optional().nullable(),
-    expiredRedirectUrl: z.string().url("Invalid redirect URL").optional().nullable(),
+    ogImageUrl: optionalNullableUrlSchema("Invalid image URL"),
+    expiredRedirectUrl: optionalNullableUrlSchema("Invalid redirect URL"),
 });
 
 async function getOwnedLink(linkId: string, userId: string) {
