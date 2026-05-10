@@ -393,7 +393,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-[1fr_280px] flex-1 overflow-hidden min-h-0">
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-[1fr_280px] flex-1 overflow-hidden min-h-0 max-h-[calc(95vh-120px)]">
                     {/* Left column - Main form */}
                     <div className="p-5 space-y-4 min-w-0 overflow-y-auto h-full">
                         {/* Destination URL */}
