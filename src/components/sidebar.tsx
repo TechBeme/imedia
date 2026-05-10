@@ -187,7 +187,7 @@ export function Sidebar({ className }: { className?: string }) {
                     <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                         <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    Dashboard
+                    {t("dashboard")}
                 </Link>
 
                 {/* Analytics */}
@@ -203,7 +203,7 @@ export function Sidebar({ className }: { className?: string }) {
                     <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                         <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
-                    Analytics
+                    {t("analytics")}
                 </Link>
 
                 {/* Links Accordion */}
@@ -216,7 +216,7 @@ export function Sidebar({ className }: { className?: string }) {
                             <svg className="w-[18px] h-[18px] text-blue-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                 <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
                             </svg>
-                            <span>Links</span>
+                            <span>{t("links")}</span>
                         </div>
                         {linksOpen ? (
                             <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -258,7 +258,7 @@ export function Sidebar({ className }: { className?: string }) {
                             <svg className="w-[18px] h-[18px] text-purple-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                 <path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                             </svg>
-                            <span>Redes Sociais</span>
+                            <span>{t("socialMedia")}</span>
                         </div>
                         {socialOpen ? (
                             <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -397,7 +397,7 @@ export function MobileSidebar() {
                                 <svg className="w-[18px] h-[18px] text-blue-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                     <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
                                 </svg>
-                                <span>Links</span>
+                                <span>{t("links")}</span>
                             </div>
                             {linksOpen ? (
                                 <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -437,7 +437,7 @@ export function MobileSidebar() {
                                 <svg className="w-[18px] h-[18px] text-purple-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                     <path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                 </svg>
-                                <span>Redes Sociais</span>
+                                <span>{t("socialMedia")}</span>
                             </div>
                             {socialOpen ? (
                                 <ChevronDown className="w-4 h-4 text-gray-400" />
