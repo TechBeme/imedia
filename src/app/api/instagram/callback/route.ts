@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { eq, and } from "drizzle-orm";
 import { withRateLimit } from "@/lib/api-guard";
 import { authRateLimit } from "@/lib/rate-limit";
+import { encrypt } from "@/lib/encryption";
 
 export async function GET(req: NextRequest) {
     return withRateLimit(req, authRateLimit, async () => {

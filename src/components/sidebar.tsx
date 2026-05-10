@@ -109,6 +109,7 @@ const linkSubItems = [
     { key: "domains", href: "/domains", icon: "globe" },
     { key: "analytics", href: "/analytics/links", icon: "barChart" },
     { key: "events", href: "/links/events", icon: "calendar" },
+    { key: "shortUrl", href: "/settings/short-url", icon: "link" },
 ];
 
 const socialSubItems = [
@@ -117,11 +118,6 @@ const socialSubItems = [
     { key: "scheduled", href: "/scheduled", icon: "clock" },
     { key: "history", href: "/history", icon: "history" },
     { key: "analytics", href: "/analytics/social", icon: "barChart" },
-];
-
-const settingsSubItems = [
-    { key: "customDomains", href: "/settings/domains", icon: "globe" },
-    { key: "shortUrl", href: "/settings/short-url", icon: "link" },
 ];
 
 // Small icons for sub-items
@@ -138,8 +134,6 @@ function SubIcon({ name, colorClass }: { name: string; colorClass: string }) {
         case "edit": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>;
         case "clock": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>;
         case "history": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
-        case "image": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>;
-        case "cog": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
         case "link": return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>;
         default: return null;
     }
@@ -153,7 +147,6 @@ export function Sidebar({ className }: { className?: string }) {
     const { data: session } = authClient.useSession();
     const [linksOpen, setLinksOpen] = useState(true);
     const [socialOpen, setSocialOpen] = useState(true);
-    const [settingsOpen, setSettingsOpen] = useState(true);
 
     async function handleLogout() {
         await authClient.signOut();
@@ -170,7 +163,6 @@ export function Sidebar({ className }: { className?: string }) {
 
     const isDashboard = pathname === `/${locale}/dashboard` || pathname === `/${locale}/dashboard/`;
     const isAnalytics = pathname.includes("/analytics");
-    const isMedia = pathname.includes("/media");
 
     return (
         <aside
@@ -310,64 +302,6 @@ export function Sidebar({ className }: { className?: string }) {
                     )}
                 </div>
 
-                {/* Media */}
-                <Link
-                    href={`/${locale}/media`}
-                    className={cn(
-                        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
-                        isMedia
-                            ? "text-blue-700 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                    )}
-                >
-                    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                        <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    {t("media")}
-                </Link>
-
-                {/* Settings Accordion */}
-                <div className="pt-1">
-                    <button
-                        onClick={() => setSettingsOpen(!settingsOpen)}
-                        className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all cursor-pointer"
-                    >
-                        <div className="flex items-center gap-3">
-                            <svg className="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                                <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span>{t("settings")}</span>
-                        </div>
-                        {settingsOpen ? (
-                            <ChevronDown className="w-4 h-4 text-gray-400" />
-                        ) : (
-                            <ChevronUp className="w-4 h-4 text-gray-400" />
-                        )}
-                    </button>
-                    {settingsOpen && (
-                        <div className="ml-6 mt-0.5 space-y-0.5 border-l-2 border-gray-200 pl-3">
-                            {settingsSubItems.map((item) => {
-                                const isActive = pathname.includes(item.href);
-                                return (
-                                    <Link
-                                        key={item.key}
-                                        href={`/${locale}${item.href}`}
-                                        className={cn(
-                                            "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all",
-                                            isActive
-                                                ? "text-gray-800 bg-gradient-to-r from-gray-50 to-transparent"
-                                                : "text-gray-600 hover:text-gray-800 hover:bg-gradient-to-r hover:from-gray-50 hover:to-transparent"
-                                        )}
-                                    >
-                                        <SubIcon name={item.icon} colorClass="text-gray-400" />
-                                        {t(item.key)}
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
             </nav>
 
             {/* Bottom: Theme Toggle + Language + Profile - ALL IN ONE LINE */}
@@ -406,7 +340,6 @@ export function MobileSidebar() {
     const { data: session } = authClient.useSession();
     const [linksOpen, setLinksOpen] = useState(true);
     const [socialOpen, setSocialOpen] = useState(true);
-    const [settingsOpen, setSettingsOpen] = useState(true);
 
     async function handleLogout() {
         await authClient.signOut();
@@ -423,7 +356,6 @@ export function MobileSidebar() {
 
     const isDashboard = pathname === `/${locale}/dashboard` || pathname === `/${locale}/dashboard/`;
     const isAnalytics = pathname.includes("/analytics");
-    const isMedia = pathname.includes("/media");
 
     return (
         <Sheet>
@@ -550,64 +482,6 @@ export function MobileSidebar() {
                         )}
                     </div>
 
-                    {/* Media */}
-                    <Link
-                        href={`/${locale}/media`}
-                        className={cn(
-                            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
-                            isMedia
-                                ? "text-blue-700 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100"
-                                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                        )}
-                    >
-                        <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                            <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        {t("media")}
-                    </Link>
-
-                    {/* Settings Accordion */}
-                    <div className="pt-1">
-                        <button
-                            onClick={() => setSettingsOpen(!settingsOpen)}
-                            className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all cursor-pointer"
-                        >
-                            <div className="flex items-center gap-3">
-                                <svg className="w-[18px] h-[18px] text-gray-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                                    <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                <span>{t("settings")}</span>
-                            </div>
-                            {settingsOpen ? (
-                                <ChevronDown className="w-4 h-4 text-gray-400" />
-                            ) : (
-                                <ChevronUp className="w-4 h-4 text-gray-400" />
-                            )}
-                        </button>
-                        {settingsOpen && (
-                            <div className="ml-6 mt-0.5 space-y-0.5 border-l-2 border-gray-200 pl-3">
-                                {settingsSubItems.map((item) => {
-                                    const isActive = pathname.includes(item.href);
-                                    return (
-                                        <Link
-                                            key={item.key}
-                                            href={`/${locale}${item.href}`}
-                                            className={cn(
-                                                "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all",
-                                                isActive
-                                                    ? "text-gray-800 bg-gradient-to-r from-gray-50 to-transparent"
-                                                    : "text-gray-600 hover:text-gray-800 hover:bg-gradient-to-r hover:from-gray-50 hover:to-transparent"
-                                            )}
-                                        >
-                                            <SubIcon name={item.icon} colorClass="text-gray-400" />
-                                            {t(item.key)}
-                                        </Link>
-                                    );
-                                })}
-                            </div>
-                        )}
-                    </div>
                 </nav>
                 <div className="px-3 pb-3 border-t border-gray-100 pt-3 space-y-2">
                     <div className="flex items-center justify-center gap-2 px-2 py-1.5 rounded-lg bg-gray-50">
