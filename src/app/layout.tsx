@@ -42,6 +42,36 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${poppins.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var locales = ["pt-BR","en","es"];
+                var defaultLocale = "pt-BR";
+                var cookieMatch = document.cookie.match(new RegExp("(^| )NEXT_LOCALE=([^;]+)"));
+                var locale = cookieMatch ? cookieMatch[2] : null;
+                if (!locale || !locales.includes(locale)) {
+                  var navLang = typeof navigator !== "undefined" ? navigator.language : null;
+                  if (navLang) {
+                    var code = navLang.toLowerCase();
+                    locale = locales.find(function(l) { return l.toLowerCase() === code; });
+                    if (!locale) {
+                      var langOnly = code.split("-")[0];
+                      locale = locales.find(function(l) { return l.toLowerCase().startsWith(langOnly); });
+                    }
+                  }
+                }
+                if (!locale) locale = defaultLocale;
+                var path = window.location.pathname;
+                if (path === "/" || path === "") {
+                  window.location.replace("/" + locale + "/dashboard");
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans">
         {children}
       </body>

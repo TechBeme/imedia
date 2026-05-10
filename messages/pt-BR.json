@@ -19,6 +19,8 @@
         "domains": "Domínios",
         "events": "Eventos",
         "settings": "Configurações",
+        "customDomains": "Domínios Personalizados",
+        "shortUrl": "Links Curtos",
         "logout": "Sair",
         "logoutSuccess": "Sessão encerrada",
         "openMenu": "Abrir menu"
