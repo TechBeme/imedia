@@ -126,6 +126,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
     const [showAddDomain, setShowAddDomain] = useState(false);
     const [showCreateTag, setShowCreateTag] = useState(false);
     const [showCreateFolder, setShowCreateFolder] = useState(false);
+    const [showEditPreview, setShowEditPreview] = useState(false);
     const [newTagName, setNewTagName] = useState("");
     const [newFolderName, setNewFolderName] = useState("");
     const [newDomain, setNewDomain] = useState("");
@@ -181,6 +182,7 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
         setShowAddDomain(false);
         setShowCreateTag(false);
         setShowCreateFolder(false);
+        setShowEditPreview(false);
         setNewTagName("");
         setNewFolderName("");
         setNewDomain("");
@@ -700,8 +702,18 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
                                 <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{tm("linkPreview")}</Label>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-6 text-xs gap-1 px-2"
+                                    onClick={() => setShowEditPreview(true)}
+                                >
+                                    <Settings2 className="h-3 w-3" />
+                                    {tc("edit")}
+                                </Button>
                             </div>
-                            <div className="border rounded-lg bg-background overflow-hidden">
+                            <div className="border rounded-lg bg-background overflow-hidden cursor-pointer" onClick={() => setShowEditPreview(true)}>
                                 <div className="p-3 space-y-3">
                                     <div className="border rounded-md bg-muted/30 h-28 flex items-center justify-center overflow-hidden">
                                         {ogImageUrl ? (
@@ -714,30 +726,9 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                                             </div>
                                         )}
                                     </div>
-                                    <div className="space-y-2">
-                                        <Input
-                                            placeholder={tm("ogTitle")}
-                                            value={ogTitle}
-                                            onChange={(e) => setOgTitle(e.target.value)}
-                                            className="rounded-lg h-8 text-xs"
-                                        />
-                                        <Textarea
-                                            placeholder={tm("ogDescription")}
-                                            value={ogDescription}
-                                            onChange={(e) => setOgDescription(e.target.value)}
-                                            className="rounded-lg min-h-[40px] text-xs resize-none"
-                                        />
-                                        <Input
-                                            type="url"
-                                            placeholder={tm("ogImageUrl")}
-                                            value={ogImageUrl}
-                                            onChange={(e) => setOgImageUrl(e.target.value)}
-                                            className="rounded-lg h-8 text-xs"
-                                        />
-                                    </div>
                                     <div>
-                                        <p className="text-xs font-medium truncate">{ogTitle || "..."}</p>
-                                        <p className="text-[10px] text-muted-foreground truncate">{ogDescription || "..."}</p>
+                                        <p className="text-xs font-medium truncate">{ogTitle || title || "..."}</p>
+                                        <p className="text-[10px] text-muted-foreground truncate">{ogDescription || description || "..."}</p>
                                         <p className="text-[10px] text-muted-foreground truncate mt-0.5">{shortLink}</p>
                                     </div>
                                 </div>
@@ -848,6 +839,51 @@ export function CreateLinkModal({ open, onOpenChange, onSuccess }: CreateLinkMod
                             </Button>
                         </div>
                     </form>
+                </DialogContent>
+            </Dialog>
+
+            {/* Edit Preview Modal */}
+            <Dialog open={showEditPreview} onOpenChange={setShowEditPreview}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogTitle>{tm("linkPreview")}</DialogTitle>
+                    <div className="space-y-4 pt-2">
+                        <div className="space-y-1.5">
+                            <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{tm("ogTitle")}</Label>
+                            <Input
+                                placeholder={tm("ogTitle")}
+                                value={ogTitle}
+                                onChange={(e) => setOgTitle(e.target.value)}
+                                className="rounded-lg h-10"
+                            />
+                        </div>
+                        <div className="space-y-1.5">
+                            <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{tm("ogDescription")}</Label>
+                            <Textarea
+                                placeholder={tm("ogDescription")}
+                                value={ogDescription}
+                                onChange={(e) => setOgDescription(e.target.value)}
+                                className="rounded-lg min-h-[80px] resize-none"
+                            />
+                        </div>
+                        <div className="space-y-1.5">
+                            <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{tm("ogImageUrl")}</Label>
+                            <Input
+                                type="url"
+                                placeholder={tm("ogImageUrl")}
+                                value={ogImageUrl}
+                                onChange={(e) => setOgImageUrl(e.target.value)}
+                                className="rounded-lg h-10"
+                            />
+                        </div>
+                        <div className="flex justify-end gap-2">
+                            <Button type="button" variant="ghost" size="sm" className="rounded-lg h-8" onClick={() => setShowEditPreview(false)}>
+                                {tm("cancel")}
+                            </Button>
+                            <Button type="button" className="rounded-lg h-8" onClick={() => setShowEditPreview(false)}>
+                                {tc("save")}
+                            </Button>
+                        </div>
+                    </div>
                 </DialogContent>
             </Dialog>
         </Dialog>
