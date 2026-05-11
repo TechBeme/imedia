@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
                 JSON.stringify({ userId: session.user.id, nonce: crypto.randomUUID() })
             ).toString("base64");
 
-            const scope = "instagram_business_basic,instagram_business_content_publish";
+            const scope = "instagram_business_basic,instagram_business_content_publish,instagram_business_manage_comments,instagram_business_manage_messages";
 
             const authUrl = new URL("https://www.instagram.com/oauth/authorize");
             authUrl.searchParams.set("client_id", appId);

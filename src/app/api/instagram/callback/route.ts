@@ -39,40 +39,47 @@ export async function GET(req: NextRequest) {
             const appSecret = process.env.INSTAGRAM_APP_SECRET!;
             const redirectUri = process.env.INSTAGRAM_REDIRECT_URI!;
 
-            // 1. Exchange code for access token via Instagram Graph API
-            const tokenUrl = new URL("https://graph.instagram.com/oauth/access_token");
-            tokenUrl.searchParams.set("client_id", appId);
-            tokenUrl.searchParams.set("client_secret", appSecret);
-            tokenUrl.searchParams.set("grant_type", "authorization_code");
-            tokenUrl.searchParams.set("redirect_uri", redirectUri);
-            tokenUrl.searchParams.set("code", code);
+            // 1. Exchange code for short-lived access token
+            const tokenForm = new URLSearchParams();
+            tokenForm.set("client_id", appId);
+            tokenForm.set("client_secret", appSecret);
+            tokenForm.set("grant_type", "authorization_code");
+            tokenForm.set("redirect_uri", redirectUri);
+            tokenForm.set("code", code);
 
-            const tokenResponse = await fetch(tokenUrl.toString(), { method: "POST" });
+            const tokenResponse = await fetch("https://api.instagram.com/oauth/access_token", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: tokenForm.toString(),
+            });
             const tokenData = await tokenResponse.json();
-            console.log("[instagram/callback] step 1 token response:", JSON.stringify(tokenData));
 
             if (!tokenData.access_token) {
-                const errMsg = tokenData.error_message || tokenData.error?.message || JSON.stringify(tokenData);
-                console.error("[instagram/callback] token exchange failed:", errMsg);
-                throw new Error(`Token exchange failed: ${errMsg}`);
+                throw new Error(tokenData.error_message || "Failed to get access token");
             }
 
-            const accessToken = tokenData.access_token;
-            const userId = tokenData.user_id;
-            const expiresIn = 5184000; // Instagram tokens are long-lived, default 60 days
+            const shortLivedToken = tokenData.access_token;
+            const igUserId = tokenData.user_id;
 
-            // 2. Get Instagram account details
-            const igInfoUrl = new URL(`https://graph.instagram.com/v22.0/${userId}`);
-            igInfoUrl.searchParams.set("fields", "account_type,username,media_count");
+            // 2. Exchange for long-lived access token
+            const longLivedUrl = new URL("https://graph.instagram.com/access_token");
+            longLivedUrl.searchParams.set("grant_type", "ig_exchange_token");
+            longLivedUrl.searchParams.set("client_secret", appSecret);
+            longLivedUrl.searchParams.set("access_token", shortLivedToken);
+
+            const longLivedRes = await fetch(longLivedUrl.toString());
+            const longLivedData = await longLivedRes.json();
+
+            const accessToken = longLivedData.access_token || shortLivedToken;
+            const expiresIn = longLivedData.expires_in || 5184000; // ~60 days default
+
+            // 3. Get Instagram account info
+            const igInfoUrl = new URL(`https://graph.instagram.com/${igUserId}`);
+            igInfoUrl.searchParams.set("fields", "username,account_type,media_count");
             igInfoUrl.searchParams.set("access_token", accessToken);
 
             const igInfoRes = await fetch(igInfoUrl.toString());
             const igInfo = await igInfoRes.json();
-            console.log("[instagram/callback] step 2 profile info:", JSON.stringify(igInfo));
-
-            if (igInfo.error) {
-                throw new Error(igInfo.error.message || "Failed to fetch Instagram profile");
-            }
 
             // 4. Save to database
             const existing = await db
@@ -90,7 +97,7 @@ export async function GET(req: NextRequest) {
                 await db
                     .update(socialAccounts)
                     .set({
-                        providerAccountId: String(userId),
+                        providerAccountId: String(igUserId),
                         username: igInfo.username,
                         displayName: igInfo.username,
                         accessToken: encrypt(accessToken),
@@ -103,7 +110,7 @@ export async function GET(req: NextRequest) {
                 await db.insert(socialAccounts).values({
                     userId: session.user.id,
                     platform: "instagram",
-                    providerAccountId: String(userId),
+                    providerAccountId: String(igUserId),
                     username: igInfo.username,
                     displayName: igInfo.username,
                     accessToken: encrypt(accessToken),

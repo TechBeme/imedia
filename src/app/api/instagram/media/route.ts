@@ -63,17 +63,17 @@ export async function GET(req: NextRequest) {
 
             const providerAccountId = account.providerAccountId;
 
-            // Fetch profile info via Instagram Graph API (v22.0)
-            const profileUrl = new URL(`https://graph.instagram.com/v22.0/${providerAccountId}`);
-            profileUrl.searchParams.set("fields", "account_type,username,media_count");
+            // Fetch profile info (Basic Display API fields only)
+            const profileUrl = new URL(`https://graph.instagram.com/${providerAccountId}`);
+            profileUrl.searchParams.set("fields", "username,account_type,media_count");
             profileUrl.searchParams.set("access_token", accessToken);
 
             const profileRes = await fetch(profileUrl.toString(), { next: { revalidate: 60 } });
             const profileData = await profileRes.json();
             console.log("[instagram/media] profile response:", JSON.stringify(profileData));
 
-            // Fetch media via Instagram Graph API (v22.0)
-            const mediaUrl = new URL(`https://graph.instagram.com/v22.0/${providerAccountId}/media`);
+            // Fetch media (Basic Display API fields only - no like_count/comments_count)
+            const mediaUrl = new URL(`https://graph.instagram.com/${providerAccountId}/media`);
             mediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp");
             mediaUrl.searchParams.set("limit", "18");
             mediaUrl.searchParams.set("access_token", accessToken);
