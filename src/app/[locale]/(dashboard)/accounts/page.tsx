@@ -326,9 +326,9 @@ export default function AccountsPage() {
                                         <strong>Erro ao carregar dados:</strong> {apiError}. Tente reconectar sua conta.
                                     </div>
                                 )}
-                                <div className="flex items-start gap-8">
+                                <div className="flex items-center gap-10">
                                     {/* Avatar with gradient ring */}
-                                    <div className="h-28 w-28 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-1 shrink-0">
+                                    <div className="h-36 w-36 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-1 shrink-0">
                                         <div className="h-full w-full rounded-full bg-white p-0.5">
                                             {displayProfile.profilePictureUrl ? (
                                                 <img
@@ -406,9 +406,12 @@ export default function AccountsPage() {
                                                     href={displayProfile.website}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="text-sm text-blue-600 hover:underline mt-1 block"
+                                                    className="text-sm text-blue-800 hover:underline mt-1 inline-flex items-center gap-1 font-semibold"
                                                 >
-                                                    {displayProfile.website}
+                                                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                                    </svg>
+                                                    {displayProfile.website.replace(/^https?:\/\//, "")}
                                                 </a>
                                             )}
                                         </div>
