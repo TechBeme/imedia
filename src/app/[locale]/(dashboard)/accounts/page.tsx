@@ -466,18 +466,20 @@ export default function AccountsPage() {
                                                             {formatCount(item.view_count || item.like_count || 0)}
                                                         </span>
                                                     </div>
-
-                                                    <button
-                                                        className="h-7 w-7 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
-                                                        title="Editar"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            toast.info("Edicao de posts em breve!");
-                                                        }}
-                                                    >
-                                                        <Pencil className="h-3.5 w-3.5 text-slate-600" />
-                                                    </button>
+                                                    <div className="w-10" />
                                                 </div>
+
+                                                <button
+                                                    className="absolute bottom-7 left-1/2 flex -translate-x-1/2 items-center justify-center rounded-full bg-slate-900/95 px-6 py-3 text-sm font-semibold text-white opacity-0 shadow-[0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-200 group-hover:opacity-100 hover:bg-slate-900"
+                                                    title="Editar"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        toast.info("Edicao de posts em breve!");
+                                                    }}
+                                                >
+                                                    <Pencil className="absolute h-4 w-4 text-white/18" />
+                                                    <span className="relative z-10">Editar</span>
+                                                </button>
 
                                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-6 text-white">
                                                     <div className="flex items-center gap-1.5">
