@@ -436,7 +436,7 @@ export default function AccountsPage() {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="group relative overflow-hidden cursor-pointer bg-slate-100"
-                                                style={{ aspectRatio: item.media_type === "VIDEO" ? "3 / 4" : "1 / 1" }}
+                                                style={{ aspectRatio: "3 / 4" }}
                                             >
                                                 <img
                                                     src={item.media_type === "VIDEO" && item.thumbnail_url
