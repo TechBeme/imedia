@@ -428,14 +428,14 @@ export default function AccountsPage() {
                                         <p className="text-sm">Nenhuma publicacao encontrada</p>
                                     </div>
                                 ) : (
-                                    <div className="grid grid-cols-3 gap-px bg-slate-200">
+                                    <div className="grid grid-cols-3 gap-px">
                                         {media.map((item) => (
                                             <a
                                                 key={item.id}
                                                 href={item.permalink}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="group relative overflow-hidden cursor-pointer bg-slate-100"
+                                                className="group relative overflow-hidden cursor-pointer"
                                                 style={{ aspectRatio: "3 / 4" }}
                                             >
                                                 <img
@@ -468,7 +468,7 @@ export default function AccountsPage() {
                                                     </div>
                                                 </div>
 
-                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-6 text-white">
+                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
                                                     <div className="flex items-center gap-6">
                                                         <div className="flex items-center gap-1.5">
                                                             <Heart className="h-5 w-5 fill-white" />
@@ -482,7 +482,7 @@ export default function AccountsPage() {
                                                     </div>
 
                                                     <button
-                                                        className="flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/30"
+                                                        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/30"
                                                         onClick={(e) => {
                                                             e.preventDefault();
                                                             toast.info("Edicao de posts em breve!");
