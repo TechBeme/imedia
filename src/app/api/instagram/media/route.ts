@@ -109,7 +109,7 @@ export async function GET(req: NextRequest) {
                     followsCount: profileData.follows_count || 0,
                     biography: profileData.biography || "",
                     website: profileData.website || "",
-                    profilePictureUrl: profileData.profile_picture_url || account.profileImage || null,
+                    profilePictureUrl: profileData.profile_picture_url || account.profilePicture || null,
                 },
                 debug: {
                     providerAccountId,
