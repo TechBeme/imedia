@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { motion } from "motion/react";
 import { Loader2, Heart, Pencil } from "lucide-react";
 import { FaRegEye } from "react-icons/fa";
+import { HiSquare2Stack } from "react-icons/hi2";
 import {
     RiInstagramLine,
     RiFacebookCircleLine,
@@ -49,11 +50,7 @@ function ReelIcon({ className = "h-5 w-5" }: { className?: string }) {
 }
 
 function CarouselIcon({ className = "h-5 w-5" }: { className?: string }) {
-    return (
-        <svg aria-hidden="true" className={className} fill="currentColor" viewBox="0 0 24 24">
-            <path d="M21 16V8a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v8a5 5 0 0 0 5 5h8a5 5 0 0 0 5-5Zm-11 3.5A3.5 3.5 0 0 1 6.5 16V8A3.5 3.5 0 0 1 10 4.5h8A3.5 3.5 0 0 1 21.5 8v8a3.5 3.5 0 0 1-3.5 3.5Zm-6-14A2.5 2.5 0 0 0 1.5 8v8A2.5 2.5 0 0 0 4 18.5h.81A5 5 0 0 1 4 16V8c0-.955.267-1.848.73-2.61A2.5 2.5 0 0 0 4 5.5Z" />
-        </svg>
-    );
+    return <HiSquare2Stack aria-hidden="true" className={`${className} rotate-180`} />;
 }
 
 function CommentIcon({ className = "h-5 w-5" }: { className?: string }) {
