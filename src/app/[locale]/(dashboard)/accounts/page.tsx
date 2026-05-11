@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { motion } from "motion/react";
-import { Loader2, Heart, MessageCircle, Pencil } from "lucide-react";
+import { Loader2, Heart, MessageCircle, Pencil, Eye } from "lucide-react";
 import {
     RiInstagramLine,
     RiFacebookCircleLine,
@@ -36,6 +36,7 @@ interface InstagramMediaItem {
     timestamp: string;
     like_count: number;
     comments_count: number;
+    view_count?: number;
 }
 
 interface SocialAccount {
@@ -452,6 +453,16 @@ export default function AccountsPage() {
                                                     </div>
                                                 )}
 
+                                                {/* Views count - bottom left (like Instagram) */}
+                                                {item.media_type === "VIDEO" && (
+                                                    <div className="absolute bottom-2 left-2 flex items-center gap-1 text-white drop-shadow-md">
+                                                        <Eye className="h-5 w-5" />
+                                                        <span className="text-sm font-semibold">
+                                                            {formatCount(item.view_count || item.like_count)}
+                                                        </span>
+                                                    </div>
+                                                )}
+
                                                 {/* Hover overlay */}
                                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-6 text-white">
                                                     <div className="flex items-center gap-1.5">
@@ -464,9 +475,9 @@ export default function AccountsPage() {
                                                     </div>
                                                 </div>
 
-                                                {/* Edit button */}
+                                                {/* Edit button - bottom right */}
                                                 <button
-                                                    className="absolute top-2 left-2 h-8 w-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                                                    className="absolute bottom-2 right-2 h-8 w-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
                                                     title="Editar"
                                                     onClick={(e) => {
                                                         e.preventDefault();

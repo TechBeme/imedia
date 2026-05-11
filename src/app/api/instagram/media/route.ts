@@ -19,6 +19,7 @@ export interface InstagramMedia {
     timestamp: string;
     like_count: number;
     comments_count: number;
+    view_count?: number;
 }
 
 export async function GET(req: NextRequest) {
@@ -90,7 +91,7 @@ export async function GET(req: NextRequest) {
             const mediaUrl = new URL(`https://graph.instagram.com/${providerAccountId}/media`);
             mediaUrl.searchParams.set(
                 "fields",
-                "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count"
+                "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count,view_count"
             );
             mediaUrl.searchParams.set("limit", "18");
             mediaUrl.searchParams.set("access_token", accessToken);
