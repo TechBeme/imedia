@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { motion } from "motion/react";
-import { Loader2, Heart, MessageCircle, Pencil, Eye } from "lucide-react";
+import { Loader2, Heart, Pencil, Eye } from "lucide-react";
 import {
     RiInstagramLine,
     RiFacebookCircleLine,
@@ -37,6 +37,22 @@ interface InstagramMediaItem {
     like_count: number;
     comments_count: number;
     view_count?: number;
+}
+
+function ReelIcon({ className = "h-5 w-5" }: { className?: string }) {
+    return (
+        <svg aria-hidden="true" className={className} fill="currentColor" viewBox="0 0 24 24">
+            <path d="M22.942 7.464c-.062-1.36-.306-2.143-.511-2.671a5.366 5.366 0 0 0-1.272-1.952 5.364 5.364 0 0 0-1.951-1.27c-.53-.207-1.312-.45-2.673-.513-1.2-.054-1.557-.066-4.535-.066s-3.336.012-4.536.066c-1.36.062-2.143.306-2.672.511-.769.3-1.371.692-1.951 1.272s-.973 1.182-1.27 1.951c-.207.53-.45 1.312-.513 2.673C1.004 8.665.992 9.022.992 12s.012 3.336.066 4.536c.062 1.36.306 2.143.511 2.671.298.77.69 1.373 1.272 1.952.58.581 1.182.974 1.951 1.27.53.207 1.311.45 2.673.513 1.199.054 1.557.066 4.535.066s3.336-.012 4.536-.066c1.36-.062 2.143-.306 2.671-.511a5.368 5.368 0 0 0 1.953-1.273c.58-.58.972-1.181 1.27-1.95.206-.53.45-1.312.512-2.673.054-1.2.066-1.557.066-4.535s-.012-3.336-.066-4.536Zm-7.085 6.055-5.25 3c-1.167.667-2.619-.175-2.619-1.519V9c0-1.344 1.452-2.186 2.619-1.52l5.25 3c1.175.672 1.175 2.368 0 3.04Z" />
+        </svg>
+    );
+}
+
+function CarouselIcon({ className = "h-5 w-5" }: { className?: string }) {
+    return (
+        <svg aria-hidden="true" className={className} fill="currentColor" viewBox="0 0 24 24">
+            <path d="M21 16V8a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v8a5 5 0 0 0 5 5h8a5 5 0 0 0 5-5Zm-11 3.5A3.5 3.5 0 0 1 6.5 16V8A3.5 3.5 0 0 1 10 4.5h8A3.5 3.5 0 0 1 21.5 8v8a3.5 3.5 0 0 1-3.5 3.5Zm-6-14A2.5 2.5 0 0 0 1.5 8v8A2.5 2.5 0 0 0 4 18.5h.81A5 5 0 0 1 4 16V8c0-.955.267-1.848.73-2.61A2.5 2.5 0 0 0 4 5.5Z" />
+        </svg>
+    );
 }
 
 interface SocialAccount {
@@ -249,7 +265,6 @@ export default function AccountsPage() {
             </div>
 
             <div className="flex gap-6 items-start">
-                {/* Sidebar - Platform List */}
                 <div className="w-56 shrink-0">
                     <h2 className="text-sm font-semibold text-slate-700 mb-3 px-2">Plataformas</h2>
                     <div className="space-y-1">
@@ -270,25 +285,20 @@ export default function AccountsPage() {
                                 >
                                     <Icon className="h-4 w-4" />
                                     <span>{platform.name}</span>
-                                    {connected && (
-                                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                                    )}
+                                    {connected && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-500" />}
                                 </button>
                             );
                         })}
                     </div>
                 </div>
 
-                {/* Detail Panel - Instagram Profile */}
                 <div className="flex-1">
                     {!isConnected ? (
                         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-12 text-center">
                             <div className="h-16 w-16 rounded-2xl bg-pink-50 flex items-center justify-center mx-auto mb-4">
                                 <RiInstagramLine className="h-8 w-8 text-pink-500" />
                             </div>
-                            <h3 className="text-lg font-semibold text-slate-800 mb-2">
-                                Conecte seu Instagram
-                            </h3>
+                            <h3 className="text-lg font-semibold text-slate-800 mb-2">Conecte seu Instagram</h3>
                             <p className="text-sm text-slate-500 mb-6 max-w-sm mx-auto">
                                 Conecte sua conta do Instagram para gerenciar posts, visualizar analytics e publicar conteudo.
                             </p>
@@ -307,7 +317,6 @@ export default function AccountsPage() {
                         </div>
                     ) : (
                         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                            {/* Profile Header */}
                             <div className="p-8 border-b border-slate-100">
                                 {apiError && (
                                     <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
@@ -345,7 +354,6 @@ export default function AccountsPage() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                onClick={handleDisconnect}
                                                 disabled={disconnecting}
                                                 className="rounded-xl text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
                                             >
@@ -417,82 +425,75 @@ export default function AccountsPage() {
                                         <p className="text-sm">Nenhuma publicacao encontrada</p>
                                     </div>
                                 ) : (
-                                    <div className="grid grid-cols-3 gap-0">
+                                    <div className="grid grid-cols-3 gap-px bg-slate-200">
                                         {media.map((item) => (
                                             <a
                                                 key={item.id}
                                                 href={item.permalink}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="group relative aspect-square bg-slate-100 overflow-hidden cursor-pointer"
+                                                className="group relative overflow-hidden cursor-pointer bg-slate-100"
+                                                style={{ aspectRatio: item.media_type === "VIDEO" ? "3 / 4" : "1 / 1" }}
                                             >
                                                 <img
                                                     src={item.media_type === "VIDEO" && item.thumbnail_url
                                                         ? item.thumbnail_url
                                                         : item.media_url}
                                                     alt={item.caption || "Post"}
-                                                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                                                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                                                     loading="lazy"
                                                 />
 
-                                                {/* Video indicator */}
                                                 {item.media_type === "VIDEO" && (
                                                     <div className="absolute top-2 right-2">
-                                                        <svg className="h-5 w-5 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
-                                                            <path d="M8 5v14l11-7z" />
-                                                        </svg>
+                                                        <ReelIcon className="h-5 w-5 text-white drop-shadow-md" />
                                                     </div>
                                                 )}
 
-                                                {/* Carousel indicator */}
                                                 {item.media_type === "CAROUSEL_ALBUM" && (
                                                     <div className="absolute top-2 right-2">
-                                                        <svg className="h-5 w-5 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
-                                                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7z" />
-                                                        </svg>
+                                                        <CarouselIcon className="h-5 w-5 text-white drop-shadow-md" />
                                                     </div>
                                                 )}
 
-                                                {/* Views count - bottom left (like Instagram) */}
-                                                {item.media_type === "VIDEO" && (
-                                                    <div className="absolute bottom-2 left-2 flex items-center gap-1 text-white drop-shadow-md">
-                                                        <Eye className="h-5 w-5" />
-                                                        <span className="text-sm font-semibold">
-                                                            {formatCount(item.view_count || item.like_count)}
+                                                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/65 via-black/15 to-transparent p-2 text-white">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <Eye className="h-4 w-4" />
+                                                        <span className="text-xs font-semibold">
+                                                            {formatCount(item.view_count || item.like_count || 0)}
                                                         </span>
                                                     </div>
-                                                )}
 
-                                                {/* Hover overlay */}
+                                                    <button
+                                                        className="h-7 w-7 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                                                        title="Editar"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            toast.info("Edicao de posts em breve!");
+                                                        }}
+                                                    >
+                                                        <Pencil className="h-3.5 w-3.5 text-slate-600" />
+                                                    </button>
+                                                </div>
+
                                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-6 text-white">
                                                     <div className="flex items-center gap-1.5">
                                                         <Heart className="h-5 w-5 fill-white" />
                                                         <span className="font-semibold">{item.like_count}</span>
                                                     </div>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <MessageCircle className="h-5 w-5 fill-white" />
-                                                        <span className="font-semibold">{item.comments_count}</span>
+
+                                                    <div className="flex items-center gap-1.5 scale-x-[-1]">
+                                                        <svg aria-hidden="true" className="h-5 w-5 fill-white" viewBox="0 0 24 24">
+                                                            <path d="M20.656 17.008c-.278.584-.995 1.11-1.67 1.16a44.884 44.884 0 0 1-1.987.05c-3.492 0-6.607-.331-9.25-.985-1.388-.343-2.574-.776-3.526-1.286-.623-.334-1.517-.912-1.517-1.946 0-1.034.894-1.612 1.517-1.946.952-.51 2.138-.943 3.526-1.286 2.643-.654 5.758-.985 9.25-.985 1.086 0 1.722.024 1.987.05.675.05 1.392.576 1.67 1.16.336.706.498 1.78.498 3.007s-.162 2.301-.498 3.007ZM12 6.014c-4.69 0-8.489 3.424-8.489 7.648 0 1.258.349 2.445.968 3.497.17.288.281.63.233.976-.102.732-.402 2.323-.524 2.958-.036.187.133.33.303.258.654-.276 2.17-.924 2.884-1.235.2-.087.43-.099.637-.028 1.255.427 2.635.658 4.088.658 4.69 0 8.489-3.424 8.489-7.648s-3.799-7.084-8.489-7.084Z" />
+                                                        </svg>
+                                                        <span className="font-semibold scale-x-[-1]">{item.comments_count}</span>
                                                     </div>
                                                 </div>
-
-                                                {/* Edit button - bottom right */}
-                                                <button
-                                                    className="absolute bottom-2 right-2 h-8 w-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
-                                                    title="Editar"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        toast.info("Edicao de posts em breve!");
-                                                    }}
-                                                >
-                                                    <Pencil className="h-4 w-4 text-slate-600" />
-                                                </button>
                                             </a>
                                         ))}
                                     </div>
                                 )}
                             </div>
-
-
                         </div>
                     )}
                 </div>

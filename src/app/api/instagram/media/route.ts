@@ -133,6 +133,7 @@ export async function GET(req: NextRequest) {
                 timestamp: item.timestamp,
                 like_count: item.like_count || 0,
                 comments_count: item.comments_count || 0,
+                view_count: item.view_count || 0,
             }));
 
             return success({
