@@ -241,7 +241,7 @@
         "mediaLibrary": "Biblioteca de Medios"
     },
     "analytics": {
-        "title": "Analytics",
+        "title": "Informes",
         "7days": "7 dias",
         "30days": "30 dias",
         "90days": "90 dias",
@@ -383,7 +383,7 @@
         }
     },
     "linkAnalytics": {
-        "title": "Estadisticas del Enlace",
+        "title": "Enlaces",
         "totalClicks": "Clics Totales",
         "uniqueClicks": "Clics Unicos",
         "clicksToday": "Clics Hoy",
@@ -458,7 +458,7 @@
         "time": "Hora"
     },
     "socialAnalytics": {
-        "title": "Analisis Social",
+        "title": "Redes Sociales",
         "7days": "7 dias",
         "30days": "30 dias",
         "90days": "90 dias",

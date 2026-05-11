@@ -241,7 +241,7 @@
         "mediaLibrary": "Media Library"
     },
     "analytics": {
-        "title": "Analytics",
+        "title": "Reports",
         "7days": "7 days",
         "30days": "30 days",
         "90days": "90 days",
@@ -311,7 +311,7 @@
         "basicInfo": "Basic Info",
         "searchPlaceholder": "Search by slug, URL, title or tag...",
         "linkNotFound": "Link not found",
-        "analytics": "Analytics",
+        "analytics": "Reports",
         "qrCode": "QR Code",
         "folder": "Folder",
         "noFolder": "No folder",
@@ -383,7 +383,7 @@
         }
     },
     "linkAnalytics": {
-        "title": "Link Analytics",
+        "title": "Links",
         "totalClicks": "Total Clicks",
         "uniqueClicks": "Unique Clicks",
         "clicksToday": "Clicks Today",
@@ -458,7 +458,7 @@
         "time": "Time"
     },
     "socialAnalytics": {
-        "title": "Social Analytics",
+        "title": "Social",
         "7days": "7 days",
         "30days": "30 days",
         "90days": "90 days",
