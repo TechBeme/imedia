@@ -73,20 +73,52 @@ export async function GET(req: NextRequest) {
             const accessToken = longLivedData.access_token || shortLivedToken;
             const expiresIn = longLivedData.expires_in || 5184000; // ~60 days default
 
-            // 3. Get Instagram user info via graph.instagram.com/me
-            // According to Meta docs: https://graph.instagram.com/v25.0/me?fields=user_id,username
-            const igMeUrl = new URL("https://graph.instagram.com/me");
-            igMeUrl.searchParams.set("fields", "user_id,username,account_type,media_count");
-            igMeUrl.searchParams.set("access_token", accessToken);
+            // 3. Get Instagram user info - try Graph API first (more fields for Business accounts)
+            let finalUserId = igUserId;
+            let igInfo: any = {};
 
-            const igMeRes = await fetch(igMeUrl.toString());
-            const igMe = await igMeRes.json();
-            console.log("[instagram/callback] igMe:", JSON.stringify(igMe));
+            // Try Facebook Graph API for Instagram Business Account
+            console.log("[instagram/callback] Trying Facebook Graph API...");
+            const fbMeUrl = new URL("https://graph.facebook.com/v22.0/me");
+            fbMeUrl.searchParams.set("fields", "id,name,instagram_business_account");
+            fbMeUrl.searchParams.set("access_token", accessToken);
 
-            // The /me endpoint returns { data: [{ user_id, username }] }
-            const meData = igMe.data?.[0] || igMe;
-            const finalUserId = meData.user_id || meData.id || igUserId;
-            const igInfo = meData;
+            const fbMeRes = await fetch(fbMeUrl.toString());
+            const fbMe = await fbMeRes.json();
+            console.log("[instagram/callback] fbMe:", JSON.stringify(fbMe));
+
+            if (fbMe.instagram_business_account?.id) {
+                // Use Business Account ID for richer data
+                finalUserId = fbMe.instagram_business_account.id;
+
+                const bizUrl = new URL(`https://graph.facebook.com/v22.0/${finalUserId}`);
+                bizUrl.searchParams.set("fields", "username,name,profile_picture_url,biography,followers_count,follows_count,media_count,website");
+                bizUrl.searchParams.set("access_token", accessToken);
+
+                const bizRes = await fetch(bizUrl.toString());
+                const bizData = await bizRes.json();
+                console.log("[instagram/callback] bizData:", JSON.stringify(bizData));
+
+                if (!bizData.error) {
+                    igInfo = bizData;
+                }
+            }
+
+            // Fallback to Basic Display API if Graph API failed
+            if (!igInfo.username) {
+                console.log("[instagram/callback] Falling back to Basic Display API...");
+                const igMeUrl = new URL("https://graph.instagram.com/me");
+                igMeUrl.searchParams.set("fields", "user_id,username,account_type,media_count");
+                igMeUrl.searchParams.set("access_token", accessToken);
+
+                const igMeRes = await fetch(igMeUrl.toString());
+                const igMe = await igMeRes.json();
+                console.log("[instagram/callback] igMe:", JSON.stringify(igMe));
+
+                const meData = igMe.data?.[0] || igMe;
+                finalUserId = meData.user_id || meData.id || igUserId;
+                igInfo = meData;
+            }
 
             // 4. Save to database
             const existing = await db

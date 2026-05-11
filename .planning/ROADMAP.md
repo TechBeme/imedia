@@ -99,25 +99,26 @@
 **Requirements:** IG-01 through IG-14
 
 **Plans:**
-1. **OAuth Refinement** — Ensure Instagram OAuth flow handles all edge cases (token refresh, re-auth, multiple accounts)
-2. **Account Info** — Fetch and display Instagram account details (username, followers, profile pic, bio)
-3. **Image Publishing** — Implement single image post with caption and alt text
-4. **Carousel Publishing** — Implement multi-image/video carousel posts (up to 10 items)
-5. **Reels Publishing** — Implement Reels upload with caption and cover selection
-6. **Stories Publishing** — Implement Stories upload (image and video)
-7. **Post Listing** — Fetch and display user's published posts with media preview and metrics
-8. **Insights** — Fetch post-level insights (impressions, reach, engagement, saves, shares)
-9. **Comment Management** — List comments, reply to comments, hide/delete comments
-10. **Rate Limiting** — Client-side enforcement of 100 posts/24h limit with user-facing warnings
-11. **Error Handling** — Graceful handling of API errors (token expiry, PPA required, rate limited)
+- [ ] **03-01-PLAN.md** — OAuth Refinement: per-user platform credentials, token refresh, token revocation on disconnect
+- [ ] **03-02-PLAN.md** — Account Info & Post Listing: rich profile display (bio, followers, profile pic), posts grid with engagement, full i18n
+- [ ] **03-03-PLAN.md** — Image & Carousel Publishing: single image and multi-image carousel posts via Meta Graph API
+- [ ] **03-04-PLAN.md** — Reels & Stories Publishing: Reels and Stories upload with media type selector in compose UI
+- [ ] **03-05-PLAN.md** — Insights & Comment Management: post-level insights, list/reply/delete comments
+- [ ] **03-06-PLAN.md** — Rate Limiting: 100 posts/24h enforcement with user-facing warnings and server-side blocking
+
+**Wave Structure:**
+- Wave 1: 03-01 (OAuth refinement), 03-02 (Account info + posts) — parallel, no file overlap
+- Wave 2: 03-03 (Image + Carousel publishing), 03-04 (Reels + Stories publishing) — 03-04 depends on 03-03 publishing library
+- Wave 3: 03-05 (Insights + comments), 03-06 (Rate limiting) — both depend on earlier waves
 
 **Success Criteria:**
-- User can connect Instagram Business account
+- User can connect Instagram Business account using per-user credentials
 - User can publish images, carousels, reels, and stories
 - User can view published posts and their insights
 - User can manage comments (reply, hide, delete)
 - Rate limits are enforced and communicated to user
 - All errors show helpful messages
+- All UI text is translatable via next-intl
 
 **Estimated:** 7-10 days
 

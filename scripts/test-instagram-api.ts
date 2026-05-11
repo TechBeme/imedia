@@ -76,12 +76,12 @@ async function testInstagramAPI(accessToken: string) {
 }
 
 // Get token from command line or environment
-const token = process.argv[2] || process.env.INSTAGRAM_TEST_TOKEN;
+const testApiToken = process.argv[2] || process.env.INSTAGRAM_TEST_TOKEN;
 
-if (!token) {
+if (!testApiToken) {
     console.error("Usage: npx tsx scripts/test-instagram-api.ts <access_token>");
     console.error("Or set INSTAGRAM_TEST_TOKEN environment variable");
     process.exit(1);
 }
 
-testInstagramAPI(token).catch(console.error);
+testInstagramAPI(testApiToken).catch(console.error);
