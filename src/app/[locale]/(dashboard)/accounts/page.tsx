@@ -42,6 +42,46 @@ interface InstagramMediaItem {
     view_count?: number;
 }
 
+function ProfileSkeleton() {
+    return (
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="p-8 border-b border-slate-100">
+                <div className="flex items-center gap-10 animate-pulse">
+                    <div className="h-36 w-36 rounded-full bg-slate-200 shrink-0" />
+                    <div className="flex-1 space-y-4">
+                        <div className="h-6 w-48 bg-slate-200 rounded" />
+                        <div className="h-4 w-32 bg-slate-200 rounded" />
+                        <div className="flex gap-8">
+                            <div className="h-4 w-20 bg-slate-200 rounded" />
+                            <div className="h-4 w-24 bg-slate-200 rounded" />
+                            <div className="h-4 w-20 bg-slate-200 rounded" />
+                        </div>
+                        <div className="h-3 w-full max-w-md bg-slate-200 rounded" />
+                    </div>
+                </div>
+            </div>
+            <div className="p-8">
+                <div className="h-4 w-32 bg-slate-200 rounded mb-4" />
+                <div className="grid grid-cols-3 gap-px">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} className="bg-slate-200" style={{ aspectRatio: "3 / 4" }} />
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function GridSkeleton() {
+    return (
+        <div className="grid grid-cols-3 gap-px">
+            {Array.from({ length: 9 }).map((_, i) => (
+                <div key={i} className="bg-slate-200 animate-pulse" style={{ aspectRatio: "3 / 4" }} />
+            ))}
+        </div>
+    );
+}
+
 function ReelIcon({ className = "h-5 w-5" }: { className?: string }) {
     return (
         <svg aria-hidden="true" className={className} fill="currentColor" viewBox="0 0 24 24">
@@ -125,6 +165,7 @@ export default function AccountsPage() {
     const [profile, setProfile] = useState<InstagramProfile | null>(null);
     const [media, setMedia] = useState<InstagramMediaItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const [profileLoading, setProfileLoading] = useState(true);
     const [connecting, setConnecting] = useState(false);
     const [disconnecting, setDisconnecting] = useState(false);
     const [apiError, setApiError] = useState<string | null>(null);
@@ -165,21 +206,21 @@ export default function AccountsPage() {
     }
 
     async function fetchInstagramMedia() {
+        setProfileLoading(true);
         try {
             const res = await fetch("/api/instagram/media");
             const data = await res.json();
-            console.log("[fetchInstagramMedia] response:", data);
             if (data.data) {
                 setProfile(data.data.profile);
                 setMedia(data.data.media || []);
                 setApiError(null);
             } else if (data.error) {
                 setApiError(data.error.message || "Erro ao buscar dados do Instagram");
-                console.error("[fetchInstagramMedia] API error:", data.error);
             }
-        } catch (err) {
-            console.error("Failed to fetch Instagram media:", err);
+        } catch {
             setApiError("Falha na conexao com o Instagram");
+        } finally {
+            setProfileLoading(false);
         }
     }
 
@@ -318,6 +359,8 @@ export default function AccountsPage() {
                                 {connecting ? "Conectando..." : "Conectar Instagram"}
                             </Button>
                         </div>
+                    ) : profileLoading ? (
+                        <ProfileSkeleton />
                     ) : (
                         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                             <div className="p-8 border-b border-slate-100">
