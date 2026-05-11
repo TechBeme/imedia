@@ -162,7 +162,7 @@ export function Sidebar({ className }: { className?: string }) {
         .join("")
         .toUpperCase() || "U";
 
-    const isDashboard = pathname === `/${locale}/dashboard` || pathname === `/${locale}/dashboard/`;
+    const isDashboard = pathname === `/${locale}` || pathname === `/${locale}/` || pathname === `/${locale}/dashboard` || pathname === `/${locale}/dashboard/`;
 
     return (
         <aside
@@ -174,7 +174,7 @@ export function Sidebar({ className }: { className?: string }) {
             {/* Logo */}
             <div className="flex items-center px-5 h-14 border-b border-gray-100">
                 <Link
-                    href={`/${locale}/dashboard`}
+                    href={`/${locale}`}
                     className="flex items-center gap-3 cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-lg"
                 >
                     <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
@@ -186,9 +186,9 @@ export function Sidebar({ className }: { className?: string }) {
 
             {/* Navigation */}
             <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto">
-                {/* Dashboard */}
+                {/* Início */}
                 <Link
-                    href={`/${locale}/dashboard`}
+                    href={`/${locale}`}
                     className={cn(
                         "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
                         isDashboard
@@ -370,7 +370,7 @@ export function MobileSidebar() {
         .join("")
         .toUpperCase() || "U";
 
-    const isDashboard = pathname === `/${locale}/dashboard` || pathname === `/${locale}/dashboard/`;
+    const isDashboard = pathname === `/${locale}` || pathname === `/${locale}/` || pathname === `/${locale}/dashboard` || pathname === `/${locale}/dashboard/`;
 
     return (
         <Sheet>
@@ -380,7 +380,7 @@ export function MobileSidebar() {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0 border-r border-gray-200 bg-gradient-to-b from-white to-gray-50">
                 <div className="flex items-center px-5 h-14 border-b border-gray-100">
-                    <Link href={`/${locale}/dashboard`} className="flex items-center gap-3 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-lg">
+                    <Link href={`/${locale}`} className="flex items-center gap-3 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-lg">
                         <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
                             <span className="text-white font-bold text-sm">s</span>
                         </div>
@@ -389,7 +389,7 @@ export function MobileSidebar() {
                 </div>
                 <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto">
                     <Link
-                        href={`/${locale}/dashboard`}
+                        href={`/${locale}`}
                         className={cn(
                             "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
                             isDashboard
