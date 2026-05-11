@@ -73,16 +73,30 @@ export async function GET(req: NextRequest) {
             const accessToken = longLivedData.access_token || shortLivedToken;
             const expiresIn = longLivedData.expires_in || 5184000; // ~60 days default
 
-            // 3. Get Instagram account info
-            const igInfoUrl = new URL(`https://graph.instagram.com/${igUserId}`);
-            igInfoUrl.searchParams.set("fields", "username,account_type,media_count");
+            // 3. Get Facebook user info to find Instagram Business Account
+            const fbMeUrl = new URL("https://graph.facebook.com/v22.0/me");
+            fbMeUrl.searchParams.set("fields", "id,name,instagram_business_account");
+            fbMeUrl.searchParams.set("access_token", accessToken);
+
+            const fbMeRes = await fetch(fbMeUrl.toString());
+            const fbMe = await fbMeRes.json();
+            console.log("[instagram/callback] fbMe:", JSON.stringify(fbMe));
+
+            const igBusinessAccountId = fbMe.instagram_business_account?.id;
+            if (!igBusinessAccountId) {
+                throw new Error("No Instagram Business Account found. Make sure your Instagram account is connected to a Facebook Page.");
+            }
+
+            // 4. Get Instagram account info using Business Account ID
+            const igInfoUrl = new URL(`https://graph.facebook.com/v22.0/${igBusinessAccountId}`);
+            igInfoUrl.searchParams.set("fields", "username,name,profile_picture_url,biography,followers_count,follows_count,media_count");
             igInfoUrl.searchParams.set("access_token", accessToken);
 
             const igInfoRes = await fetch(igInfoUrl.toString());
             const igInfo = await igInfoRes.json();
             console.log("[instagram/callback] igInfo:", JSON.stringify(igInfo));
 
-            // 4. Save to database
+            // 5. Save to database
             const existing = await db
                 .select()
                 .from(socialAccounts)
@@ -98,9 +112,10 @@ export async function GET(req: NextRequest) {
                 await db
                     .update(socialAccounts)
                     .set({
-                        providerAccountId: String(igUserId),
+                        providerAccountId: String(igBusinessAccountId),
                         username: igInfo.username,
-                        displayName: igInfo.username,
+                        displayName: igInfo.name || igInfo.username,
+                        profileImage: igInfo.profile_picture_url || null,
                         accessToken: encrypt(accessToken),
                         expiresAt: new Date(Date.now() + expiresIn * 1000),
                         isActive: true,
@@ -111,9 +126,10 @@ export async function GET(req: NextRequest) {
                 await db.insert(socialAccounts).values({
                     userId: session.user.id,
                     platform: "instagram",
-                    providerAccountId: String(igUserId),
+                    providerAccountId: String(igBusinessAccountId),
                     username: igInfo.username,
-                    displayName: igInfo.username,
+                    displayName: igInfo.name || igInfo.username,
+                    profileImage: igInfo.profile_picture_url || null,
                     accessToken: encrypt(accessToken),
                     expiresAt: new Date(Date.now() + expiresIn * 1000),
                     isActive: true,
