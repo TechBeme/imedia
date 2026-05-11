@@ -8,6 +8,7 @@ import { motion } from "motion/react";
 import { Loader2, Heart, Pencil } from "lucide-react";
 import { FaRegEye } from "react-icons/fa";
 import { HiSquare2Stack } from "react-icons/hi2";
+import { IoChatbubble } from "react-icons/io5";
 import {
     RiInstagramLine,
     RiFacebookCircleLine,
@@ -54,11 +55,7 @@ function CarouselIcon({ className = "h-5 w-5" }: { className?: string }) {
 }
 
 function CommentIcon({ className = "h-5 w-5" }: { className?: string }) {
-    return (
-        <svg aria-hidden="true" className={className} fill="currentColor" viewBox="0 0 24 24">
-            <path d="M20 11.5c0 4.136-3.813 7.5-8.5 7.5a9.82 9.82 0 0 1-3.318-.57L4 20l1.255-3.136C3.84 15.513 3 13.592 3 11.5 3 7.364 6.813 4 11.5 4S20 7.364 20 11.5Zm-8.5-6C7.64 5.5 4.5 8.168 4.5 11.5c0 1.843.773 3.53 2.12 4.628l.344.28-.743 1.857 2.34-.837.244.085c.9.313 1.84.472 2.795.472 3.86 0 7-2.692 7-6s-3.14-6-7-6Z" />
-        </svg>
-    );
+    return <IoChatbubble aria-hidden="true" className={`${className} scale-x-[-1]`} />;
 }
 
 interface SocialAccount {
