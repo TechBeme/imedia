@@ -4,12 +4,12 @@
         "description": "Gerencie todas as suas redes sociais em um só lugar"
     },
     "nav": {
-        "dashboard": "Dashboard",
+        "dashboard": "Painel",
         "accounts": "Contas",
         "compose": "Criar Post",
         "scheduled": "Agendados",
         "history": "Historico",
-        "analytics": "Análises",
+        "analytics": "Relatórios",
         "links": "Links",
         "socialMedia": "Redes Sociais",
         "allLinks": "Todos os Links",
@@ -19,8 +19,8 @@
         "domains": "Domínios",
         "shortUrl": "Links Curtos",
         "overview": "Visão Geral",
-        "linkAnalytics": "Análise de Links",
-        "socialAnalytics": "Análise Social",
+        "linkAnalytics": "Links",
+        "socialAnalytics": "Redes Sociais",
         "logout": "Sair",
         "logoutSuccess": "Sessão encerrada",
         "openMenu": "Abrir menu"
