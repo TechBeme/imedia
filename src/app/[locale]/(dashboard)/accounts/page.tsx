@@ -326,9 +326,9 @@ export default function AccountsPage() {
                                         <strong>Erro ao carregar dados:</strong> {apiError}. Tente reconectar sua conta.
                                     </div>
                                 )}
-                                <div className="flex items-start gap-12">
+                                <div className="flex items-start gap-8">
                                     {/* Avatar with gradient ring */}
-                                    <div className="h-36 w-36 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-1 shrink-0">
+                                    <div className="h-28 w-28 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-1 shrink-0">
                                         <div className="h-full w-full rounded-full bg-white p-0.5">
                                             {displayProfile.profilePictureUrl ? (
                                                 <img
@@ -338,7 +338,7 @@ export default function AccountsPage() {
                                                 />
                                             ) : (
                                                 <div className="h-full w-full rounded-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
-                                                    <span className="text-3xl font-bold text-pink-500">
+                                                    <span className="text-2xl font-bold text-pink-500">
                                                         {(displayProfile.name || displayProfile.username || "U")
                                                             .charAt(0)
                                                             .toUpperCase()}
@@ -348,9 +348,9 @@ export default function AccountsPage() {
                                         </div>
                                     </div>
 
-                                    <div className="flex-1 min-w-0 pt-2">
-                                        {/* Username + Disconnect */}
-                                        <div className="flex items-center gap-4 mb-5">
+                                    <div className="flex-1 min-w-0">
+                                        {/* Username + Disconnect button */}
+                                        <div className="flex items-center justify-between mb-3">
                                             <h2 className="text-xl font-normal text-slate-800">
                                                 {displayProfile.username || instagramAccount?.username || "—"}
                                             </h2>
@@ -358,63 +358,60 @@ export default function AccountsPage() {
                                                 variant="outline"
                                                 size="sm"
                                                 disabled={disconnecting}
-                                                className="rounded-lg text-slate-700 border-slate-300 hover:bg-slate-50 text-sm font-semibold px-4"
+                                                className="rounded-xl text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
                                             >
                                                 {disconnecting ? (
                                                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
                                                 ) : null}
-                                                Desconectar
+                                                Desconectar conta
                                             </Button>
                                         </div>
 
+                                        {/* Name */}
+                                        <p className="font-semibold text-slate-800 mb-3">
+                                            {displayProfile.name || displayProfile.username || instagramAccount?.displayName || "—"}
+                                        </p>
+
                                         {/* Stats */}
-                                        <div className="flex gap-10 mb-5">
-                                            <div>
-                                                <span className="font-semibold text-slate-800">
+                                        <div className="flex gap-8 mb-4">
+                                            <div className="text-center">
+                                                <span className="font-bold text-slate-800">
                                                     {displayProfile.mediaCount || 0}
                                                 </span>{" "}
                                                 <span className="text-slate-500">posts</span>
                                             </div>
-                                            <div>
-                                                <span className="font-semibold text-slate-800">
+                                            <div className="text-center">
+                                                <span className="font-bold text-slate-800">
                                                     {formatCount(displayProfile.followersCount || 0)}
                                                 </span>{" "}
                                                 <span className="text-slate-500">seguidores</span>
                                             </div>
-                                            <div>
-                                                <span className="font-semibold text-slate-800">
+                                            <div className="text-center">
+                                                <span className="font-bold text-slate-800">
                                                     {displayProfile.followsCount || 0}
                                                 </span>{" "}
                                                 <span className="text-slate-500">seguindo</span>
                                             </div>
                                         </div>
 
-                                        {/* Name */}
-                                        <p className="font-semibold text-slate-800 text-sm mb-1">
-                                            {displayProfile.name || displayProfile.username || instagramAccount?.displayName || "—"}
-                                        </p>
-
-                                        {/* Bio */}
-                                        {displayProfile.biography && (
-                                            <p className="text-sm text-slate-600 whitespace-pre-line mb-2">
-                                                {displayProfile.biography}
-                                            </p>
-                                        )}
-
-                                        {/* Website */}
-                                        {displayProfile.website && (
-                                            <a
-                                                href={displayProfile.website}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-sm text-blue-800 hover:underline inline-flex items-center gap-1 font-semibold"
-                                            >
-                                                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                                                </svg>
-                                                {displayProfile.website.replace(/^https?:\/\//, "")}
-                                            </a>
-                                        )}
+                                        {/* Bio, website */}
+                                        <div>
+                                            {displayProfile.biography && (
+                                                <p className="text-sm text-slate-600 whitespace-pre-line">
+                                                    {displayProfile.biography}
+                                                </p>
+                                            )}
+                                            {displayProfile.website && (
+                                                <a
+                                                    href={displayProfile.website}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-sm text-blue-600 hover:underline mt-1 block"
+                                                >
+                                                    {displayProfile.website}
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
