@@ -355,6 +355,11 @@ export default function AccountsPage() {
                                             </Button>
                                         </div>
 
+                                        {/* Name */}
+                                        <p className="font-semibold text-slate-800 mb-3">
+                                            {displayProfile.name || displayProfile.username || instagramAccount?.displayName || "—"}
+                                        </p>
+
                                         {/* Stats */}
                                         <div className="flex gap-8 mb-4">
                                             <div className="text-center">
@@ -377,13 +382,10 @@ export default function AccountsPage() {
                                             </div>
                                         </div>
 
-                                        {/* Name, bio, website */}
+                                        {/* Bio, website */}
                                         <div>
-                                            <p className="font-semibold text-slate-800">
-                                                {displayProfile.name || displayProfile.username || instagramAccount?.displayName || "—"}
-                                            </p>
                                             {displayProfile.biography && (
-                                                <p className="text-sm text-slate-600 mt-1 whitespace-pre-line">
+                                                <p className="text-sm text-slate-600 whitespace-pre-line">
                                                     {displayProfile.biography}
                                                 </p>
                                             )}
@@ -414,7 +416,7 @@ export default function AccountsPage() {
                                         <p className="text-sm">Nenhuma publicacao encontrada</p>
                                     </div>
                                 ) : (
-                                    <div className="grid grid-cols-3 gap-1">
+                                    <div className="grid grid-cols-3 gap-0">
                                         {media.map((item) => (
                                             <a
                                                 key={item.id}
@@ -428,7 +430,7 @@ export default function AccountsPage() {
                                                         ? item.thumbnail_url
                                                         : item.media_url}
                                                     alt={item.caption || "Post"}
-                                                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
                                                     loading="lazy"
                                                 />
 

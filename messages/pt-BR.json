@@ -21,6 +21,8 @@
         "overview": "Visão Geral",
         "linkAnalytics": "Links",
         "socialAnalytics": "Redes Sociais",
+        "linkReport": "Relatório de Links",
+        "socialReport": "Relatório de Redes Sociais",
         "logout": "Sair",
         "logoutSuccess": "Sessão encerrada",
         "openMenu": "Abrir menu"

@@ -21,6 +21,8 @@
         "overview": "Overview",
         "linkAnalytics": "Links",
         "socialAnalytics": "Social",
+        "linkReport": "Link Report",
+        "socialReport": "Social Report",
         "logout": "Logout",
         "logoutSuccess": "Logged out",
         "openMenu": "Open menu"
