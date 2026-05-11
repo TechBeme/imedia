@@ -68,46 +68,55 @@ export async function GET(req: NextRequest) {
 
             const providerAccountId = account.providerAccountId;
 
-            // Try Facebook Graph API first (richer data for Business accounts)
+            // Use Instagram Graph API (graph.instagram.com) - works with Instagram Login tokens
+            // for Business/Creator accounts with extended fields
             let profileData: any = {};
             let mediaData: any = {};
 
-            console.log("[instagram/media] Trying Facebook Graph API...");
-            const graphProfileUrl = new URL(`https://graph.facebook.com/v22.0/${providerAccountId}`);
-            graphProfileUrl.searchParams.set("fields", "username,name,profile_picture_url,biography,followers_count,follows_count,media_count,website");
-            graphProfileUrl.searchParams.set("access_token", accessToken);
+            console.log("[instagram/media] Fetching from Instagram Graph API...");
 
-            const graphProfileRes = await fetch(graphProfileUrl.toString(), { next: { revalidate: 60 } });
-            profileData = await graphProfileRes.json();
-            console.log("[instagram/media] Graph API profile:", JSON.stringify(profileData));
+            // Try full fields for Business/Creator accounts
+            const profileUrl = new URL(`https://graph.instagram.com/${providerAccountId}`);
+            profileUrl.searchParams.set(
+                "fields",
+                "username,name,account_type,profile_picture_url,biography,followers_count,follows_count,media_count,website"
+            );
+            profileUrl.searchParams.set("access_token", accessToken);
 
-            const graphMediaUrl = new URL(`https://graph.facebook.com/v22.0/${providerAccountId}/media`);
-            graphMediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count");
-            graphMediaUrl.searchParams.set("limit", "18");
-            graphMediaUrl.searchParams.set("access_token", accessToken);
+            const profileRes = await fetch(profileUrl.toString(), { next: { revalidate: 60 } });
+            profileData = await profileRes.json();
+            console.log("[instagram/media] Profile:", JSON.stringify(profileData));
 
-            const graphMediaRes = await fetch(graphMediaUrl.toString(), { next: { revalidate: 60 } });
-            mediaData = await graphMediaRes.json();
-            console.log("[instagram/media] Graph API media:", JSON.stringify({ count: mediaData.data?.length, error: mediaData.error }));
+            const mediaUrl = new URL(`https://graph.instagram.com/${providerAccountId}/media`);
+            mediaUrl.searchParams.set(
+                "fields",
+                "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count"
+            );
+            mediaUrl.searchParams.set("limit", "18");
+            mediaUrl.searchParams.set("access_token", accessToken);
 
-            // Fallback to Basic Display API if Graph API failed
+            const mediaRes = await fetch(mediaUrl.toString(), { next: { revalidate: 60 } });
+            mediaData = await mediaRes.json();
+            console.log("[instagram/media] Media:", JSON.stringify({ count: mediaData.data?.length, error: mediaData.error }));
+
+            // Fallback to minimal fields if full fields failed (personal accounts)
             if (profileData.error || mediaData.error) {
-                console.log("[instagram/media] Graph API failed, falling back to Basic Display API...");
+                console.log("[instagram/media] Full fields failed, falling back to basic fields...");
 
-                const profileUrl = new URL(`https://graph.instagram.com/${providerAccountId}`);
-                profileUrl.searchParams.set("fields", "username,account_type,media_count");
-                profileUrl.searchParams.set("access_token", accessToken);
+                const basicProfileUrl = new URL(`https://graph.instagram.com/${providerAccountId}`);
+                basicProfileUrl.searchParams.set("fields", "username,account_type,media_count");
+                basicProfileUrl.searchParams.set("access_token", accessToken);
 
-                const profileRes = await fetch(profileUrl.toString(), { next: { revalidate: 60 } });
-                const basicProfileData = await profileRes.json();
+                const basicProfileRes = await fetch(basicProfileUrl.toString(), { next: { revalidate: 60 } });
+                const basicProfileData = await basicProfileRes.json();
 
-                const mediaUrl = new URL(`https://graph.instagram.com/${providerAccountId}/media`);
-                mediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp");
-                mediaUrl.searchParams.set("limit", "18");
-                mediaUrl.searchParams.set("access_token", accessToken);
+                const basicMediaUrl = new URL(`https://graph.instagram.com/${providerAccountId}/media`);
+                basicMediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp");
+                basicMediaUrl.searchParams.set("limit", "18");
+                basicMediaUrl.searchParams.set("access_token", accessToken);
 
-                const mediaRes = await fetch(mediaUrl.toString(), { next: { revalidate: 60 } });
-                const basicMediaData = await mediaRes.json();
+                const basicMediaRes = await fetch(basicMediaUrl.toString(), { next: { revalidate: 60 } });
+                const basicMediaData = await basicMediaRes.json();
 
                 if (!basicProfileData.error) profileData = basicProfileData;
                 if (!basicMediaData.error) mediaData = basicMediaData;
