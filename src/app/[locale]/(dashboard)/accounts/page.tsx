@@ -308,20 +308,6 @@ export default function AccountsPage() {
                         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                             {/* Profile Header */}
                             <div className="p-8 border-b border-slate-100">
-                                <div className="flex justify-end mb-2">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={handleDisconnect}
-                                        disabled={disconnecting}
-                                        className="rounded-xl text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-                                    >
-                                        {disconnecting ? (
-                                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                                        ) : null}
-                                        Desconectar conta
-                                    </Button>
-                                </div>
                                 {apiError && (
                                     <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
                                         <strong>Erro ao carregar dados:</strong> {apiError}. Tente reconectar sua conta.
@@ -350,12 +336,26 @@ export default function AccountsPage() {
                                     </div>
 
                                     <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-4 mb-3 flex-wrap">
-                                            <h2 className="text-2xl font-light text-slate-800">
+                                        {/* Username + Disconnect button */}
+                                        <div className="flex items-center justify-between mb-3">
+                                            <h2 className="text-xl font-normal text-slate-800">
                                                 {displayProfile.username || instagramAccount?.username || "—"}
                                             </h2>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={handleDisconnect}
+                                                disabled={disconnecting}
+                                                className="rounded-xl text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+                                            >
+                                                {disconnecting ? (
+                                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                                ) : null}
+                                                Desconectar conta
+                                            </Button>
                                         </div>
 
+                                        {/* Stats */}
                                         <div className="flex gap-8 mb-4">
                                             <div className="text-center">
                                                 <span className="font-bold text-slate-800">
@@ -377,6 +377,7 @@ export default function AccountsPage() {
                                             </div>
                                         </div>
 
+                                        {/* Name, bio, website */}
                                         <div>
                                             <p className="font-semibold text-slate-800">
                                                 {displayProfile.name || displayProfile.username || instagramAccount?.displayName || "—"}
@@ -413,14 +414,14 @@ export default function AccountsPage() {
                                         <p className="text-sm">Nenhuma publicacao encontrada</p>
                                     </div>
                                 ) : (
-                                    <div className="grid grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-3 gap-1">
                                         {media.map((item) => (
                                             <a
                                                 key={item.id}
                                                 href={item.permalink}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="group relative aspect-square bg-slate-100 rounded-xl overflow-hidden cursor-pointer"
+                                                className="group relative aspect-square bg-slate-100 overflow-hidden cursor-pointer"
                                             >
                                                 <img
                                                     src={item.media_type === "VIDEO" && item.thumbnail_url
