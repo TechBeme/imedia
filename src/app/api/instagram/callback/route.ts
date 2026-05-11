@@ -80,6 +80,7 @@ export async function GET(req: NextRequest) {
 
             const igInfoRes = await fetch(igInfoUrl.toString());
             const igInfo = await igInfoRes.json();
+            console.log("[instagram/callback] igInfo:", JSON.stringify(igInfo));
 
             // 4. Save to database
             const existing = await db

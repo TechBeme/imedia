@@ -49,16 +49,21 @@ export async function GET(req: NextRequest) {
             }
 
             let accessToken: string | null = null;
+            let tokenSource = "none";
             if (account.accessToken) {
                 try {
                     accessToken = decrypt(account.accessToken);
-                } catch {
+                    tokenSource = "decrypted";
+                } catch (e) {
                     // Token might be stored unencrypted (legacy) - try using directly
+                    console.log("[instagram/media] decrypt failed, trying raw token:", e);
                     accessToken = account.accessToken;
+                    tokenSource = "raw";
                 }
             }
+            console.log("[instagram/media] account:", { providerAccountId: account.providerAccountId, hasToken: !!account.accessToken, tokenSource, tokenPrefix: accessToken?.substring(0, 10) });
             if (!accessToken) {
-                return success({ media: [], profile: null });
+                return success({ media: [], profile: null, debug: { error: "no_token" } });
             }
 
             const providerAccountId = account.providerAccountId;
@@ -105,6 +110,12 @@ export async function GET(req: NextRequest) {
                     biography: "",
                     website: "",
                     profilePictureUrl: account.profilePicture || null,
+                },
+                debug: {
+                    providerAccountId,
+                    tokenSource,
+                    profileError: profileData.error,
+                    mediaError: mediaData.error,
                 },
             });
         } catch (err) {
