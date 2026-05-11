@@ -73,30 +73,46 @@ export async function GET(req: NextRequest) {
             const accessToken = longLivedData.access_token || shortLivedToken;
             const expiresIn = longLivedData.expires_in || 5184000; // ~60 days default
 
-            // 3. Get Facebook user info to find Instagram Business Account
-            const fbMeUrl = new URL("https://graph.facebook.com/v22.0/me");
-            fbMeUrl.searchParams.set("fields", "id,name,instagram_business_account");
-            fbMeUrl.searchParams.set("access_token", accessToken);
+            // 3. Try to get Instagram user info via Basic Display API first
+            const igMeUrl = new URL("https://graph.instagram.com/me");
+            igMeUrl.searchParams.set("fields", "user_id,username,account_type,media_count");
+            igMeUrl.searchParams.set("access_token", accessToken);
 
-            const fbMeRes = await fetch(fbMeUrl.toString());
-            const fbMe = await fbMeRes.json();
-            console.log("[instagram/callback] fbMe:", JSON.stringify(fbMe));
+            const igMeRes = await fetch(igMeUrl.toString());
+            const igMe = await igMeRes.json();
+            console.log("[instagram/callback] igMe:", JSON.stringify(igMe));
 
-            const igBusinessAccountId = fbMe.instagram_business_account?.id;
-            if (!igBusinessAccountId) {
-                throw new Error("No Instagram Business Account found. Make sure your Instagram account is connected to a Facebook Page.");
+            let finalUserId = igMe.user_id || igMe.id || igUserId;
+            let igInfo = igMe;
+
+            // If Basic Display API fails, try Facebook Graph API for Business Account
+            if (igMe.error) {
+                console.log("[instagram/callback] Basic Display API failed, trying Facebook Graph API...");
+                const fbMeUrl = new URL("https://graph.facebook.com/v22.0/me");
+                fbMeUrl.searchParams.set("fields", "id,name,instagram_business_account");
+                fbMeUrl.searchParams.set("access_token", accessToken);
+
+                const fbMeRes = await fetch(fbMeUrl.toString());
+                const fbMe = await fbMeRes.json();
+                console.log("[instagram/callback] fbMe:", JSON.stringify(fbMe));
+
+                const igBusinessAccountId = fbMe.instagram_business_account?.id;
+                if (!igBusinessAccountId) {
+                    throw new Error("No Instagram Business Account found. Make sure your Instagram account is connected to a Facebook Page, or try reconnecting with Instagram Basic Display.");
+                }
+
+                finalUserId = igBusinessAccountId;
+
+                const igInfoUrl = new URL(`https://graph.facebook.com/v22.0/${igBusinessAccountId}`);
+                igInfoUrl.searchParams.set("fields", "username,name,profile_picture_url,biography,followers_count,follows_count,media_count");
+                igInfoUrl.searchParams.set("access_token", accessToken);
+
+                const igInfoRes = await fetch(igInfoUrl.toString());
+                igInfo = await igInfoRes.json();
+                console.log("[instagram/callback] igInfo (Graph API):", JSON.stringify(igInfo));
             }
 
-            // 4. Get Instagram account info using Business Account ID
-            const igInfoUrl = new URL(`https://graph.facebook.com/v22.0/${igBusinessAccountId}`);
-            igInfoUrl.searchParams.set("fields", "username,name,profile_picture_url,biography,followers_count,follows_count,media_count");
-            igInfoUrl.searchParams.set("access_token", accessToken);
-
-            const igInfoRes = await fetch(igInfoUrl.toString());
-            const igInfo = await igInfoRes.json();
-            console.log("[instagram/callback] igInfo:", JSON.stringify(igInfo));
-
-            // 5. Save to database
+            // 4. Save to database
             const existing = await db
                 .select()
                 .from(socialAccounts)
@@ -112,7 +128,7 @@ export async function GET(req: NextRequest) {
                 await db
                     .update(socialAccounts)
                     .set({
-                        providerAccountId: String(igBusinessAccountId),
+                        providerAccountId: String(finalUserId),
                         username: igInfo.username,
                         displayName: igInfo.name || igInfo.username,
                         profilePicture: igInfo.profile_picture_url || null,
@@ -126,7 +142,7 @@ export async function GET(req: NextRequest) {
                 await db.insert(socialAccounts).values({
                     userId: session.user.id,
                     platform: "instagram",
-                    providerAccountId: String(igBusinessAccountId),
+                    providerAccountId: String(finalUserId),
                     username: igInfo.username,
                     displayName: igInfo.name || igInfo.username,
                     profilePicture: igInfo.profile_picture_url || null,

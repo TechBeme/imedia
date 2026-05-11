@@ -68,18 +68,17 @@ export async function GET(req: NextRequest) {
 
             const providerAccountId = account.providerAccountId;
 
-            // Fetch profile info via Facebook Graph API (Instagram Business Account)
-            const profileUrl = new URL(`https://graph.facebook.com/v22.0/${providerAccountId}`);
-            profileUrl.searchParams.set("fields", "username,name,profile_picture_url,biography,followers_count,follows_count,media_count,website");
+            // Try Basic Display API first
+            const profileUrl = new URL(`https://graph.instagram.com/${providerAccountId}`);
+            profileUrl.searchParams.set("fields", "username,account_type,media_count");
             profileUrl.searchParams.set("access_token", accessToken);
 
             const profileRes = await fetch(profileUrl.toString(), { next: { revalidate: 60 } });
             const profileData = await profileRes.json();
             console.log("[instagram/media] profile response:", JSON.stringify(profileData));
 
-            // Fetch media via Facebook Graph API
-            const mediaUrl = new URL(`https://graph.facebook.com/v22.0/${providerAccountId}/media`);
-            mediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count");
+            const mediaUrl = new URL(`https://graph.instagram.com/${providerAccountId}/media`);
+            mediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp");
             mediaUrl.searchParams.set("limit", "18");
             mediaUrl.searchParams.set("access_token", accessToken);
 
@@ -87,7 +86,35 @@ export async function GET(req: NextRequest) {
             const mediaData = await mediaRes.json();
             console.log("[instagram/media] media response:", JSON.stringify({ count: mediaData.data?.length, error: mediaData.error }));
 
-            const media: InstagramMedia[] = (mediaData.data || []).map((item: any) => ({
+            // If Basic Display API fails, try Facebook Graph API
+            let finalProfileData = profileData;
+            let finalMediaData = mediaData;
+
+            if (profileData.error || mediaData.error) {
+                console.log("[instagram/media] Basic Display API failed, trying Facebook Graph API...");
+
+                const graphProfileUrl = new URL(`https://graph.facebook.com/v22.0/${providerAccountId}`);
+                graphProfileUrl.searchParams.set("fields", "username,name,profile_picture_url,biography,followers_count,follows_count,media_count,website");
+                graphProfileUrl.searchParams.set("access_token", accessToken);
+
+                const graphProfileRes = await fetch(graphProfileUrl.toString(), { next: { revalidate: 60 } });
+                const graphProfileData = await graphProfileRes.json();
+                console.log("[instagram/media] Graph API profile:", JSON.stringify(graphProfileData));
+
+                const graphMediaUrl = new URL(`https://graph.facebook.com/v22.0/${providerAccountId}/media`);
+                graphMediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count");
+                graphMediaUrl.searchParams.set("limit", "18");
+                graphMediaUrl.searchParams.set("access_token", accessToken);
+
+                const graphMediaRes = await fetch(graphMediaUrl.toString(), { next: { revalidate: 60 } });
+                const graphMediaData = await graphMediaRes.json();
+                console.log("[instagram/media] Graph API media:", JSON.stringify({ count: graphMediaData.data?.length, error: graphMediaData.error }));
+
+                if (!graphProfileData.error) finalProfileData = graphProfileData;
+                if (!graphMediaData.error) finalMediaData = graphMediaData;
+            }
+
+            const media: InstagramMedia[] = (finalMediaData.data || []).map((item: any) => ({
                 id: item.id,
                 caption: item.caption || null,
                 media_type: item.media_type,
@@ -102,14 +129,14 @@ export async function GET(req: NextRequest) {
             return success({
                 media,
                 profile: {
-                    username: profileData.username || account.username,
-                    name: profileData.name || account.displayName || profileData.username || null,
-                    mediaCount: profileData.media_count || 0,
-                    followersCount: profileData.followers_count || 0,
-                    followsCount: profileData.follows_count || 0,
-                    biography: profileData.biography || "",
-                    website: profileData.website || "",
-                    profilePictureUrl: profileData.profile_picture_url || account.profilePicture || null,
+                    username: finalProfileData.username || account.username,
+                    name: finalProfileData.name || account.displayName || finalProfileData.username || null,
+                    mediaCount: finalProfileData.media_count || 0,
+                    followersCount: finalProfileData.followers_count || 0,
+                    followsCount: finalProfileData.follows_count || 0,
+                    biography: finalProfileData.biography || "",
+                    website: finalProfileData.website || "",
+                    profilePictureUrl: finalProfileData.profile_picture_url || account.profilePicture || null,
                 },
                 debug: {
                     providerAccountId,
