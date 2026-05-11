@@ -5,7 +5,8 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { motion } from "motion/react";
-import { Loader2, Heart, Pencil, Eye } from "lucide-react";
+import { Loader2, Heart, Pencil } from "lucide-react";
+import { FaRegEye } from "react-icons/fa";
 import {
     RiInstagramLine,
     RiFacebookCircleLine,
@@ -51,6 +52,14 @@ function CarouselIcon({ className = "h-5 w-5" }: { className?: string }) {
     return (
         <svg aria-hidden="true" className={className} fill="currentColor" viewBox="0 0 24 24">
             <path d="M21 16V8a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v8a5 5 0 0 0 5 5h8a5 5 0 0 0 5-5Zm-11 3.5A3.5 3.5 0 0 1 6.5 16V8A3.5 3.5 0 0 1 10 4.5h8A3.5 3.5 0 0 1 21.5 8v8a3.5 3.5 0 0 1-3.5 3.5Zm-6-14A2.5 2.5 0 0 0 1.5 8v8A2.5 2.5 0 0 0 4 18.5h.81A5 5 0 0 1 4 16V8c0-.955.267-1.848.73-2.61A2.5 2.5 0 0 0 4 5.5Z" />
+        </svg>
+    );
+}
+
+function CommentIcon({ className = "h-5 w-5" }: { className?: string }) {
+    return (
+        <svg aria-hidden="true" className={className} fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20 11.5c0 4.136-3.813 7.5-8.5 7.5a9.82 9.82 0 0 1-3.318-.57L4 20l1.255-3.136C3.84 15.513 3 13.592 3 11.5 3 7.364 6.813 4 11.5 4S20 7.364 20 11.5Zm-8.5-6C7.64 5.5 4.5 8.168 4.5 11.5c0 1.843.773 3.53 2.12 4.628l.344.28-.743 1.857 2.34-.837.244.085c.9.313 1.84.472 2.795.472 3.86 0 7-2.692 7-6s-3.14-6-7-6Z" />
         </svg>
     );
 }
@@ -458,7 +467,7 @@ export default function AccountsPage() {
 
                                                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/65 via-black/15 to-transparent p-2 text-white">
                                                     <div className="flex items-center gap-1.5">
-                                                        <Eye className="h-4 w-4" />
+                                                        <FaRegEye className="h-3.5 w-3.5" />
                                                         <span className="text-xs font-semibold">
                                                             {formatCount(item.view_count || item.like_count || 0)}
                                                         </span>
@@ -482,11 +491,9 @@ export default function AccountsPage() {
                                                         <span className="font-semibold">{item.like_count}</span>
                                                     </div>
 
-                                                    <div className="flex items-center gap-1.5 scale-x-[-1]">
-                                                        <svg aria-hidden="true" className="h-5 w-5 fill-white" viewBox="0 0 24 24">
-                                                            <path d="M20.656 17.008c-.278.584-.995 1.11-1.67 1.16a44.884 44.884 0 0 1-1.987.05c-3.492 0-6.607-.331-9.25-.985-1.388-.343-2.574-.776-3.526-1.286-.623-.334-1.517-.912-1.517-1.946 0-1.034.894-1.612 1.517-1.946.952-.51 2.138-.943 3.526-1.286 2.643-.654 5.758-.985 9.25-.985 1.086 0 1.722.024 1.987.05.675.05 1.392.576 1.67 1.16.336.706.498 1.78.498 3.007s-.162 2.301-.498 3.007ZM12 6.014c-4.69 0-8.489 3.424-8.489 7.648 0 1.258.349 2.445.968 3.497.17.288.281.63.233.976-.102.732-.402 2.323-.524 2.958-.036.187.133.33.303.258.654-.276 2.17-.924 2.884-1.235.2-.087.43-.099.637-.028 1.255.427 2.635.658 4.088.658 4.69 0 8.489-3.424 8.489-7.648s-3.799-7.084-8.489-7.084Z" />
-                                                        </svg>
-                                                        <span className="font-semibold scale-x-[-1]">{item.comments_count}</span>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <CommentIcon className="h-5 w-5 fill-white" />
+                                                        <span className="font-semibold">{item.comments_count}</span>
                                                     </div>
                                                 </div>
                                             </a>
