@@ -386,3 +386,86 @@ export const customDomains = pgTable(
         index("custom_domains_domain_idx").on(table.domain),
     ]
 );
+
+// Automation tables
+export const automations = pgTable(
+    "automations",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => user.id, { onDelete: "cascade" }),
+        socialAccountId: uuid("social_account_id")
+            .notNull()
+            .references(() => socialAccounts.id, { onDelete: "cascade" }),
+        name: text("name").notNull(),
+        platform: text("platform").notNull(),
+        triggerType: text("trigger_type").notNull().default("comment_keyword"),
+        triggerConfig: jsonb("trigger_config").notNull(),
+        scope: jsonb("scope").notNull(),
+        isActive: boolean("is_active").notNull().default(true),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+        updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("automations_user_idx").on(table.userId),
+        index("automations_social_account_idx").on(table.socialAccountId),
+        index("automations_platform_idx").on(table.platform),
+        index("automations_is_active_idx").on(table.isActive),
+    ]
+);
+
+export const automationActions = pgTable(
+    "automation_actions",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        automationId: uuid("automation_id")
+            .notNull()
+            .references(() => automations.id, { onDelete: "cascade" }),
+        type: text("type").notNull(),
+        config: jsonb("config").notNull(),
+        order: integer("order").notNull().default(0),
+        isActive: boolean("is_active").notNull().default(true),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("automation_actions_automation_idx").on(table.automationId),
+    ]
+);
+
+export const automationLogs = pgTable(
+    "automation_logs",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        automationId: uuid("automation_id")
+            .notNull()
+            .references(() => automations.id, { onDelete: "cascade" }),
+        triggerEvent: jsonb("trigger_event").notNull(),
+        actionResults: jsonb("action_results").notNull(),
+        status: text("status").notNull(),
+        executedAt: timestamp("executed_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("automation_logs_automation_idx").on(table.automationId),
+        index("automation_logs_status_idx").on(table.status),
+        index("automation_logs_executed_at_idx").on(table.executedAt),
+    ]
+);
+
+export const commentWatchState = pgTable(
+    "comment_watch_state",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        socialAccountId: uuid("social_account_id")
+            .notNull()
+            .references(() => socialAccounts.id, { onDelete: "cascade" }),
+        postId: text("post_id").notNull(),
+        lastCheckedAt: timestamp("last_checked_at").notNull().defaultNow(),
+        lastCommentId: text("last_comment_id"),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("comment_watch_state_social_account_idx").on(table.socialAccountId),
+        index("comment_watch_state_post_idx").on(table.postId),
+    ]
+);
