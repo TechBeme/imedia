@@ -67,7 +67,23 @@
         "active": "Ativa",
         "inactive": "Inativa",
         "noAutomations": "Nenhuma automação criada ainda",
-        "createFirst": "Crie sua primeira automação"
+        "createFirst": "Crie sua primeira automação",
+        "logs": {
+            "title": "Histórico de execução",
+            "trigger": "Gatilho",
+            "actions": "Ações",
+            "status": "Status",
+            "timestamp": "Data/Hora",
+            "success": "Sucesso",
+            "failed": "Falhou",
+            "partial": "Parcial",
+            "noLogs": "Nenhuma execução registrada",
+            "commentFrom": "Comentário de",
+            "replyAction": "Responder comentário",
+            "dmAction": "Enviar DM",
+            "viewDetails": "Ver detalhes",
+            "hideDetails": "Ocultar detalhes"
+        }
     },
     "auth": {
         "login": "Entrar",

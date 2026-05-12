@@ -67,7 +67,23 @@
         "active": "Active",
         "inactive": "Inactive",
         "noAutomations": "No automations created yet",
-        "createFirst": "Create your first automation"
+        "createFirst": "Create your first automation",
+        "logs": {
+            "title": "Execution History",
+            "trigger": "Trigger",
+            "actions": "Actions",
+            "status": "Status",
+            "timestamp": "Timestamp",
+            "success": "Success",
+            "failed": "Failed",
+            "partial": "Partial",
+            "noLogs": "No executions recorded",
+            "commentFrom": "Comment from",
+            "replyAction": "Reply to comment",
+            "dmAction": "Send DM",
+            "viewDetails": "View details",
+            "hideDetails": "Hide details"
+        }
     },
     "auth": {
         "login": "Sign In",
