@@ -238,11 +238,6 @@
         "comments": "COMENTARIOS",
         "views": "VISUALIZACOES"
     },
-    "media": {
-        "title": "Midias",
-        "upload": "Enviar",
-        "mediaLibrary": "Biblioteca de Midias"
-    },
     "analytics": {
         "title": "Relatórios",
         "7days": "7 dias",

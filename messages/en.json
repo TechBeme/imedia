@@ -238,11 +238,6 @@
         "comments": "COMMENTS",
         "views": "VIEWS"
     },
-    "media": {
-        "title": "Media",
-        "upload": "Upload",
-        "mediaLibrary": "Media Library"
-    },
     "analytics": {
         "title": "Reports",
         "7days": "7 days",
