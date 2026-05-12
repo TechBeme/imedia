@@ -134,6 +134,43 @@
 
 ---
 
+## Phase 3.1: Social Automations (INSERTED)
+
+**Goal:** Build a ManyChat-like automation system where users create rules that trigger on social media interactions (starting with Instagram comments) and execute actions like replying to comments or sending DMs, with randomized responses to appear human.
+
+**Requirements:** AUTO-01 through AUTO-17
+
+**Plans:**
+- [ ] **03.1-01-PLAN.md** — Database Schema & Core Engine (automations, automation_actions, automation_logs, comment_watch_state tables; trigger matching, random response selection, cooldown logic)
+- [ ] **03.1-02-PLAN.md** — Instagram Adapter & Comment Polling Cron (fetch comments, reply to comments, DM placeholder; Vercel cron every 2 minutes)
+- [ ] **03.1-03-PLAN.md** — Automation CRUD REST API (POST/GET/PATCH/DELETE /api/automations, toggle, actions, logs endpoints with Zod validation)
+- [ ] **03.1-04-PLAN.md** — Automation Builder UI (trigger config with keywords/match mode, action config with randomized responses, create/edit pages)
+- [ ] **03.1-05-PLAN.md** — Activity Log UI (execution history page with expandable details, status badges, trigger info)
+- [ ] **03.1-06-PLAN.md** — Finalization (schema push, unit tests, build verification, env documentation)
+
+**Wave Structure:**
+- Wave 1: 03.1-01 (schema + engine)
+- Wave 2: 03.1-02 (adapter + cron, depends on engine)
+- Wave 3: 03.1-03 (API), 03.1-04 (UI builder), 03.1-05 (activity log) — all depend on engine, API and UI can run in parallel
+- Wave 4: 03.1-06 (finalization, depends on all prior)
+
+**Success Criteria:**
+- User can create an automation with trigger keywords and action responses
+- Automation matches comments containing configured keywords (case-insensitive by default)
+- Matched comments trigger reply actions with a randomly selected response
+- DM action is modeled but shows graceful "not available" for Instagram
+- Vercel cron polls Instagram comments every 2 minutes and executes matching automations
+- Activity log shows every execution with trigger details, action results, and status
+- All automations are scoped to a specific social account
+- Cooldown prevents the same user from triggering the same automation repeatedly
+- All UI text is translatable via next-intl
+- Unit tests pass for engine functions
+- TypeScript build succeeds with zero errors
+
+**Estimated:** 5-7 days
+
+---
+
 ## Phase 4: Scheduled Posts
 
 **Goal:** Build a complete scheduled posts system. User schedules posts from compose, views them on a dashboard, and a cron executor publishes them at the right time.
