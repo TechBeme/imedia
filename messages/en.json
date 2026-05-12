@@ -24,9 +24,50 @@
         "linkReport": "Link Report",
         "socialReport": "Social Report",
         "report": "Report",
+        "automations": "Automations",
         "logout": "Logout",
         "logoutSuccess": "Logged out",
         "openMenu": "Open menu"
+    },
+    "automations": {
+        "title": "Automations",
+        "new": "New Automation",
+        "edit": "Edit Automation",
+        "name": "Name",
+        "namePlaceholder": "E.g.: Promo responder",
+        "account": "Account",
+        "selectAccount": "Select an account",
+        "trigger": {
+            "title": "Trigger",
+            "keywords": "Keywords",
+            "keywordsPlaceholder": "Enter keywords separated by commas",
+            "matchMode": "Match mode",
+            "contains": "Contains",
+            "exact": "Exact",
+            "caseSensitive": "Case sensitive"
+        },
+        "actions": {
+            "title": "Actions",
+            "replyComment": "Reply to comment",
+            "sendDM": "Send DM",
+            "responses": "Responses",
+            "addVariant": "Add variant",
+            "variantPlaceholder": "Type a response...",
+            "enabled": "Enabled"
+        },
+        "scope": {
+            "title": "Scope",
+            "allPosts": "All posts",
+            "specificPosts": "Specific posts"
+        },
+        "save": "Save",
+        "saving": "Saving...",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "active": "Active",
+        "inactive": "Inactive",
+        "noAutomations": "No automations created yet",
+        "createFirst": "Create your first automation"
     },
     "auth": {
         "login": "Sign In",

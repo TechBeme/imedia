@@ -24,9 +24,50 @@
         "linkReport": "Relatório de Links",
         "socialReport": "Relatório de Redes Sociais",
         "report": "Relatório",
+        "automations": "Automações",
         "logout": "Sair",
         "logoutSuccess": "Sessão encerrada",
         "openMenu": "Abrir menu"
+    },
+    "automations": {
+        "title": "Automações",
+        "new": "Nova Automação",
+        "edit": "Editar Automação",
+        "name": "Nome",
+        "namePlaceholder": "Ex: Responder promoção",
+        "account": "Conta",
+        "selectAccount": "Selecione uma conta",
+        "trigger": {
+            "title": "Gatilho",
+            "keywords": "Palavras-chave",
+            "keywordsPlaceholder": "Digite as palavras-chave separadas por vírgula",
+            "matchMode": "Modo de correspondência",
+            "contains": "Contém",
+            "exact": "Exato",
+            "caseSensitive": "Diferenciar maiúsculas/minúsculas"
+        },
+        "actions": {
+            "title": "Ações",
+            "replyComment": "Responder comentário",
+            "sendDM": "Enviar DM",
+            "responses": "Respostas",
+            "addVariant": "Adicionar variante",
+            "variantPlaceholder": "Digite uma resposta...",
+            "enabled": "Ativado"
+        },
+        "scope": {
+            "title": "Escopo",
+            "allPosts": "Todas as publicações",
+            "specificPosts": "Publicações específicas"
+        },
+        "save": "Salvar",
+        "saving": "Salvando...",
+        "cancel": "Cancelar",
+        "delete": "Excluir",
+        "active": "Ativa",
+        "inactive": "Inativa",
+        "noAutomations": "Nenhuma automação criada ainda",
+        "createFirst": "Crie sua primeira automação"
     },
     "auth": {
         "login": "Entrar",

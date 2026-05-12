@@ -24,9 +24,50 @@
         "linkReport": "Informe de Enlaces",
         "socialReport": "Informe de Redes Sociales",
         "report": "Informe",
+        "automations": "Automatizaciones",
         "logout": "Cerrar sesion",
         "logoutSuccess": "Sesión cerrada",
         "openMenu": "Abrir menu"
+    },
+    "automations": {
+        "title": "Automatizaciones",
+        "new": "Nueva Automatización",
+        "edit": "Editar Automatización",
+        "name": "Nombre",
+        "namePlaceholder": "Ej: Responder promoción",
+        "account": "Cuenta",
+        "selectAccount": "Selecciona una cuenta",
+        "trigger": {
+            "title": "Disparador",
+            "keywords": "Palabras clave",
+            "keywordsPlaceholder": "Ingresa palabras clave separadas por comas",
+            "matchMode": "Modo de coincidencia",
+            "contains": "Contiene",
+            "exact": "Exacto",
+            "caseSensitive": "Sensible a mayúsculas"
+        },
+        "actions": {
+            "title": "Acciones",
+            "replyComment": "Responder comentario",
+            "sendDM": "Enviar DM",
+            "responses": "Respuestas",
+            "addVariant": "Agregar variante",
+            "variantPlaceholder": "Escribe una respuesta...",
+            "enabled": "Activado"
+        },
+        "scope": {
+            "title": "Alcance",
+            "allPosts": "Todas las publicaciones",
+            "specificPosts": "Publicaciones específicas"
+        },
+        "save": "Guardar",
+        "saving": "Guardando...",
+        "cancel": "Cancelar",
+        "delete": "Eliminar",
+        "active": "Activa",
+        "inactive": "Inactiva",
+        "noAutomations": "Aún no hay automatizaciones",
+        "createFirst": "Crea tu primera automatización"
     },
     "auth": {
         "login": "Iniciar sesion",
