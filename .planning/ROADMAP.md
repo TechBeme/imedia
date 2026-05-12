@@ -154,12 +154,14 @@
 **Requirements:** AUTO-01 through AUTO-17
 
 **Plans:**
-- [ ] **03.1-01-PLAN.md** — Database Schema & Core Engine (automations, automation_actions, automation_logs, comment_watch_state tables; trigger matching, random response selection, cooldown logic)
-- [ ] **03.1-02-PLAN.md** — Instagram Adapter & Comment Polling Cron (fetch comments, reply to comments, DM placeholder; Vercel cron every 2 minutes)
-- [ ] **03.1-03-PLAN.md** — Automation CRUD REST API (POST/GET/PATCH/DELETE /api/automations, toggle, actions, logs endpoints with Zod validation)
-- [ ] **03.1-04-PLAN.md** — Automation Builder UI (trigger config with keywords/match mode, action config with randomized responses, create/edit pages)
-- [ ] **03.1-05-PLAN.md** — Activity Log UI (execution history page with expandable details, status badges, trigger info)
-- [ ] **03.1-06-PLAN.md** — Finalization (schema push, unit tests, build verification, env documentation)
+- [x] **03.1-01-PLAN.md** — Database Schema & Core Engine (automations, automation_actions, automation_logs, comment_watch_state tables; trigger matching, random response selection, cooldown logic)
+- [x] **03.1-02-PLAN.md** — Instagram Adapter & Comment Polling Cron (fetch comments, reply to comments, DM placeholder; Vercel cron every 2 minutes)
+- [x] **03.1-03-PLAN.md** — Automation CRUD REST API (POST/GET/PATCH/DELETE /api/automations, toggle, actions, logs endpoints with Zod validation)
+- [x] **03.1-04-PLAN.md** — Automation Builder UI (trigger config with keywords/match mode, action config with randomized responses, create/edit pages)
+- [x] **03.1-05-PLAN.md** — Activity Log UI (execution history page with expandable details, status badges, trigger info)
+- [x] **03.1-06-PLAN.md** — Finalization (schema push, unit tests, build verification, env documentation)
+
+**Status:** COMPLETED — all success criteria met. 6 plans executed across 4 waves. 13 unit tests passing.
 
 **Wave Structure:**
 - Wave 1: 03.1-01 (schema + engine)

@@ -1,8 +1,8 @@
 # Project State: somedia
 
 **Last updated:** 2026-05-11
-**Current phase:** Phase 3 — Instagram Integration (IN PROGRESS)
-**Next action:** Complete remaining Instagram features (insights, comments, rate limiting) or proceed to next phase
+**Current phase:** Phase 3.1 — Social Automations (COMPLETED)
+**Next action:** Proceed to Phase 4 — Scheduled Posts, or continue Phase 3 remaining items (insights, comments, rate limiting)
 
 ## Project Reference
 
@@ -38,6 +38,7 @@ All 11 tasks completed successfully:
 | 2 | PARTIAL | 10/10 | ~50% | Dashboard, accounts, compose, settings are real; analytics, scheduled, history, media are mock-only |
 | 2.1 | COMPLETED | 5/5 | 100% | Link shortener fully implemented with extras (device rules, OG preview, CSV export) |
 | 3 | IN PROGRESS | 11/11 | ~70% | OAuth + publishing (image, carousel, reel, story) done. Insights, comments, rate limiting pending |
+| 3.1 | COMPLETED | 6/6 | 100% | Social automations fully implemented: comment triggers, reply actions, randomized responses, activity log |
 | 4 | Pending | 6/6 | 0% | No code yet |
 | 5 | Pending | 8/8 | 0% | No code yet |
 | 6 | Pending | 8/8 | 0% | No code yet |
@@ -50,6 +51,7 @@ All 11 tasks completed successfully:
 
 - Phase 2.1 Link Shortener — COMPLETED and deployed
 - Phase 3 Instagram Integration — IN PROGRESS (publishing live, insights/comments/rate limiting remaining)
+- Phase 3.1 Social Automations — COMPLETED (all 6 plans executed, 13 tests passing, schema pushed)
 
 ## Blockers
 
