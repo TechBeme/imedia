@@ -125,7 +125,12 @@
         "slug": "SLUG",
         "recentClicks": "Clics Recientes",
         "noLinksYet": "Aun no hay enlaces creados",
-        "noClicksYet": "Aun no hay clics registrados"
+        "noClicksYet": "Aun no hay clics registrados",
+        "emptyTitle": "Sin datos aun",
+        "emptyDescription": "Tu panel se llenara a medida que crees enlaces y publiques posts.",
+        "errorTitle": "Error al cargar el panel",
+        "errorDescription": "Algo salio mal al cargar los datos de tu panel.",
+        "retry": "Intentar de nuevo"
     },
     "accounts": {
         "title": "Cuentas Conectadas",
@@ -196,7 +201,14 @@
         "editComingSoon": "Edicion proximamente",
         "publishNowMock": "Publicar ahora (simulacion)",
         "cancelled": "Cancelado",
-        "pending": "pendiente"
+        "pending": "pendiente",
+        "emptyTitle": "Ningun post programado",
+        "emptyDescription": "Programa tu primer post para verlo aqui.",
+        "errorTitle": "Error al cargar posts",
+        "errorDescription": "Algo salio mal al cargar tus posts programados.",
+        "retry": "Intentar de nuevo",
+        "createPost": "Crear post",
+        "createComingSoon": "Creacion de posts proximamente"
     },
     "header": {
         "searchPlaceholder": "Buscar cualquier cosa...",
@@ -236,7 +248,12 @@
         "date": "FECHA",
         "likes": "ME GUSTA",
         "comments": "COMENTARIOS",
-        "views": "VISTAS"
+        "views": "VISTAS",
+        "emptyTitle": "Sin historial aun",
+        "emptyDescription": "Tus posts publicados apareceran aqui.",
+        "errorTitle": "Error al cargar historial",
+        "errorDescription": "Algo salio mal al cargar tu historial de posts.",
+        "retry": "Intentar de nuevo"
     },
     "analytics": {
         "title": "Informes",
@@ -246,7 +263,12 @@
         "engagementByPlatform": "Engagement por Plataforma",
         "followerGrowth": "Crecimiento de Seguidores",
         "platformDistribution": "Distribucion por Plataforma",
-        "topPerformingPosts": "Posts Mas Destacados"
+        "topPerformingPosts": "Posts Mas Destacados",
+        "emptyTitle": "Sin datos de analytics",
+        "emptyDescription": "Los analytics apareceran una vez que comiences a publicar posts.",
+        "errorTitle": "Error al cargar informes",
+        "errorDescription": "Algo salio mal al cargar tus datos de analytics.",
+        "retry": "Intentar de nuevo"
     },
     "links": {
         "title": "Titulo",

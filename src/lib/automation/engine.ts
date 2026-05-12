@@ -158,10 +158,14 @@ export async function checkCooldown(
 
     // Check if this user triggered recently
     return recentLogs.some((log) => {
-        const payload = log.triggerEvent.payload as {
-            username?: string;
-            userId?: string;
+        const triggerEvent = log.triggerEvent as {
+            payload?: {
+                username?: string;
+                userId?: string;
+            };
         };
+        const payload = triggerEvent.payload;
+        if (!payload) return false;
         return (
             payload.username === userIdentifier ||
             payload.userId === userIdentifier
@@ -231,8 +235,7 @@ export async function executeAutomation(
             postId,
             timestamp: comment.timestamp,
         },
-
-    });
+    }, results);
 
     return results;
 }

@@ -125,7 +125,12 @@
         "slug": "SLUG",
         "recentClicks": "Recent Clicks",
         "noLinksYet": "No links created yet",
-        "noClicksYet": "No clicks recorded yet"
+        "noClicksYet": "No clicks recorded yet",
+        "emptyTitle": "No data yet",
+        "emptyDescription": "Your dashboard will fill up as you create links and publish posts.",
+        "errorTitle": "Failed to load dashboard",
+        "errorDescription": "Something went wrong while loading your dashboard data.",
+        "retry": "Try again"
     },
     "accounts": {
         "title": "Connected Accounts",
@@ -196,7 +201,14 @@
         "editComingSoon": "Edit coming soon",
         "publishNowMock": "Publish now (mock)",
         "cancelled": "Cancelled",
-        "pending": "pending"
+        "pending": "pending",
+        "emptyTitle": "No scheduled posts",
+        "emptyDescription": "Schedule your first post to see it here.",
+        "errorTitle": "Failed to load posts",
+        "errorDescription": "Something went wrong while loading your scheduled posts.",
+        "retry": "Try again",
+        "createPost": "Create post",
+        "createComingSoon": "Post creation coming soon"
     },
     "header": {
         "searchPlaceholder": "Search anything...",
@@ -236,7 +248,12 @@
         "date": "DATE",
         "likes": "LIKES",
         "comments": "COMMENTS",
-        "views": "VIEWS"
+        "views": "VIEWS",
+        "emptyTitle": "No history yet",
+        "emptyDescription": "Your published posts will appear here.",
+        "errorTitle": "Failed to load history",
+        "errorDescription": "Something went wrong while loading your post history.",
+        "retry": "Try again"
     },
     "analytics": {
         "title": "Reports",
@@ -246,7 +263,12 @@
         "engagementByPlatform": "Engagement by Platform",
         "followerGrowth": "Follower Growth",
         "platformDistribution": "Platform Distribution",
-        "topPerformingPosts": "Top Performing Posts"
+        "topPerformingPosts": "Top Performing Posts",
+        "emptyTitle": "No analytics data",
+        "emptyDescription": "Analytics will appear once you start publishing posts.",
+        "errorTitle": "Failed to load reports",
+        "errorDescription": "Something went wrong while loading your analytics data.",
+        "retry": "Try again"
     },
     "links": {
         "title": "Title",

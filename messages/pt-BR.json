@@ -125,7 +125,12 @@
         "slug": "SLUG",
         "recentClicks": "Cliques Recentes",
         "noLinksYet": "Nenhum link criado ainda",
-        "noClicksYet": "Nenhum clique registrado ainda"
+        "noClicksYet": "Nenhum clique registrado ainda",
+        "emptyTitle": "Nenhum dado ainda",
+        "emptyDescription": "Seu dashboard sera preenchido conforme voce cria links e publica posts.",
+        "errorTitle": "Falha ao carregar dashboard",
+        "errorDescription": "Algo deu errado ao carregar os dados do seu dashboard.",
+        "retry": "Tentar novamente"
     },
     "accounts": {
         "title": "Contas Conectadas",
@@ -196,7 +201,14 @@
         "editComingSoon": "Edição em breve",
         "publishNowMock": "Publicar agora (simulacao)",
         "cancelled": "Cancelado",
-        "pending": "pendente"
+        "pending": "pendente",
+        "emptyTitle": "Nenhum post agendado",
+        "emptyDescription": "Agende seu primeiro post para ve-lo aqui.",
+        "errorTitle": "Falha ao carregar posts",
+        "errorDescription": "Algo deu errado ao carregar seus posts agendados.",
+        "retry": "Tentar novamente",
+        "createPost": "Criar post",
+        "createComingSoon": "Criacao de posts em breve"
     },
     "header": {
         "searchPlaceholder": "Buscar qualquer coisa...",
@@ -236,7 +248,12 @@
         "date": "DATA",
         "likes": "CURTIDAS",
         "comments": "COMENTARIOS",
-        "views": "VISUALIZACOES"
+        "views": "VISUALIZACOES",
+        "emptyTitle": "Nenhum historico ainda",
+        "emptyDescription": "Seus posts publicados aparecerao aqui.",
+        "errorTitle": "Falha ao carregar historico",
+        "errorDescription": "Algo deu errado ao carregar seu historico de posts.",
+        "retry": "Tentar novamente"
     },
     "analytics": {
         "title": "Relatórios",
@@ -246,7 +263,12 @@
         "engagementByPlatform": "Engajamento por Plataforma",
         "followerGrowth": "Crescimento de Seguidores",
         "platformDistribution": "Distribuição por Plataforma",
-        "topPerformingPosts": "Posts Mais Performaticos"
+        "topPerformingPosts": "Posts Mais Performaticos",
+        "emptyTitle": "Sem dados de analytics",
+        "emptyDescription": "Os analytics aparecerao assim que voce comecar a publicar posts.",
+        "errorTitle": "Falha ao carregar relatorios",
+        "errorDescription": "Algo deu errado ao carregar seus dados de analytics.",
+        "retry": "Tentar novamente"
     },
     "links": {
         "title": "Titulo",

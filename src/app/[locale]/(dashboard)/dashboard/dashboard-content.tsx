@@ -25,6 +25,8 @@ import {
     Plus,
     Globe,
     Monitor,
+    Inbox,
+    AlertTriangle,
 } from "lucide-react";
 import {
     AreaChart,
@@ -62,6 +64,35 @@ function formatNumber(n: number): string {
     if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
     if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
     return String(n);
+}
+
+function DashboardEmpty() {
+    const t = useTranslations("dashboard");
+    return (
+        <Card className="glass-card">
+            <CardContent className="p-8 text-center">
+                <Inbox className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                <h3 className="text-lg font-semibold mb-1">{t("emptyTitle")}</h3>
+                <p className="text-sm text-muted-foreground">{t("emptyDescription")}</p>
+            </CardContent>
+        </Card>
+    );
+}
+
+function DashboardError({ onRetry }: { onRetry: () => void }) {
+    const t = useTranslations("dashboard");
+    return (
+        <Card className="glass-card">
+            <CardContent className="p-8 text-center">
+                <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-amber-500" />
+                <h3 className="text-lg font-semibold mb-1">{t("errorTitle")}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{t("errorDescription")}</p>
+                <Button onClick={onRetry} variant="outline" className="rounded-xl cursor-pointer">
+                    {t("retry")}
+                </Button>
+            </CardContent>
+        </Card>
+    );
 }
 
 export default function DashboardContent({ data }: DashboardContentProps) {
@@ -150,6 +181,23 @@ export default function DashboardContent({ data }: DashboardContentProps) {
             { label: "-", value: "0", color: "bg-chart-3" },
             { label: "-", value: "0", color: "bg-chart-4" },
         ];
+
+    if (data.totalLinks === 0) {
+        return (
+            <motion.div
+                className="space-y-6"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
+                <motion.div variants={itemVariants}>
+                    <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
+                    <p className="text-sm text-muted-foreground mt-0.5">{t("subtitle")}</p>
+                </motion.div>
+                <DashboardEmpty />
+            </motion.div>
+        );
+    }
 
     return (
         <motion.div
