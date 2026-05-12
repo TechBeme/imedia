@@ -134,26 +134,31 @@
 
 ---
 
-## Phase 4: Media Library
+## Phase 4: Scheduled Posts
 
-**Goal:** Build a functional media library for uploading, organizing, and reusing assets across all platforms.
+**Goal:** Build a complete scheduled posts system. User schedules posts from compose, views them on a dashboard, and a cron executor publishes them at the right time.
 
-**Requirements:** MED-01 through MED-06
+**Requirements:** SCH-01 through SCH-06
 
 **Plans:**
-1. **Upload API** — Vercel Blob integration for image and video uploads with validation
-2. **Media Schema** — Database table for media assets with metadata (filename, size, dimensions, mimeType, url, tags)
-3. **Media Grid UI** — Display uploaded assets with preview, metadata, and actions
-4. **Upload Zone** — Drag-and-drop upload component with progress indicator
-5. **Media Selection** — Integrate media picker into compose page for selecting existing assets
-6. **Delete & Cleanup** — Delete media from library and Blob storage
+- [x] **04-01-PLAN.md** — Cleanup & API Foundation (remove Media Library page/sidebar/i18n; create `/api/scheduled-posts` CRUD)
+- [x] **04-02-PLAN.md** — Compose Integration & Scheduled Dashboard (add schedule toggle/date picker to compose; build real `/scheduled` page with list, filters, actions)
+- [x] **04-03-PLAN.md** — Cron Executor & Finalization (Vercel cron job, publish pending Instagram posts, status updates, build verification)
+
+**Wave Structure:**
+- Wave 1: 04-01 (cleanup + API)
+- Wave 2: 04-02 (compose + scheduled page, depends on API)
+- Wave 3: 04-03 (cron + finalization, depends on API)
 
 **Success Criteria:**
-- User can upload images and videos via drag-and-drop
-- Uploaded media appears in the library grid with previews
-- User can select media from library when composing a post
-- User can delete media assets
-- File validation prevents invalid formats and oversized files
+- User can schedule an Instagram post from the compose page with a future date/time
+- Scheduled posts are saved to the database with `status: pending`
+- `/scheduled` page shows all posts with platform, content preview, scheduled time, and status
+- User can edit or cancel a pending scheduled post
+- User can "publish now" to bypass scheduling
+- Vercel cron executes pending Instagram posts at the scheduled time
+- Executed posts update status to `published` or `failed` with error message
+- All UI text is translatable via next-intl
 
 **Estimated:** 3-4 days
 
@@ -327,7 +332,7 @@
 | 2 | Frontend UI/UX (Mock Data) | 5-7 days | 8-12 days |
 | 2.1 | Link Shortener | 5-7 days | 13-19 days |
 | 3 | Instagram Integration | 7-10 days | 20-29 days |
-| 4 | Media Library | 3-4 days | 23-33 days |
+| 4 | Scheduled Posts | 3-4 days | 23-33 days |
 | 5 | Scheduling Engine | 5-7 days | 28-40 days |
 | 6 | YouTube Integration | 5-7 days | 33-47 days |
 | 7 | TikTok Integration | 4-6 days | 37-53 days |
@@ -345,12 +350,12 @@
 Phase 1 (Foundation)
   └── Phase 2 (Frontend UI)
         └── Phase 3 (Instagram)
-              └── Phase 4 (Media Library) ──> Phase 5 (Scheduling)
-                                              └── Phase 6 (YouTube)
-                                              └── Phase 7 (TikTok)
-                                              └── Phase 8 (X)
-                                                    └── Phase 9 (Analytics)
-                                                          └── Phase 10 (Production)
+              └── Phase 4 (Scheduled Posts) ──> Phase 5 (Scheduling Engine)
+                                                  └── Phase 6 (YouTube)
+                                                  └── Phase 7 (TikTok)
+                                                  └── Phase 8 (X)
+                                                        └── Phase 9 (Analytics)
+                                                              └── Phase 10 (Production)
 ```
 
 **Parallelizable groups:**
