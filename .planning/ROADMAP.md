@@ -49,6 +49,12 @@
 9. **Responsive Polish** — Mobile sidebar sheet, touch-friendly controls, breakpoint testing
 10. **UX Micro-interactions** — Skeleton loaders, empty states, error states, toast notifications, form validation feedback
 
+**Status:** PARTIALLY COMPLETE
+- Accounts page is real (Instagram profile + media grid from Graph API)
+- Compose page is real (publishes to Instagram)
+- Settings page is real (profile + short URL + domains settings)
+- Dashboard, scheduled, history, analytics, media pages are mock-only
+
 **Success Criteria:**
 - All 8 dashboard pages are visually complete and navigable
 - Pages work on mobile, tablet, and desktop
@@ -56,7 +62,7 @@
 - Owner can walk through the full user journey with mock data
 - No backend API calls beyond existing auth and social-accounts listing
 
-**Estimated:** 5-7 days
+**Estimated:** 5-7 days (remaining: mock pages need real data wiring)
 
 ---
 
@@ -67,11 +73,11 @@
 **Requirements:** LNK-01 through LNK-12
 
 **Plans:**
-- [ ] **02.1-01-PLAN.md** — Database Schema & Core API (shortLinks/linkClicks tables, POST /api/links, GET /[slug] redirect with click tracking)
-- [ ] **02.1-02-PLAN.md** — Link Management UI & Public Shorten Page (dashboard links page, link card/form components, public /s page, password prompt)
-- [ ] **02.1-03-PLAN.md** — Analytics Dashboard & QR Codes (analytics API with aggregations, charts with recharts, QR code generation PNG/SVG)
-- [ ] **02.1-04-PLAN.md** — Custom Domains (customDomains table, DNS TXT verification, domain management UI, middleware routing)
-- [ ] **02.1-05-PLAN.md** — Integration & Finalization (sidebar nav, migrations, build verification)
+- [x] **02.1-01-PLAN.md** — Database Schema & Core API (shortLinks/linkClicks tables, POST /api/links, GET /[slug] redirect with click tracking)
+- [x] **02.1-02-PLAN.md** — Link Management UI & Public Shorten Page (dashboard links page, link card/form components, public /s page, password prompt)
+- [x] **02.1-03-PLAN.md** — Analytics Dashboard & QR Codes (analytics API with aggregations, charts with recharts, QR code generation PNG/SVG)
+- [x] **02.1-04-PLAN.md** — Custom Domains (customDomains table, DNS TXT verification, domain management UI, middleware routing)
+- [x] **02.1-05-PLAN.md** — Integration & Finalization (sidebar nav, migrations, build verification)
 
 **Wave Structure:**
 - Wave 1: 02.1-01 (schema + core API)
@@ -88,6 +94,8 @@
 - Public shorten page works for anonymous users
 - All endpoints are rate-limited
 
+**Status:** COMPLETED — all success criteria met. Extra features delivered: device rules, OG metadata preview, CSV export, folders, tags.
+
 **Estimated:** 5-7 days
 
 ---
@@ -99,10 +107,10 @@
 **Requirements:** IG-01 through IG-14
 
 **Plans:**
-- [ ] **03-01-PLAN.md** — OAuth Refinement: per-user platform credentials, token refresh, token revocation on disconnect
-- [ ] **03-02-PLAN.md** — Account Info & Post Listing: rich profile display (bio, followers, profile pic), posts grid with engagement, full i18n
-- [ ] **03-03-PLAN.md** — Image & Carousel Publishing: single image and multi-image carousel posts via Meta Graph API
-- [ ] **03-04-PLAN.md** — Reels & Stories Publishing: Reels and Stories upload with media type selector in compose UI
+- [x] **03-01-PLAN.md** — OAuth Refinement: per-user platform credentials, token refresh, token revocation on disconnect
+- [x] **03-02-PLAN.md** — Account Info & Post Listing: rich profile display (bio, followers, profile pic), posts grid with engagement, full i18n
+- [x] **03-03-PLAN.md** — Image & Carousel Publishing: single image and multi-image carousel posts via Meta Graph API
+- [x] **03-04-PLAN.md** — Reels & Stories Publishing: Reels and Stories upload with media type selector in compose UI
 - [ ] **03-05-PLAN.md** — Insights & Comment Management: post-level insights, list/reply/delete comments
 - [ ] **03-06-PLAN.md** — Rate Limiting: 100 posts/24h enforcement with user-facing warnings and server-side blocking
 
@@ -120,7 +128,9 @@
 - All errors show helpful messages
 - All UI text is translatable via next-intl
 
-**Estimated:** 7-10 days
+**Status:** IN PROGRESS — OAuth, account info, media listing, and all publishing types (image, carousel, reel, story) are implemented. Insights, comments, and rate limiting remain.
+
+**Estimated:** 7-10 days (remaining: ~3 days for insights, comments, rate limiting)
 
 ---
 
@@ -355,4 +365,4 @@ After this roadmap is approved, run `/gsd-plan-phase 1` to create the detailed p
 
 ---
 *Roadmap created: 2026-05-04*
-*Last updated: 2026-05-04*
+*Last updated: 2026-05-11*

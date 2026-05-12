@@ -1,15 +1,15 @@
 # Project State: somedia
 
-**Last updated:** 2026-05-04
-**Current phase:** Phase 2.1 — Link Shortener (SHIPPED — PR #1)
-**Next action:** Review/merge PR #1, then proceed to next phase
+**Last updated:** 2026-05-11
+**Current phase:** Phase 3 — Instagram Integration (IN PROGRESS)
+**Next action:** Complete remaining Instagram features (insights, comments, rate limiting) or proceed to next phase
 
 ## Project Reference
 
-See: `.planning/PROJECT.md` (updated 2026-05-04)
+See: `.planning/PROJECT.md` (updated 2026-05-11)
 
 **Core value:** The owner can compose once and publish or schedule everywhere — with full visibility into performance analytics and account health across all connected platforms.
-**Current focus:** Phase 1 completed — all foundation infrastructure is production-ready
+**Current focus:** Instagram publishing is live; remaining Phase 3 items are insights/comments/rate limiting
 
 ## Phase 1 Completion Summary
 
@@ -32,23 +32,24 @@ All 11 tasks completed successfully:
 
 ## Progress
 
-| Phase | Status | Plans | Progress |
-|-------|--------|-------|----------|
-| 1 | COMPLETED | 11/11 | 100% |
-| 2 | Pending | 10/10 | 0% |
-| 2.1 | SHIPPED | 5/5 | 100% |
-| 3 | Pending | 11/11 | 0% |
-| 4 | Pending | 6/6 | 0% |
-| 5 | Pending | 8/8 | 0% |
-| 6 | Pending | 8/8 | 0% |
-| 7 | Pending | 7/7 | 0% |
-| 8 | Pending | 7/7 | 0% |
-| 9 | Pending | 5/5 | 0% |
-| 10 | Pending | 8/8 | 0% |
+| Phase | Status | Plans | Progress | Notes |
+|-------|--------|-------|----------|-------|
+| 1 | COMPLETED | 11/11 | 100% | Foundation fully implemented |
+| 2 | PARTIAL | 10/10 | ~50% | Dashboard, accounts, compose, settings are real; analytics, scheduled, history, media are mock-only |
+| 2.1 | COMPLETED | 5/5 | 100% | Link shortener fully implemented with extras (device rules, OG preview, CSV export) |
+| 3 | IN PROGRESS | 11/11 | ~70% | OAuth + publishing (image, carousel, reel, story) done. Insights, comments, rate limiting pending |
+| 4 | Pending | 6/6 | 0% | No code yet |
+| 5 | Pending | 8/8 | 0% | No code yet |
+| 6 | Pending | 8/8 | 0% | No code yet |
+| 7 | Pending | 7/7 | 0% | No code yet |
+| 8 | Pending | 7/7 | 0% | No code yet |
+| 9 | Pending | 5/5 | 0% | No code yet |
+| 10 | Pending | 8/8 | 0% | No code yet |
 
 ## Active Workstreams
 
-- Phase 2.1 Link Shortener — SHIPPED (PR #1 open for review)
+- Phase 2.1 Link Shortener — COMPLETED and deployed
+- Phase 3 Instagram Integration — IN PROGRESS (publishing live, insights/comments/rate limiting remaining)
 
 ## Blockers
 
@@ -76,12 +77,15 @@ All 11 tasks completed successfully:
 ## Notes
 
 - Phase 1 fully implemented and tested
-- Phase 2.1 fully implemented, verified, and shipped as PR #1
+- Phase 2.1 fully implemented, verified, and deployed
+- Phase 3 partially implemented: OAuth, media fetch, and all publishing types (image, carousel, reel, story) are live
 - All TypeScript checks pass (`npx tsc --noEmit`)
 - Build succeeds (`next build`)
-- Drizzle migration 0001 applied to Neon Postgres
+- Drizzle migrations 0000 through 0003 applied to Neon Postgres
 - 7 integration smoke tests passing
 - All API routes use standardized error responses
 - i18n complete for pt-BR, en, es
 - Auth middleware protects all dashboard routes
 - Rate limiting active on auth, API, and webhook endpoints
+- 20+ database tables in schema (exceeds original plan)
+- Link shortener has extra features beyond original requirements: device rules, OG metadata preview, CSV export, folders, tags

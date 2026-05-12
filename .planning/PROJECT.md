@@ -12,26 +12,36 @@ The owner can compose once and publish or schedule everywhere — with full visi
 
 ### Validated
 
-- ✓ User authentication via email/password and Google OAuth (better-auth) — existing
-- ✓ i18n routing with locale prefix (pt-BR, en, es) — existing
-- ✓ Dashboard shell with sidebar, header, and auth guard — existing
-- ✓ Instagram OAuth connection (connect/disconnect) via Facebook Graph API — existing
-- ✓ Social accounts listing API — existing
-- ✓ Dark/light theme support — existing
-- ✓ Database schema with users, sessions, social accounts (Drizzle + Neon) — existing
-- ✓ Responsive UI with shadcn/ui, Tailwind CSS, and Motion animations — existing
+- ✓ User authentication via email/password and Google OAuth (better-auth)
+- ✓ Password reset flow (forgot + reset pages)
+- ✓ i18n routing with locale prefix (pt-BR, en, es) — fully translated, zero hardcoded strings
+- ✓ Dashboard shell with sidebar, header, and auth guard
+- ✓ Instagram OAuth connection (connect/disconnect) via Facebook Graph API with per-user credentials
+- ✓ Instagram publishing: images, carousels, reels, and stories via Meta Graph API
+- ✓ Instagram account info and media grid fetch from Graph API
+- ✓ Social accounts listing API
+- ✓ Platform credentials CRUD API with AES-256-GCM encryption at rest
+- ✓ Dark/light theme support
+- ✓ Database schema with 20+ tables (users, sessions, social accounts, short links, link clicks, custom domains, media assets, posts, scheduled posts, platform credentials, etc.)
+- ✓ Responsive UI with shadcn/ui, Tailwind CSS, and Motion animations
+- ✓ Link shortener with custom slugs, QR codes, click analytics, custom domains, password protection, expiration, device rules, OG metadata, folders, tags, CSV export
+- ✓ Public shorten page for anonymous users
+- ✓ Rate limiting on all API and auth endpoints (Upstash Redis)
+- ✓ API error standardization (machine-readable codes)
+- ✓ Webhook infrastructure (Meta verification + event receiver)
+- ✓ Vercel Blob upload API
 
 ### Active
 
-- [ ] **Frontend-First UI/UX**: Complete all dashboard page interfaces (dashboard, accounts, compose, scheduled, history, analytics, media, settings) with mock data and full i18n — no backend integrations beyond existing auth
-- [ ] **Instagram Full Integration**: Publish posts (images, carousels, reels, stories), fetch media/insights, comment moderation, reply to DMs via Meta Graph API
+- [ ] **Frontend UI Completion**: Wire real data to analytics, scheduled, history, and media pages (currently mock-only)
+- [ ] **Instagram Insights & Comments**: Post-level insights, list/reply/delete comments, 100 posts/24h rate limiting
 - [ ] **YouTube Integration**: OAuth, video upload with metadata (title, description, captions/tags), list videos, analytics via YouTube Data API v3
 - [ ] **TikTok Integration**: OAuth, video upload/publish, list videos, comments via TikTok Content Posting API
 - [ ] **X (Twitter) Integration**: OAuth 2.0, tweet/post with media, list tweets, analytics via X API v2
 - [ ] **Scheduling Engine**: Native scheduling where supported (YouTube `publishAt`, TikTok direct post with schedule); fallback internal cron executor for platforms without native support (Instagram, X)
 - [ ] **Media Library**: Upload, organize, and reuse media assets across platforms
 - [ ] **Analytics Aggregation**: Cross-platform metrics dashboard (views, likes, comments, shares, reach)
-- [ ] **Production Hardening**: CI/CD pipeline, unit/integration tests, security audit, rate-limiting, error monitoring
+- [ ] **Production Hardening**: CI/CD pipeline, unit/integration tests, security audit, error monitoring
 - [ ] **Vercel Deployment**: Deploy to Vercel without GitHub repo linking; configure all env vars
 
 ### Out of Scope
@@ -48,10 +58,10 @@ The owner can compose once and publish or schedule everywhere — with full visi
 ## Context
 
 - **Brownfield project**: Codebase already initialized with Next.js 16, React 19, TypeScript, Drizzle ORM, Neon Postgres, better-auth, next-intl, shadcn/ui, Tailwind v4, Motion, recharts
-- **Instagram OAuth partially implemented**: Auth flow, callback, disconnect, and social-accounts listing API exist — BUT currently uses global env vars for App ID/Secret. Must be refactored to use per-user credentials from the database.
-- **Platform credentials architecture**: New `platformCredentials` table stores each user's App ID/Secret per platform, encrypted at rest. OAuth flows read credentials from DB, not env vars.
+- **Instagram OAuth fully implemented**: Auth flow, callback, disconnect, and social-accounts listing API all use per-user credentials from the `platformCredentials` table. No global env vars for platform credentials.
+- **Platform credentials architecture**: `platformCredentials` table stores each user's App ID/Secret per platform, encrypted at rest. OAuth flows read credentials from DB, not env vars.
 - **Design system**: `design-system/somedia/MASTER.md` defines colors, typography, spacing
-- **Database**: 8 tables defined in `src/db/schema.ts` (user, session, account, verification, socialAccounts, etc.)
+- **Database**: 20+ tables defined in `src/db/schema.ts` including better-auth tables, link shortener tables (shortLinks, linkClicks, linkFolders, linkTags, shortLinkTags, linkDeviceRules, customDomains), social tables (socialAccounts, platformCredentials, mediaAssets, posts, scheduledPosts, platformPosts), and user settings.
 - **Deployment target**: Vercel (serverless), Neon (Postgres), no GitHub repo link
 - **Security priority**: Owner-only access; all social tokens AND platform app credentials encrypted at rest; OAuth state validation; CSRF protection
 - **Per-user platform credentials**: Each user configures their own App ID / Client ID and App Secret / Client Secret for each platform (Instagram, YouTube, TikTok, X, etc.) directly in the UI. No global env vars for platform credentials.
@@ -70,14 +80,14 @@ The owner can compose once and publish or schedule everywhere — with full visi
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Frontend-first approach | Validate UI/UX with mock data before investing in backend integrations | — Pending |
-| Instagram first, then YouTube, TikTok, X | Instagram has the most mature Graph API; reduces integration risk | — Pending |
+| Frontend-first approach | Validate UI/UX with mock data before investing in backend integrations | ✓ In progress — accounts, compose, settings are real; analytics, scheduled, history, media remain mock |
+| Instagram first, then YouTube, TikTok, X | Instagram has the most mature Graph API; reduces integration risk | ✓ In progress — OAuth and publishing complete; insights, comments, rate limiting remaining |
 | Internal cron scheduler for unsupported platforms | Instagram and X lack native scheduling APIs; owner needs scheduling regardless | — Pending |
-| Vercel deployment without GitHub link | User requirement; manual deploy via Vercel CLI | — Pending |
-| Per-user platform credentials | Each user is their own developer; configures own App ID/Secret per platform | — Pending |
+| Vercel deployment without GitHub link | User requirement; manual deploy via Vercel CLI | ✓ Deployed manually via `vercel --prod` |
+| Per-user platform credentials | Each user is their own developer; configures own App ID/Secret per platform | ✓ Implemented — platformCredentials table with encryption |
 | Neon Postgres for database | Already configured; serverless-friendly | ✓ Good |
 | better-auth for authentication | Already configured; supports OAuth providers needed | ✓ Good |
 | next-intl for i18n | Already configured; supports pt-BR/en/es | ✓ Good |
 
 ---
-*Last updated: 2026-05-04 after project initialization*
+*Last updated: 2026-05-11 after codebase audit*
