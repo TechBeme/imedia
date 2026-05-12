@@ -221,6 +221,38 @@ export async function publishStory({
 }
 
 /**
+ * Fetch user's media (posts) from Instagram
+ */
+export async function fetchUserMedia(
+    accessToken: string,
+    igUserId: string,
+    limit = 25
+): Promise<
+    Array<{
+        id: string;
+        caption?: string;
+        media_type: string;
+        media_url?: string;
+        permalink?: string;
+        timestamp: string;
+    }>
+> {
+    const url = new URL(`${GRAPH_API_BASE}/${API_VERSION}/${igUserId}/media`);
+    url.searchParams.set("fields", "id,caption,media_type,media_url,permalink,timestamp");
+    url.searchParams.set("limit", String(limit));
+    url.searchParams.set("access_token", accessToken);
+
+    const res = await fetch(url.toString());
+    const data = await res.json();
+
+    if (data.error) {
+        throw new Error(`Failed to fetch user media: ${data.error.message}`);
+    }
+
+    return data.data || [];
+}
+
+/**
  * Check the status of a media container
  */
 export async function checkContainerStatus(

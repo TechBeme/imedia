@@ -1,9 +1,13 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "motion/react";
+import { BarChart3, AlertTriangle } from "lucide-react";
 import {
     BarChart,
     Bar,
@@ -60,8 +64,125 @@ const tooltipStyle = {
     background: "hsl(var(--card))",
 };
 
+function AnalyticsSkeleton() {
+    return (
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+                <Card key={i} className="glass-card">
+                    <CardHeader>
+                        <Skeleton className="h-5 w-40" />
+                    </CardHeader>
+                    <CardContent>
+                        <Skeleton className="h-[300px] w-full rounded-lg" />
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+    );
+}
+
+function AnalyticsEmpty() {
+    const t = useTranslations("analytics");
+    return (
+        <Card className="glass-card">
+            <CardContent className="p-8 text-center">
+                <BarChart3 className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                <h3 className="text-lg font-semibold mb-1">{t("emptyTitle")}</h3>
+                <p className="text-sm text-muted-foreground">{t("emptyDescription")}</p>
+            </CardContent>
+        </Card>
+    );
+}
+
+function AnalyticsError({ onRetry }: { onRetry: () => void }) {
+    const t = useTranslations("analytics");
+    return (
+        <Card className="glass-card">
+            <CardContent className="p-8 text-center">
+                <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-amber-500" />
+                <h3 className="text-lg font-semibold mb-1">{t("errorTitle")}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{t("errorDescription")}</p>
+                <Button onClick={onRetry} variant="outline" className="rounded-xl cursor-pointer">
+                    {t("retry")}
+                </Button>
+            </CardContent>
+        </Card>
+    );
+}
+
 export default function AnalyticsPage() {
     const t = useTranslations("analytics");
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
+    const [hasData, setHasData] = useState(false);
+
+    function fetchData() {
+        setIsLoading(true);
+        setIsError(false);
+        setTimeout(() => {
+            setHasData(true);
+            setIsLoading(false);
+        }, 1000);
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <motion.div
+                className="space-y-6"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
+                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
+                    </div>
+                    <Skeleton className="h-10 w-48 rounded-xl" />
+                </motion.div>
+                <AnalyticsSkeleton />
+            </motion.div>
+        );
+    }
+
+    if (isError) {
+        return (
+            <motion.div
+                className="space-y-6"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
+                <motion.div variants={itemVariants} className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
+                    </div>
+                </motion.div>
+                <AnalyticsError onRetry={fetchData} />
+            </motion.div>
+        );
+    }
+
+    if (!hasData) {
+        return (
+            <motion.div
+                className="space-y-6"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
+                <motion.div variants={itemVariants} className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
+                    </div>
+                </motion.div>
+                <AnalyticsEmpty />
+            </motion.div>
+        );
+    }
 
     return (
         <motion.div
@@ -70,7 +191,7 @@ export default function AnalyticsPage() {
             initial="hidden"
             animate="visible"
         >
-            <motion.div variants={itemVariants} className="flex items-center justify-between">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
                 </div>
@@ -83,7 +204,7 @@ export default function AnalyticsPage() {
                 </Tabs>
             </motion.div>
 
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
                 <motion.div variants={itemVariants}>
                     <Card className="glass-card">
                         <CardHeader>
@@ -174,11 +295,11 @@ export default function AnalyticsPage() {
                                 { title: "Weekly tips", platform: "Facebook", engagement: "890" },
                             ].map((post, i) => (
                                 <div key={i} className="flex items-center justify-between py-2 hover:bg-accent/50 rounded-lg px-2 -mx-2 transition-colors cursor-pointer">
-                                    <div>
-                                        <p className="text-sm font-medium">{post.title}</p>
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-medium truncate">{post.title}</p>
                                         <p className="text-xs text-muted-foreground">{post.platform}</p>
                                     </div>
-                                    <span className="text-sm font-semibold">{post.engagement}</span>
+                                    <span className="text-sm font-semibold shrink-0">{post.engagement}</span>
                                 </div>
                             ))}
                         </CardContent>
