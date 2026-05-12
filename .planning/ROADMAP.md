@@ -53,16 +53,29 @@
 - Accounts page is real (Instagram profile + media grid from Graph API)
 - Compose page is real (publishes to Instagram)
 - Settings page is real (profile + short URL + domains settings)
-- Dashboard, scheduled, history, analytics, media pages are mock-only
+- Dashboard shows real link analytics data
+- Scheduled, history, analytics pages are mock-only (real data deferred to Phases 3 and 4)
+- Media Library removed (deferred out of scope)
+
+**Plans:**
+- [ ] **02-01-PLAN.md** — Media Library Removal (delete page, sidebar nav, i18n keys)
+- [ ] **02-02-PLAN.md** — Skeleton Loaders, Empty States, Error States, Responsive Polish
+- [ ] **02-03-PLAN.md** — i18n Audit, Build Verification, Final Commit
+
+**Wave Structure:**
+- Wave 1: 02-01 (Media Library removal)
+- Wave 2: 02-02 (Skeletons, empty/error states, responsive polish)
+- Wave 3: 02-03 (i18n audit, build verification)
 
 **Success Criteria:**
-- All 8 dashboard pages are visually complete and navigable
-- Pages work on mobile, tablet, and desktop
-- All interactions have appropriate feedback (loading, success, error)
-- Owner can walk through the full user journey with mock data
-- No backend API calls beyond existing auth and social-accounts listing
+- Media Library completely removed from codebase
+- All mock pages have skeleton loaders, empty states, and error states
+- All pages are responsive on mobile, tablet, and desktop
+- All UI text is translatable via next-intl
+- No hardcoded strings in modified components
+- Application builds successfully
 
-**Estimated:** 5-7 days (remaining: mock pages need real data wiring)
+**Estimated:** 2-3 days
 
 ---
 
