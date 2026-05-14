@@ -6,6 +6,14 @@ import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -21,7 +29,7 @@ import {
     ChevronUp,
     BarChart3,
     CheckCircle2,
-    XCircle,
+    Trash2,
     FileText,
 } from "lucide-react";
 import {
@@ -89,6 +97,8 @@ export default function AutomationsPage() {
     const [actions, setActions] = useState<Record<string, AutomationAction[]>>({});
     const [loading, setLoading] = useState(true);
     const [expandedId, setExpandedId] = useState<string | null>(null);
+    const [deleteId, setDeleteId] = useState<string | null>(null);
+    const [deleting, setDeleting] = useState(false);
 
     useEffect(() => {
         async function load() {
@@ -141,6 +151,27 @@ export default function AutomationsPage() {
             }
         } catch {
             toast.error("Erro ao alterar status");
+        }
+    }
+
+    async function deleteAutomation(id: string) {
+        setDeleting(true);
+        try {
+            const res = await fetch(`/api/automations/${id}`, {
+                method: "DELETE",
+            });
+            if (res.ok) {
+                setAutomations((prev) => prev.filter((a) => a.id !== id));
+                toast.success("Automação excluída");
+                setDeleteId(null);
+            } else {
+                const errData = await res.json().catch(() => ({}));
+                toast.error(errData.error?.message || "Erro ao excluir automação");
+            }
+        } catch {
+            toast.error("Erro ao excluir automação");
+        } finally {
+            setDeleting(false);
         }
     }
 
@@ -221,7 +252,12 @@ export default function AutomationsPage() {
                                 key={automation.id}
                                 className="bg-white rounded-2xl border border-slate-200 hover:shadow-md transition-shadow"
                             >
-                                <div className="p-5">
+                                {/* Clickable header — expands on click */}
+                                <button
+                                    type="button"
+                                    className="w-full text-left p-5 cursor-pointer"
+                                    onClick={() => setExpandedId(isExpanded ? null : automation.id)}
+                                >
                                     <div className="flex items-start gap-4">
                                         {/* Platform Icon */}
                                         <div className={`h-12 w-12 rounded-xl ${def?.bg || "bg-pink-50"} flex items-center justify-center shrink-0`}>
@@ -283,47 +319,55 @@ export default function AutomationsPage() {
                                             </div>
                                         </div>
 
-                                        {/* Actions */}
+                                        {/* Actions + Chevron */}
                                         <div className="flex items-center gap-1 shrink-0">
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="h-8 w-8 rounded-lg"
-                                                onClick={() => toggleAutomation(automation.id, automation.isActive)}
-                                                title={automation.isActive ? "Desativar" : "Ativar"}
+                                            <div
+                                                className="flex items-center gap-1"
+                                                onClick={(e) => e.stopPropagation()}
                                             >
-                                                {automation.isActive ? (
-                                                    <Power className="h-4 w-4 text-emerald-500" />
-                                                ) : (
-                                                    <PowerOff className="h-4 w-4 text-slate-400" />
-                                                )}
-                                            </Button>
-                                            <Link href={`/automations/${automation.id}/logs`}>
-                                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
-                                                    <Activity className="h-4 w-4 text-slate-500" />
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-8 w-8 rounded-lg"
+                                                    onClick={() => toggleAutomation(automation.id, automation.isActive)}
+                                                    title={automation.isActive ? "Desativar" : "Ativar"}
+                                                >
+                                                    {automation.isActive ? (
+                                                        <Power className="h-4 w-4 text-emerald-500" />
+                                                    ) : (
+                                                        <PowerOff className="h-4 w-4 text-slate-400" />
+                                                    )}
                                                 </Button>
-                                            </Link>
-                                            <Link href={`/automations/${automation.id}/edit`}>
-                                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
-                                                    <Pencil className="h-4 w-4 text-slate-500" />
+                                                <Link href={`/automations/${automation.id}/logs`}>
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                                                        <Activity className="h-4 w-4 text-slate-500" />
+                                                    </Button>
+                                                </Link>
+                                                <Link href={`/automations/${automation.id}/edit`}>
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                                                        <Pencil className="h-4 w-4 text-slate-500" />
+                                                    </Button>
+                                                </Link>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-8 w-8 rounded-lg hover:text-red-500 hover:bg-red-50"
+                                                    onClick={() => setDeleteId(automation.id)}
+                                                    title="Excluir"
+                                                >
+                                                    <Trash2 className="h-4 w-4 text-slate-500" />
                                                 </Button>
-                                            </Link>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="h-8 w-8 rounded-lg"
-                                                onClick={() => setExpandedId(isExpanded ? null : automation.id)}
-                                                title={isExpanded ? "Recolher" : "Expandir"}
-                                            >
+                                            </div>
+                                            <div className="ml-1">
                                                 {isExpanded ? (
-                                                    <ChevronUp className="h-4 w-4 text-slate-500" />
+                                                    <ChevronUp className="h-4 w-4 text-slate-400" />
                                                 ) : (
-                                                    <ChevronDown className="h-4 w-4 text-slate-500" />
+                                                    <ChevronDown className="h-4 w-4 text-slate-400" />
                                                 )}
-                                            </Button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </button>
 
                                 {/* Expandable Details */}
                                 <AnimatePresence>
@@ -449,6 +493,29 @@ export default function AutomationsPage() {
                     })}
                 </div>
             )}
+            {/* Delete Confirmation Dialog */}
+            <Dialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Excluir automação</DialogTitle>
+                        <DialogDescription>
+                            Tem certeza que deseja excluir esta automação? Esta ação não pode ser desfeita.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="gap-2">
+                        <Button variant="outline" onClick={() => setDeleteId(null)} disabled={deleting}>
+                            Cancelar
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={() => deleteId && deleteAutomation(deleteId)}
+                            disabled={deleting}
+                        >
+                            {deleting ? "Excluindo..." : "Excluir"}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </motion.div>
     );
 }
