@@ -7,10 +7,12 @@ import { AutomationForm } from "@/components/automation/automation-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
-interface SocialAccount {
+interface AutomationSocialAccount {
     id: string;
     platform: string;
     username: string | null;
+    displayName: string | null;
+    profilePicture: string | null;
 }
 
 interface AutomationData {
@@ -40,7 +42,7 @@ export default function EditAutomationPage() {
     const params = useParams();
     const id = params.id as string;
     const [data, setData] = useState<AutomationData | null>(null);
-    const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+    const [accounts, setAccounts] = useState<AutomationSocialAccount[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -75,7 +77,7 @@ export default function EditAutomationPage() {
 
     if (loading) {
         return (
-            <div className="mx-auto max-w-2xl space-y-6">
+            <div className="mx-auto max-w-5xl space-y-6">
                 <Skeleton className="h-8 w-48" />
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
@@ -89,7 +91,7 @@ export default function EditAutomationPage() {
     }
 
     return (
-        <div className="mx-auto max-w-2xl space-y-6">
+        <div className="mx-auto max-w-5xl space-y-6">
             <h1 className="text-2xl font-bold">{t("edit")}</h1>
             <AutomationForm
                 accounts={accounts}

@@ -154,12 +154,12 @@ export function ActivityLog({ logs }: ActivityLogProps) {
                                                     <Badge
                                                         variant={
                                                             result.status ===
-                                                            "success"
+                                                                "success"
                                                                 ? "default"
                                                                 : result.status ===
                                                                     "skipped"
-                                                                  ? "secondary"
-                                                                  : "destructive"
+                                                                    ? "secondary"
+                                                                    : "destructive"
                                                         }
                                                     >
                                                         {result.status}

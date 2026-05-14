@@ -1,14 +1,31 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { Plus, Pencil, Activity } from "lucide-react";
+import { motion } from "motion/react";
+import {
+    Plus,
+    Pencil,
+    Activity,
+    Bot,
+    MessageCircle,
+    Send,
+    Power,
+    PowerOff,
+} from "lucide-react";
+import {
+    RiInstagramLine,
+    RiFacebookCircleLine,
+    RiThreadsLine,
+    RiYoutubeLine,
+    RiTiktokLine,
+    RiTwitterXLine,
+} from "react-icons/ri";
 
 interface Automation {
     id: string;
@@ -25,17 +42,27 @@ interface Automation {
     createdAt: string;
 }
 
-interface SocialAccount {
+interface AutomationSocialAccount {
     id: string;
     platform: string;
     username: string | null;
+    displayName: string | null;
+    profilePicture: string | null;
 }
+
+const platformDefs: Record<string, { icon: React.ElementType; color: string; bg: string; label: string }> = {
+    instagram: { icon: RiInstagramLine, color: "text-pink-500", bg: "bg-pink-50", label: "Instagram" },
+    facebook: { icon: RiFacebookCircleLine, color: "text-blue-600", bg: "bg-blue-50", label: "Facebook" },
+    threads: { icon: RiThreadsLine, color: "text-slate-700", bg: "bg-slate-50", label: "Threads" },
+    youtube: { icon: RiYoutubeLine, color: "text-red-500", bg: "bg-red-50", label: "YouTube" },
+    tiktok: { icon: RiTiktokLine, color: "text-slate-700", bg: "bg-slate-50", label: "TikTok" },
+    x: { icon: RiTwitterXLine, color: "text-slate-700", bg: "bg-slate-50", label: "X" },
+};
 
 export default function AutomationsPage() {
     const t = useTranslations("automations");
-    const locale = useLocale();
     const [automations, setAutomations] = useState<Automation[]>([]);
-    const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+    const [accounts, setAccounts] = useState<AutomationSocialAccount[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -64,10 +91,27 @@ export default function AutomationsPage() {
         load();
     }, []);
 
-    const getAccountName = (accountId: string) => {
-        const account = accounts.find((a) => a.id === accountId);
-        return account?.username || account?.platform || "Unknown";
+    const getAccount = (accountId: string) => {
+        return accounts.find((a) => a.id === accountId);
     };
+
+    async function toggleAutomation(id: string, current: boolean) {
+        try {
+            const res = await fetch(`/api/automations/${id}/toggle`, {
+                method: "POST",
+            });
+            if (res.ok) {
+                setAutomations((prev) =>
+                    prev.map((a) =>
+                        a.id === id ? { ...a, isActive: !current } : a
+                    )
+                );
+                toast.success(!current ? "Automação ativada" : "Automação desativada");
+            }
+        } catch {
+            toast.error("Erro ao alterar status");
+        }
+    }
 
     if (loading) {
         return (
@@ -76,104 +120,158 @@ export default function AutomationsPage() {
                     <Skeleton className="h-8 w-48" />
                     <Skeleton className="h-10 w-32" />
                 </div>
-                {Array.from({ length: 3 }).map((_, i) => (
-                    <Card key={i}>
-                        <CardHeader className="pb-2">
-                            <Skeleton className="h-6 w-64" />
-                        </CardHeader>
-                        <CardContent>
-                            <Skeleton className="h-4 w-full" />
-                        </CardContent>
-                    </Card>
-                ))}
+                <div className="grid gap-4">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                        <div key={i} className="bg-white rounded-2xl border border-slate-200 p-6">
+                            <div className="flex items-center gap-4 animate-pulse">
+                                <div className="h-12 w-12 rounded-xl bg-slate-200" />
+                                <div className="flex-1 space-y-2">
+                                    <div className="h-5 w-48 bg-slate-200 rounded" />
+                                    <div className="h-4 w-32 bg-slate-200 rounded" />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="space-y-6">
+        <motion.div
+            className="space-y-6"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+        >
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">{t("title")}</h1>
+                <div>
+                    <h1 className="text-2xl font-semibold tracking-tight font-heading">{t("title")}</h1>
+                </div>
                 <Link href="/automations/new">
-                    <Button>
-                        <Plus className="mr-2 h-4 w-4" />
+                    <Button className="rounded-xl gap-2">
+                        <Plus className="h-4 w-4" />
                         {t("new")}
                     </Button>
                 </Link>
             </div>
 
             {automations.length === 0 ? (
-                <Card>
-                    <CardContent className="flex flex-col items-center justify-center py-12">
-                        <p className="text-muted-foreground">
-                            {t("noAutomations")}
-                        </p>
-                        <Link href="/automations/new" className="mt-4">
-                            <Button>{t("createFirst")}</Button>
-                        </Link>
-                    </CardContent>
-                </Card>
+                <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center">
+                    <div className="h-16 w-16 rounded-2xl bg-pink-50 flex items-center justify-center mx-auto mb-4">
+                        <Bot className="h-8 w-8 text-pink-500" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-800 mb-2">Nenhuma automação</h3>
+                    <p className="text-sm text-slate-500 mb-6 max-w-sm mx-auto">
+                        Crie automações para responder comentários automaticamente com base em palavras-chave.
+                    </p>
+                    <Link href="/automations/new">
+                        <Button className="rounded-xl bg-pink-500 hover:bg-pink-600 text-white">
+                            <Plus className="h-4 w-4 mr-2" />
+                            Criar primeira automação
+                        </Button>
+                    </Link>
+                </div>
             ) : (
                 <div className="grid gap-4">
-                    {automations.map((automation) => (
-                        <Card key={automation.id}>
-                            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-lg">
-                                    {automation.name}
-                                </CardTitle>
-                                <Badge
-                                    variant={
-                                        automation.isActive
-                                            ? "default"
-                                            : "secondary"
-                                    }
-                                >
-                                    {automation.isActive
-                                        ? t("active")
-                                        : t("inactive")}
-                                </Badge>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="flex items-center justify-between">
-                                    <div className="text-sm text-muted-foreground">
-                                        {getAccountName(
-                                            automation.socialAccountId
-                                        )}{" "}
-                                        ·{" "}
-                                        {automation.triggerConfig?.keywords
-                                            ?.length || 0}{" "}
-                                        keywords
+                    {automations.map((automation) => {
+                        const account = getAccount(automation.socialAccountId);
+                        const def = account ? platformDefs[account.platform] : null;
+                        const Icon = def?.icon || RiInstagramLine;
+
+                        return (
+                            <div
+                                key={automation.id}
+                                className="bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-md transition-shadow"
+                            >
+                                <div className="flex items-start gap-4">
+                                    {/* Platform Icon */}
+                                    <div className={`h-12 w-12 rounded-xl ${def?.bg || "bg-pink-50"} flex items-center justify-center shrink-0`}>
+                                        <Icon className={`h-6 w-6 ${def?.color || "text-pink-500"}`} />
                                     </div>
-                                    <div className="flex gap-2">
-                                        <Link
-                                            href={`/automations/${automation.id}/logs`}
-                                        >
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
+
+                                    {/* Info */}
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <h3 className="text-base font-semibold text-slate-800 truncate">
+                                                {automation.name}
+                                            </h3>
+                                            <Badge
+                                                variant={automation.isActive ? "default" : "secondary"}
+                                                className={`text-[10px] h-5 px-1.5 rounded-md ${
+                                                    automation.isActive
+                                                        ? "bg-emerald-50 text-emerald-600 border-emerald-200"
+                                                        : "bg-slate-100 text-slate-500 border-slate-200"
+                                                }`}
                                             >
-                                                <Activity className="mr-1 h-4 w-4" />
-                                                Logs
+                                                {automation.isActive ? "Ativa" : "Inativa"}
+                                            </Badge>
+                                        </div>
+
+                                        <div className="flex items-center gap-3 text-sm text-slate-500">
+                                            <span className="flex items-center gap-1">
+                                                <Icon className="h-3.5 w-3.5" />
+                                                {account?.username || account?.platform || "—"}
+                                            </span>
+                                            <span className="flex items-center gap-1">
+                                                <MessageCircle className="h-3.5 w-3.5" />
+                                                {automation.triggerConfig?.keywords?.length || 0} palavras
+                                            </span>
+                                        </div>
+
+                                        <div className="flex flex-wrap gap-1.5 mt-2">
+                                            {automation.triggerConfig?.keywords?.slice(0, 5).map((kw, i) => (
+                                                <Badge
+                                                    key={i}
+                                                    variant="secondary"
+                                                    className="text-[10px] h-5 px-1.5 bg-pink-50 text-pink-600 border-pink-200 rounded-md"
+                                                >
+                                                    {kw}
+                                                </Badge>
+                                            ))}
+                                            {(automation.triggerConfig?.keywords?.length || 0) > 5 && (
+                                                <Badge
+                                                    variant="secondary"
+                                                    className="text-[10px] h-5 px-1.5 rounded-md"
+                                                >
+                                                    +{(automation.triggerConfig?.keywords?.length || 0) - 5}
+                                                </Badge>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Actions */}
+                                    <div className="flex items-center gap-1 shrink-0">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8 rounded-lg"
+                                            onClick={() => toggleAutomation(automation.id, automation.isActive)}
+                                            title={automation.isActive ? "Desativar" : "Ativar"}
+                                        >
+                                            {automation.isActive ? (
+                                                <Power className="h-4 w-4 text-emerald-500" />
+                                            ) : (
+                                                <PowerOff className="h-4 w-4 text-slate-400" />
+                                            )}
+                                        </Button>
+                                        <Link href={`/automations/${automation.id}/logs`}>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                                                <Activity className="h-4 w-4 text-slate-500" />
                                             </Button>
                                         </Link>
-                                        <Link
-                                            href={`/automations/${automation.id}/edit`}
-                                        >
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                            >
-                                                <Pencil className="mr-1 h-4 w-4" />
-                                                {t("edit")}
+                                        <Link href={`/automations/${automation.id}/edit`}>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                                                <Pencil className="h-4 w-4 text-slate-500" />
                                             </Button>
                                         </Link>
                                     </div>
                                 </div>
-                            </CardContent>
-                        </Card>
-                    ))}
+                            </div>
+                        );
+                    })}
                 </div>
             )}
-        </div>
+        </motion.div>
     );
 }

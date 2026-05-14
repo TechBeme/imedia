@@ -77,6 +77,13 @@ export const socialAccounts = pgTable(
         refreshToken: text("refresh_token"), // encrypted
         expiresAt: timestamp("expires_at"),
         metadata: jsonb("metadata"), // follower_count, etc.
+        // Cached profile metrics (refreshed on every page load)
+        followersCount: integer("followers_count"),
+        followsCount: integer("follows_count"),
+        mediaCount: integer("media_count"),
+        biography: text("biography"),
+        website: text("website"),
+        metricsFetchedAt: timestamp("metrics_fetched_at"),
         isActive: boolean("is_active").notNull().default(true),
         createdAt: timestamp("created_at").notNull().defaultNow(),
         updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -84,6 +91,34 @@ export const socialAccounts = pgTable(
     (table) => [
         index("social_accounts_user_idx").on(table.userId),
         index("social_accounts_platform_idx").on(table.platform),
+    ]
+);
+
+// Cached media items from connected social accounts (refreshed on every page load)
+export const socialAccountMedia = pgTable(
+    "social_account_media",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        socialAccountId: uuid("social_account_id")
+            .notNull()
+            .references(() => socialAccounts.id, { onDelete: "cascade" }),
+        externalId: text("external_id").notNull(), // Instagram media ID
+        caption: text("caption"),
+        mediaType: text("media_type").notNull(), // IMAGE, VIDEO, CAROUSEL_ALBUM
+        mediaUrl: text("media_url").notNull(),
+        thumbnailUrl: text("thumbnail_url"),
+        permalink: text("permalink").notNull(),
+        timestamp: timestamp("timestamp"),
+        likeCount: integer("like_count").notNull().default(0),
+        commentsCount: integer("comments_count").notNull().default(0),
+        viewCount: integer("view_count"),
+        fetchedAt: timestamp("fetched_at").notNull().defaultNow(),
+        createdAt: timestamp("created_at").notNull().defaultNow(),
+    },
+    (table) => [
+        index("social_account_media_account_idx").on(table.socialAccountId),
+        index("social_account_media_external_idx").on(table.externalId),
+        index("social_account_media_fetched_idx").on(table.fetchedAt),
     ]
 );
 

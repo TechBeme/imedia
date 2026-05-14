@@ -2,8 +2,8 @@ import { z } from "zod";
 
 export const triggerConfigSchema = z.object({
     keywords: z.array(z.string().min(1).max(100)).min(1).max(50),
-    matchMode: z.enum(["exact", "contains"]).default("contains"),
-    caseSensitive: z.boolean().default(false),
+    matchMode: z.enum(["exact", "contains"]).default("contains").optional(),
+    caseSensitive: z.boolean().default(false).optional(),
 });
 
 export const automationScopeSchema = z.object({

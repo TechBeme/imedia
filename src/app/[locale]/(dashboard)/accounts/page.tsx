@@ -104,6 +104,11 @@ interface SocialAccount {
     username: string | null;
     displayName: string | null;
     profilePicture: string | null;
+    followersCount: number | null;
+    followsCount: number | null;
+    mediaCount: number | null;
+    biography: string | null;
+    website: string | null;
     isActive: boolean;
 }
 
@@ -224,6 +229,21 @@ export default function AccountsPage() {
         }
     }
 
+    // Build fallback profile from DB-cached account data when API fails
+    function buildFallbackProfile(account: SocialAccount | undefined): InstagramProfile | null {
+        if (!account) return null;
+        return {
+            username: account.username,
+            name: account.displayName,
+            mediaCount: account.mediaCount ?? 0,
+            followersCount: account.followersCount ?? 0,
+            followsCount: account.followsCount ?? 0,
+            biography: account.biography ?? "",
+            website: account.website ?? "",
+            profilePictureUrl: account.profilePicture,
+        };
+    }
+
     async function handleConnect() {
         setConnecting(true);
         try {
@@ -284,7 +304,7 @@ export default function AccountsPage() {
     const instagramAccount = accounts.find((a) => a.platform === "instagram" && a.isActive);
     const isConnected = !!instagramAccount;
 
-    const displayProfile: InstagramProfile = profile || {
+    const displayProfile: InstagramProfile = profile || buildFallbackProfile(instagramAccount) || {
         username: instagramAccount?.username || null,
         name: instagramAccount?.displayName || null,
         mediaCount: 0,

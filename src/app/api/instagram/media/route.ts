@@ -8,6 +8,10 @@ import { withRateLimit } from "@/lib/api-guard";
 import { apiRateLimit } from "@/lib/rate-limit";
 import { success, unauthorized, internalError } from "@/lib/api-response";
 import { decrypt } from "@/lib/encryption";
+import {
+    updateSocialAccountMetrics,
+    replaceSocialAccountMedia,
+} from "@/lib/social-accounts";
 
 export interface InstagramMedia {
     id: string;
@@ -56,21 +60,24 @@ export async function GET(req: NextRequest) {
                     accessToken = decrypt(account.accessToken);
                     tokenSource = "decrypted";
                 } catch (e) {
-                    // Token might be stored unencrypted (legacy) - try using directly
                     console.log("[instagram/media] decrypt failed, trying raw token:", e);
                     accessToken = account.accessToken;
                     tokenSource = "raw";
                 }
             }
-            console.log("[instagram/media] account:", { providerAccountId: account.providerAccountId, hasToken: !!account.accessToken, tokenSource, tokenPrefix: accessToken?.substring(0, 10) });
+            console.log("[instagram/media] account:", {
+                providerAccountId: account.providerAccountId,
+                hasToken: !!account.accessToken,
+                tokenSource,
+                tokenPrefix: accessToken?.substring(0, 10),
+            });
             if (!accessToken) {
                 return success({ media: [], profile: null, debug: { error: "no_token" } });
             }
 
             const providerAccountId = account.providerAccountId;
 
-            // Use Instagram Graph API (graph.instagram.com) - works with Instagram Login tokens
-            // for Business/Creator accounts with extended fields
+            // ── Fetch from Instagram Graph API ───────────────────────────────
             let profileData: any = {};
             let mediaData: any = {};
 
@@ -135,6 +142,37 @@ export async function GET(req: NextRequest) {
                 comments_count: item.comments_count || 0,
                 view_count: item.view_count || 0,
             }));
+
+            // ── Persist to database (async, non-blocking) ────────────────────
+            try {
+                await updateSocialAccountMetrics(account.id, {
+                    followersCount: profileData.followers_count || 0,
+                    followsCount: profileData.follows_count || 0,
+                    mediaCount: profileData.media_count || 0,
+                    biography: profileData.biography || undefined,
+                    website: profileData.website || undefined,
+                });
+
+                await replaceSocialAccountMedia(
+                    account.id,
+                    media.map((item) => ({
+                        externalId: item.id,
+                        caption: item.caption,
+                        mediaType: item.media_type,
+                        mediaUrl: item.media_url,
+                        thumbnailUrl: item.thumbnail_url,
+                        permalink: item.permalink,
+                        timestamp: item.timestamp ? new Date(item.timestamp) : null,
+                        likeCount: item.like_count,
+                        commentsCount: item.comments_count,
+                        viewCount: item.view_count,
+                    }))
+                );
+                console.log("[instagram/media] Saved metrics + media to DB for account", account.id);
+            } catch (dbErr) {
+                // Don't fail the request if DB save fails — user still gets fresh data
+                console.error("[instagram/media] DB save failed:", dbErr);
+            }
 
             return success({
                 media,
