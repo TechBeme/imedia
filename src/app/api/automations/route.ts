@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { z } from "zod";
 import { db } from "@/db";
 import { automations, automationLogs, automationActions, socialAccounts } from "@/db/schema";
-import { eq, and, desc, sql } from "drizzle-orm";
+import { eq, and, desc, sql, inArray } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { success, error, unauthorized, internalError } from "@/lib/api-response";
 import { withRateLimit } from "@/lib/api-guard";
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
                         failedRuns: sql<number>`count(*) filter (where ${automationLogs.status} = 'failed')::int`,
                     })
                     .from(automationLogs)
-                    .where(sql`${automationLogs.automationId} = ANY(${automationIds})`)
+                    .where(inArray(automationLogs.automationId, automationIds))
                     .groupBy(automationLogs.automationId);
 
                 for (const row of logCounts) {
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
                 const actionList = await db
                     .select()
                     .from(automationActions)
-                    .where(sql`${automationActions.automationId} = ANY(${automationIds})`);
+                    .where(inArray(automationActions.automationId, automationIds));
 
                 for (const action of actionList) {
                     if (!actions[action.automationId]) actions[action.automationId] = [];

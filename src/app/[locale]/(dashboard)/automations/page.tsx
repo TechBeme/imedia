@@ -100,7 +100,6 @@ export default function AutomationsPage() {
 
                 if (autoRes.ok) {
                     const autoData = await autoRes.json();
-                    console.log("[automations] API response:", autoData);
                     setAutomations(autoData.data?.automations || []);
                     setStats(autoData.data?.stats || {});
                     setActions(autoData.data?.actions || {});
