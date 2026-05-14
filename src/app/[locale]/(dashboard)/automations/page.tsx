@@ -100,9 +100,14 @@ export default function AutomationsPage() {
 
                 if (autoRes.ok) {
                     const autoData = await autoRes.json();
-                    setAutomations(autoData.automations || []);
-                    setStats(autoData.stats || {});
-                    setActions(autoData.actions || {});
+                    console.log("[automations] API response:", autoData);
+                    setAutomations(autoData.data?.automations || []);
+                    setStats(autoData.data?.stats || {});
+                    setActions(autoData.data?.actions || {});
+                } else {
+                    const errData = await autoRes.json().catch(() => ({}));
+                    console.error("[automations] API error:", autoRes.status, errData);
+                    toast.error(errData.error?.message || "Erro ao carregar automações");
                 }
                 if (accRes.ok) {
                     const accData = await accRes.json();
