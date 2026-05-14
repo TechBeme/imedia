@@ -100,9 +100,9 @@ export default function AutomationsPage() {
 
                 if (autoRes.ok) {
                     const autoData = await autoRes.json();
-                    setAutomations(autoData.data?.automations || []);
-                    setStats(autoData.data?.stats || {});
-                    setActions(autoData.data?.actions || {});
+                    setAutomations(autoData.automations || []);
+                    setStats(autoData.stats || {});
+                    setActions(autoData.actions || {});
                 }
                 if (accRes.ok) {
                     const accData = await accRes.json();
@@ -233,8 +233,8 @@ export default function AutomationsPage() {
                                                 <Badge
                                                     variant={automation.isActive ? "default" : "secondary"}
                                                     className={`text-[10px] h-5 px-1.5 rounded-md ${automation.isActive
-                                                            ? "bg-emerald-50 text-emerald-600 border-emerald-200"
-                                                            : "bg-slate-100 text-slate-500 border-slate-200"
+                                                        ? "bg-emerald-50 text-emerald-600 border-emerald-200"
+                                                        : "bg-slate-100 text-slate-500 border-slate-200"
                                                         }`}
                                                 >
                                                     {automation.isActive ? t("active") : t("inactive")}
