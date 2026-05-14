@@ -198,11 +198,10 @@ export default function AutomationsPage() {
                                             </h3>
                                             <Badge
                                                 variant={automation.isActive ? "default" : "secondary"}
-                                                className={`text-[10px] h-5 px-1.5 rounded-md ${
-                                                    automation.isActive
+                                                className={`text-[10px] h-5 px-1.5 rounded-md ${automation.isActive
                                                         ? "bg-emerald-50 text-emerald-600 border-emerald-200"
                                                         : "bg-slate-100 text-slate-500 border-slate-200"
-                                                }`}
+                                                    }`}
                                             >
                                                 {automation.isActive ? "Ativa" : "Inativa"}
                                             </Badge>

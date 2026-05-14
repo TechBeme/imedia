@@ -318,12 +318,11 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
                                     <button
                                         key={account.id}
                                         type="button"
-                                        onClick={() => setSocialAccountId(account.id)}
-                                        className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-200 ${
-                                            isSelected
+                                        onClick={() => setSocialAccountId(isSelected ? "" : account.id)}
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-200 ${isSelected
                                                 ? `${def?.bg || "bg-pink-50"} ${def?.color || "text-pink-500"} border-current ring-1 ring-current`
                                                 : "bg-white border-slate-200 hover:border-slate-300 text-slate-700"
-                                        }`}
+                                            }`}
                                     >
                                         <Icon className="h-5 w-5 shrink-0" />
                                         <div className="min-w-0">
@@ -405,11 +404,10 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
                                                             key={post.id}
                                                             type="button"
                                                             onClick={() => togglePost(post.id)}
-                                                            className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                                                                isSelected
+                                                            className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${isSelected
                                                                     ? "border-pink-500 ring-2 ring-pink-500/20"
                                                                     : "border-transparent hover:border-slate-300"
-                                                            }`}
+                                                                }`}
                                                         >
                                                             <img
                                                                 src={post.thumbnail_url || post.media_url}
