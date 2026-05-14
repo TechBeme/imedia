@@ -396,7 +396,7 @@ export default function AccountsPage() {
                                             {displayProfile.profilePictureUrl ? (
                                                 <img
                                                     src={displayProfile.profilePictureUrl}
-                                                    alt={displayProfile.username || "Profile"}
+                                                    alt=""
                                                     className="h-full w-full rounded-full object-cover"
                                                 />
                                             ) : (
@@ -508,7 +508,7 @@ export default function AccountsPage() {
                                                     src={item.media_type === "VIDEO" && item.thumbnail_url
                                                         ? item.thumbnail_url
                                                         : item.media_url}
-                                                    alt={item.caption || "Post"}
+                                                    alt=""
                                                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                                                     loading="lazy"
                                                 />

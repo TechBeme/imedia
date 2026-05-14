@@ -411,7 +411,7 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
                                                         >
                                                             <img
                                                                 src={post.thumbnail_url || post.media_url}
-                                                                alt={post.caption || ""}
+                                                                alt=""
                                                                 className="h-full w-full object-cover"
                                                             />
                                                             {isSelected && (
