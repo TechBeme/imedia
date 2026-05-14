@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import {
     Plus,
     Pencil,
@@ -17,6 +17,12 @@ import {
     Send,
     Power,
     PowerOff,
+    ChevronDown,
+    ChevronUp,
+    BarChart3,
+    CheckCircle2,
+    XCircle,
+    FileText,
 } from "lucide-react";
 import {
     RiInstagramLine,
@@ -38,8 +44,24 @@ interface Automation {
         matchMode: string;
         caseSensitive: boolean;
     };
+    scope: {
+        posts: "all" | "specific";
+        postIds?: string[];
+    };
     isActive: boolean;
     createdAt: string;
+}
+
+interface AutomationStats {
+    totalRuns: number;
+    successRuns: number;
+    failedRuns: number;
+}
+
+interface AutomationAction {
+    type: string;
+    config: { messages: string[] };
+    isActive: boolean;
 }
 
 interface AutomationSocialAccount {
@@ -63,7 +85,10 @@ export default function AutomationsPage() {
     const t = useTranslations("automations");
     const [automations, setAutomations] = useState<Automation[]>([]);
     const [accounts, setAccounts] = useState<AutomationSocialAccount[]>([]);
+    const [stats, setStats] = useState<Record<string, AutomationStats>>({});
+    const [actions, setActions] = useState<Record<string, AutomationAction[]>>({});
     const [loading, setLoading] = useState(true);
+    const [expandedId, setExpandedId] = useState<string | null>(null);
 
     useEffect(() => {
         async function load() {
@@ -76,6 +101,8 @@ export default function AutomationsPage() {
                 if (autoRes.ok) {
                     const autoData = await autoRes.json();
                     setAutomations(autoData.data?.automations || []);
+                    setStats(autoData.data?.stats || {});
+                    setActions(autoData.data?.actions || {});
                 }
                 if (accRes.ok) {
                     const accData = await accRes.json();
@@ -178,94 +205,241 @@ export default function AutomationsPage() {
                         const account = getAccount(automation.socialAccountId);
                         const def = account ? platformDefs[account.platform] : null;
                         const Icon = def?.icon || RiInstagramLine;
+                        const autoStats = stats[automation.id];
+                        const autoActions = actions[automation.id] || [];
+                        const isExpanded = expandedId === automation.id;
+
+                        const dmAction = autoActions.find((a) => a.type === "send_dm");
+                        const commentAction = autoActions.find((a) => a.type === "reply_comment");
 
                         return (
                             <div
                                 key={automation.id}
-                                className="bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-md transition-shadow"
+                                className="bg-white rounded-2xl border border-slate-200 hover:shadow-md transition-shadow"
                             >
-                                <div className="flex items-start gap-4">
-                                    {/* Platform Icon */}
-                                    <div className={`h-12 w-12 rounded-xl ${def?.bg || "bg-pink-50"} flex items-center justify-center shrink-0`}>
-                                        <Icon className={`h-6 w-6 ${def?.color || "text-pink-500"}`} />
-                                    </div>
+                                <div className="p-5">
+                                    <div className="flex items-start gap-4">
+                                        {/* Platform Icon */}
+                                        <div className={`h-12 w-12 rounded-xl ${def?.bg || "bg-pink-50"} flex items-center justify-center shrink-0`}>
+                                            <Icon className={`h-6 w-6 ${def?.color || "text-pink-500"}`} />
+                                        </div>
 
-                                    {/* Info */}
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <h3 className="text-base font-semibold text-slate-800 truncate">
-                                                {automation.name}
-                                            </h3>
-                                            <Badge
-                                                variant={automation.isActive ? "default" : "secondary"}
-                                                className={`text-[10px] h-5 px-1.5 rounded-md ${automation.isActive
-                                                        ? "bg-emerald-50 text-emerald-600 border-emerald-200"
-                                                        : "bg-slate-100 text-slate-500 border-slate-200"
-                                                    }`}
+                                        {/* Info */}
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <h3 className="text-base font-semibold text-slate-800 truncate">
+                                                    {automation.name}
+                                                </h3>
+                                                <Badge
+                                                    variant={automation.isActive ? "default" : "secondary"}
+                                                    className={`text-[10px] h-5 px-1.5 rounded-md ${automation.isActive
+                                                            ? "bg-emerald-50 text-emerald-600 border-emerald-200"
+                                                            : "bg-slate-100 text-slate-500 border-slate-200"
+                                                        }`}
+                                                >
+                                                    {automation.isActive ? t("active") : t("inactive")}
+                                                </Badge>
+                                            </div>
+
+                                            <div className="flex items-center gap-3 text-sm text-slate-500">
+                                                <span className="flex items-center gap-1">
+                                                    <Icon className="h-3.5 w-3.5" />
+                                                    {account?.username || account?.platform || "—"}
+                                                </span>
+                                                <span className="flex items-center gap-1">
+                                                    <MessageCircle className="h-3.5 w-3.5" />
+                                                    {automation.triggerConfig?.keywords?.length || 0} palavras
+                                                </span>
+                                                {autoStats && (
+                                                    <span className="flex items-center gap-1">
+                                                        <BarChart3 className="h-3.5 w-3.5" />
+                                                        {autoStats.totalRuns} ativações
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div className="flex flex-wrap gap-1.5 mt-2">
+                                                {automation.triggerConfig?.keywords?.slice(0, 5).map((kw, i) => (
+                                                    <Badge
+                                                        key={i}
+                                                        variant="secondary"
+                                                        className="text-[10px] h-5 px-1.5 bg-pink-50 text-pink-600 border-pink-200 rounded-md"
+                                                    >
+                                                        {kw}
+                                                    </Badge>
+                                                ))}
+                                                {(automation.triggerConfig?.keywords?.length || 0) > 5 && (
+                                                    <Badge
+                                                        variant="secondary"
+                                                        className="text-[10px] h-5 px-1.5 rounded-md"
+                                                    >
+                                                        +{(automation.triggerConfig?.keywords?.length || 0) - 5}
+                                                    </Badge>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Actions */}
+                                        <div className="flex items-center gap-1 shrink-0">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8 rounded-lg"
+                                                onClick={() => toggleAutomation(automation.id, automation.isActive)}
+                                                title={automation.isActive ? "Desativar" : "Ativar"}
                                             >
-                                                {automation.isActive ? "Ativa" : "Inativa"}
-                                            </Badge>
-                                        </div>
-
-                                        <div className="flex items-center gap-3 text-sm text-slate-500">
-                                            <span className="flex items-center gap-1">
-                                                <Icon className="h-3.5 w-3.5" />
-                                                {account?.username || account?.platform || "—"}
-                                            </span>
-                                            <span className="flex items-center gap-1">
-                                                <MessageCircle className="h-3.5 w-3.5" />
-                                                {automation.triggerConfig?.keywords?.length || 0} palavras
-                                            </span>
-                                        </div>
-
-                                        <div className="flex flex-wrap gap-1.5 mt-2">
-                                            {automation.triggerConfig?.keywords?.slice(0, 5).map((kw, i) => (
-                                                <Badge
-                                                    key={i}
-                                                    variant="secondary"
-                                                    className="text-[10px] h-5 px-1.5 bg-pink-50 text-pink-600 border-pink-200 rounded-md"
-                                                >
-                                                    {kw}
-                                                </Badge>
-                                            ))}
-                                            {(automation.triggerConfig?.keywords?.length || 0) > 5 && (
-                                                <Badge
-                                                    variant="secondary"
-                                                    className="text-[10px] h-5 px-1.5 rounded-md"
-                                                >
-                                                    +{(automation.triggerConfig?.keywords?.length || 0) - 5}
-                                                </Badge>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Actions */}
-                                    <div className="flex items-center gap-1 shrink-0">
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="h-8 w-8 rounded-lg"
-                                            onClick={() => toggleAutomation(automation.id, automation.isActive)}
-                                            title={automation.isActive ? "Desativar" : "Ativar"}
-                                        >
-                                            {automation.isActive ? (
-                                                <Power className="h-4 w-4 text-emerald-500" />
-                                            ) : (
-                                                <PowerOff className="h-4 w-4 text-slate-400" />
-                                            )}
-                                        </Button>
-                                        <Link href={`/automations/${automation.id}/logs`}>
-                                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
-                                                <Activity className="h-4 w-4 text-slate-500" />
+                                                {automation.isActive ? (
+                                                    <Power className="h-4 w-4 text-emerald-500" />
+                                                ) : (
+                                                    <PowerOff className="h-4 w-4 text-slate-400" />
+                                                )}
                                             </Button>
-                                        </Link>
-                                        <Link href={`/automations/${automation.id}/edit`}>
-                                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
-                                                <Pencil className="h-4 w-4 text-slate-500" />
+                                            <Link href={`/automations/${automation.id}/logs`}>
+                                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                                                    <Activity className="h-4 w-4 text-slate-500" />
+                                                </Button>
+                                            </Link>
+                                            <Link href={`/automations/${automation.id}/edit`}>
+                                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                                                    <Pencil className="h-4 w-4 text-slate-500" />
+                                                </Button>
+                                            </Link>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8 rounded-lg"
+                                                onClick={() => setExpandedId(isExpanded ? null : automation.id)}
+                                                title={isExpanded ? "Recolher" : "Expandir"}
+                                            >
+                                                {isExpanded ? (
+                                                    <ChevronUp className="h-4 w-4 text-slate-500" />
+                                                ) : (
+                                                    <ChevronDown className="h-4 w-4 text-slate-500" />
+                                                )}
                                             </Button>
-                                        </Link>
+                                        </div>
                                     </div>
                                 </div>
+
+                                {/* Expandable Details */}
+                                <AnimatePresence>
+                                    {isExpanded && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: "auto", opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.25, ease: "easeInOut" }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="px-5 pb-5 pt-0 border-t border-slate-100">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                                                    {/* Stats */}
+                                                    {autoStats && (
+                                                        <div className="bg-slate-50 rounded-xl p-4">
+                                                            <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                                                                <BarChart3 className="h-3.5 w-3.5" />
+                                                                Estatísticas
+                                                            </h4>
+                                                            <div className="grid grid-cols-3 gap-3">
+                                                                <div className="text-center">
+                                                                    <div className="text-lg font-bold text-slate-800">{autoStats.totalRuns}</div>
+                                                                    <div className="text-[10px] text-slate-500">Total</div>
+                                                                </div>
+                                                                <div className="text-center">
+                                                                    <div className="text-lg font-bold text-emerald-600">{autoStats.successRuns}</div>
+                                                                    <div className="text-[10px] text-slate-500">Sucesso</div>
+                                                                </div>
+                                                                <div className="text-center">
+                                                                    <div className="text-lg font-bold text-red-500">{autoStats.failedRuns}</div>
+                                                                    <div className="text-[10px] text-slate-500">Falhas</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Scope / Posts */}
+                                                    <div className="bg-slate-50 rounded-xl p-4">
+                                                        <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                                                            <FileText className="h-3.5 w-3.5" />
+                                                            Posts
+                                                        </h4>
+                                                        {automation.scope?.posts === "all" ? (
+                                                            <p className="text-sm text-slate-600">Todas as publicações</p>
+                                                        ) : (
+                                                            <p className="text-sm text-slate-600">
+                                                                {automation.scope?.postIds?.length || 0} publicações selecionadas
+                                                            </p>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Keywords */}
+                                                    <div className="bg-slate-50 rounded-xl p-4">
+                                                        <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                                                            <MessageCircle className="h-3.5 w-3.5" />
+                                                            Palavras-chave
+                                                        </h4>
+                                                        <div className="flex flex-wrap gap-1.5">
+                                                            {automation.triggerConfig?.keywords?.map((kw, i) => (
+                                                                <Badge
+                                                                    key={i}
+                                                                    variant="secondary"
+                                                                    className="text-[10px] h-5 px-1.5 bg-pink-50 text-pink-600 border-pink-200 rounded-md"
+                                                                >
+                                                                    {kw}
+                                                                </Badge>
+                                                            ))}
+                                                            {(!automation.triggerConfig?.keywords?.length) && (
+                                                                <span className="text-sm text-slate-400">Nenhuma palavra-chave</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+
+                                                    {/* DM Responses */}
+                                                    {dmAction && (
+                                                        <div className="bg-slate-50 rounded-xl p-4">
+                                                            <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                                                                <Send className="h-3.5 w-3.5" />
+                                                                Respostas em DM
+                                                            </h4>
+                                                            <ul className="space-y-1.5">
+                                                                {dmAction.config?.messages?.map((msg, i) => (
+                                                                    <li key={i} className="text-sm text-slate-600 flex items-start gap-2">
+                                                                        <span className="text-pink-400 mt-0.5">•</span>
+                                                                        {msg}
+                                                                    </li>
+                                                                ))}
+                                                                {(!dmAction.config?.messages?.length) && (
+                                                                    <span className="text-sm text-slate-400">Nenhuma resposta configurada</span>
+                                                                )}
+                                                            </ul>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Comment Responses */}
+                                                    {commentAction && (
+                                                        <div className="bg-slate-50 rounded-xl p-4">
+                                                            <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                                                                <CheckCircle2 className="h-3.5 w-3.5" />
+                                                                Respostas em comentários
+                                                            </h4>
+                                                            <ul className="space-y-1.5">
+                                                                {commentAction.config?.messages?.map((msg, i) => (
+                                                                    <li key={i} className="text-sm text-slate-600 flex items-start gap-2">
+                                                                        <span className="text-pink-400 mt-0.5">•</span>
+                                                                        {msg}
+                                                                    </li>
+                                                                ))}
+                                                                {(!commentAction.config?.messages?.length) && (
+                                                                    <span className="text-sm text-slate-400">Nenhuma resposta configurada</span>
+                                                                )}
+                                                            </ul>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
                         );
                     })}
