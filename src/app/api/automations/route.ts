@@ -32,41 +32,47 @@ export async function GET(req: NextRequest) {
             const stats: Record<string, { totalRuns: number; successRuns: number; failedRuns: number }> = {};
 
             if (automationIds.length > 0) {
-                const logCounts = await db
-                    .select({
-                        automationId: automationLogs.automationId,
-                        totalRuns: sql<number>`count(*)::int`,
-                        successRuns: sql<number>`count(*) filter (where ${automationLogs.status} = 'success')::int`,
-                        failedRuns: sql<number>`count(*) filter (where ${automationLogs.status} = 'failed')::int`,
-                    })
-                    .from(automationLogs)
-                    .where(inArray(automationLogs.automationId, automationIds))
-                    .groupBy(automationLogs.automationId);
+                try {
+                    const logs = await db
+                        .select({
+                            automationId: automationLogs.automationId,
+                            status: automationLogs.status,
+                        })
+                        .from(automationLogs)
+                        .where(inArray(automationLogs.automationId, automationIds));
 
-                for (const row of logCounts) {
-                    stats[row.automationId] = {
-                        totalRuns: row.totalRuns,
-                        successRuns: row.successRuns,
-                        failedRuns: row.failedRuns,
-                    };
+                    for (const log of logs) {
+                        if (!stats[log.automationId]) {
+                            stats[log.automationId] = { totalRuns: 0, successRuns: 0, failedRuns: 0 };
+                        }
+                        stats[log.automationId].totalRuns++;
+                        if (log.status === "success") stats[log.automationId].successRuns++;
+                        if (log.status === "failed") stats[log.automationId].failedRuns++;
+                    }
+                } catch (logErr) {
+                    console.error("[automations GET] log query error:", logErr);
                 }
             }
 
             // Fetch actions for each automation
             const actions: Record<string, Array<{ type: string; config: { messages: string[] }; isActive: boolean }>> = {};
             if (automationIds.length > 0) {
-                const actionList = await db
-                    .select()
-                    .from(automationActions)
-                    .where(inArray(automationActions.automationId, automationIds));
+                try {
+                    const actionList = await db
+                        .select()
+                        .from(automationActions)
+                        .where(inArray(automationActions.automationId, automationIds));
 
-                for (const action of actionList) {
-                    if (!actions[action.automationId]) actions[action.automationId] = [];
-                    actions[action.automationId].push({
-                        type: action.type,
-                        config: action.config as { messages: string[] },
-                        isActive: action.isActive,
-                    });
+                    for (const action of actionList) {
+                        if (!actions[action.automationId]) actions[action.automationId] = [];
+                        actions[action.automationId].push({
+                            type: action.type,
+                            config: action.config as { messages: string[] },
+                            isActive: action.isActive,
+                        });
+                    }
+                } catch (actionErr) {
+                    console.error("[automations GET] action query error:", actionErr);
                 }
             }
 
