@@ -431,8 +431,7 @@ export const automations = pgTable(
             .notNull()
             .references(() => user.id, { onDelete: "cascade" }),
         socialAccountId: uuid("social_account_id")
-            .notNull()
-            .references(() => socialAccounts.id, { onDelete: "cascade" }),
+            .references(() => socialAccounts.id, { onDelete: "set null" }),
         name: text("name").notNull(),
         platform: text("platform").notNull(),
         triggerType: text("trigger_type").notNull().default("comment_keyword"),

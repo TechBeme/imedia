@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/db";
-import { socialAccounts } from "@/db/schema";
+import { socialAccounts, automations } from "@/db/schema";
 import { headers } from "next/headers";
-import { eq, and } from "drizzle-orm";
+import { eq, and, isNull } from "drizzle-orm";
 import { withRateLimit } from "@/lib/api-guard";
 import { authRateLimit } from "@/lib/rate-limit";
 import { encrypt } from "@/lib/encryption";
@@ -194,11 +194,21 @@ export async function GET(req: NextRequest) {
                 )
                 .limit(1);
 
+            let savedAccountId: string;
+            let isSameAccountReconnecting = false;
+
             if (existing.length > 0) {
+                savedAccountId = existing[0].id;
+                const oldProviderId = existing[0].providerAccountId;
+                const newProviderId = String(finalUserId);
+
+                // Check if this is the same Instagram account reconnecting
+                isSameAccountReconnecting = oldProviderId === newProviderId;
+
                 await db
                     .update(socialAccounts)
                     .set({
-                        providerAccountId: String(finalUserId),
+                        providerAccountId: newProviderId,
                         username: igInfo.username,
                         displayName: igInfo.name || igInfo.username,
                         profilePicture: igInfo.profile_picture_url || null,
@@ -207,19 +217,50 @@ export async function GET(req: NextRequest) {
                         isActive: true,
                         updatedAt: new Date(),
                     })
-                    .where(eq(socialAccounts.id, existing[0].id));
+                    .where(eq(socialAccounts.id, savedAccountId));
             } else {
-                await db.insert(socialAccounts).values({
-                    userId: session.user.id,
-                    platform: "instagram",
-                    providerAccountId: String(finalUserId),
-                    username: igInfo.username,
-                    displayName: igInfo.name || igInfo.username,
-                    profilePicture: igInfo.profile_picture_url || null,
-                    accessToken: encrypt(accessToken),
-                    expiresAt: new Date(Date.now() + expiresIn * 1000),
-                    isActive: true,
-                });
+                const inserted = await db
+                    .insert(socialAccounts)
+                    .values({
+                        userId: session.user.id,
+                        platform: "instagram",
+                        providerAccountId: String(finalUserId),
+                        username: igInfo.username,
+                        displayName: igInfo.name || igInfo.username,
+                        profilePicture: igInfo.profile_picture_url || null,
+                        accessToken: encrypt(accessToken),
+                        expiresAt: new Date(Date.now() + expiresIn * 1000),
+                        isActive: true,
+                    })
+                    .returning({ id: socialAccounts.id });
+                savedAccountId = inserted[0].id;
+            }
+
+            // 4b. Reactivate orphaned automations if same account reconnects
+            if (isSameAccountReconnecting) {
+                console.log("[instagram/callback] Same account reconnecting — reactivating orphaned automations for account:", savedAccountId);
+                const reactivated = await db
+                    .update(automations)
+                    .set({
+                        socialAccountId: savedAccountId,
+                        isActive: true,
+                        updatedAt: new Date(),
+                    })
+                    .where(
+                        and(
+                            eq(automations.userId, session.user.id),
+                            eq(automations.platform, "instagram"),
+                            isNull(automations.socialAccountId),
+                            eq(automations.isActive, false)
+                        )
+                    )
+                    .returning({ id: automations.id });
+
+                if (reactivated.length > 0) {
+                    console.log("[instagram/callback] Reactivated", reactivated.length, "orphaned automation(s)");
+                }
+            } else if (existing.length > 0) {
+                console.log("[instagram/callback] Different account connected — orphaned automations remain inactive");
             }
 
             // 5. Subscribe account to webhooks (fire-and-forget, non-blocking)
