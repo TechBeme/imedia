@@ -91,7 +91,7 @@ export async function GET(req: NextRequest) {
             );
             profileUrl.searchParams.set("access_token", accessToken);
 
-            const profileRes = await fetch(profileUrl.toString(), { next: { revalidate: 60 } });
+            const profileRes = await fetch(profileUrl.toString(), { cache: "no-store" });
             profileData = await profileRes.json();
             console.log("[instagram/media] Profile:", JSON.stringify(profileData));
 
@@ -103,32 +103,48 @@ export async function GET(req: NextRequest) {
             mediaUrl.searchParams.set("limit", "18");
             mediaUrl.searchParams.set("access_token", accessToken);
 
-            const mediaRes = await fetch(mediaUrl.toString(), { next: { revalidate: 60 } });
+            const mediaRes = await fetch(mediaUrl.toString(), { cache: "no-store" });
             mediaData = await mediaRes.json();
             console.log("[instagram/media] Media:", JSON.stringify({ count: mediaData.data?.length, error: mediaData.error }));
 
             // Fallback to minimal fields if full fields failed (personal accounts)
-            if (profileData.error || mediaData.error) {
-                console.log("[instagram/media] Full fields failed, falling back to basic fields...");
+            // IMPORTANT: only fallback each endpoint individually — don't overwrite
+            // working media data just because profile failed (or vice versa).
+            if (profileData.error) {
+                console.log("[instagram/media] Profile full fields failed, falling back to basic profile...");
 
                 const basicProfileUrl = new URL(`https://graph.instagram.com/${providerAccountId}`);
                 basicProfileUrl.searchParams.set("fields", "username,account_type,media_count");
                 basicProfileUrl.searchParams.set("access_token", accessToken);
 
-                const basicProfileRes = await fetch(basicProfileUrl.toString(), { next: { revalidate: 60 } });
+                const basicProfileRes = await fetch(basicProfileUrl.toString(), { cache: "no-store" });
                 const basicProfileData = await basicProfileRes.json();
+                console.log("[instagram/media] Basic profile:", JSON.stringify(basicProfileData));
+
+                if (!basicProfileData.error) profileData = basicProfileData;
+            }
+
+            if (mediaData.error) {
+                console.log("[instagram/media] Media full fields failed, falling back to basic media...");
 
                 const basicMediaUrl = new URL(`https://graph.instagram.com/${providerAccountId}/media`);
-                basicMediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp");
+                // Still request engagement fields — personal accounts may support them
+                basicMediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count,view_count");
                 basicMediaUrl.searchParams.set("limit", "18");
                 basicMediaUrl.searchParams.set("access_token", accessToken);
 
-                const basicMediaRes = await fetch(basicMediaUrl.toString(), { next: { revalidate: 60 } });
+                const basicMediaRes = await fetch(basicMediaUrl.toString(), { cache: "no-store" });
                 const basicMediaData = await basicMediaRes.json();
+                console.log("[instagram/media] Basic media:", JSON.stringify({ count: basicMediaData.data?.length, error: basicMediaData.error }));
 
-                if (!basicProfileData.error) profileData = basicProfileData;
                 if (!basicMediaData.error) mediaData = basicMediaData;
             }
+
+            // Log raw engagement data from API for debugging
+            console.log("[instagram/media] Raw media items (first 3):");
+            (mediaData.data || []).slice(0, 3).forEach((item: any, i: number) => {
+                console.log(`  [${i}] id=${item.id?.slice(-8)} type=${item.media_type} likes=${item.like_count} comments=${item.comments_count} views=${item.view_count}`);
+            });
 
             const media: InstagramMedia[] = (mediaData.data || []).map((item: any) => ({
                 id: item.id,
@@ -138,9 +154,9 @@ export async function GET(req: NextRequest) {
                 thumbnail_url: item.thumbnail_url,
                 permalink: item.permalink,
                 timestamp: item.timestamp,
-                like_count: item.like_count || 0,
-                comments_count: item.comments_count || 0,
-                view_count: item.view_count || 0,
+                like_count: item.like_count ?? 0,
+                comments_count: item.comments_count ?? 0,
+                view_count: item.view_count ?? 0,
             }));
 
             // ── Persist to database (async, non-blocking) ────────────────────
@@ -174,6 +190,9 @@ export async function GET(req: NextRequest) {
                 console.error("[instagram/media] DB save failed:", dbErr);
             }
 
+            const accountType = profileData.account_type || "UNKNOWN";
+            const isPersonal = accountType === "PERSONAL";
+
             return success({
                 media,
                 profile: {
@@ -189,8 +208,11 @@ export async function GET(req: NextRequest) {
                 debug: {
                     providerAccountId,
                     tokenSource,
+                    accountType,
+                    isPersonal,
                     profileError: profileData.error,
                     mediaError: mediaData.error,
+                    engagementAvailable: !isPersonal,
                 },
             });
         } catch (err) {

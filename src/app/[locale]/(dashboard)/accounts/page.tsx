@@ -174,6 +174,8 @@ export default function AccountsPage() {
     const [connecting, setConnecting] = useState(false);
     const [disconnecting, setDisconnecting] = useState(false);
     const [apiError, setApiError] = useState<string | null>(null);
+    const [accountType, setAccountType] = useState<string | null>(null);
+    const [engagementAvailable, setEngagementAvailable] = useState<boolean | null>(null);
 
     useEffect(() => {
         fetchAccounts();
@@ -213,11 +215,13 @@ export default function AccountsPage() {
     async function fetchInstagramMedia() {
         setProfileLoading(true);
         try {
-            const res = await fetch("/api/instagram/media");
+            const res = await fetch("/api/instagram/media", { cache: "no-store" });
             const data = await res.json();
             if (data.data) {
                 setProfile(data.data.profile);
                 setMedia(data.data.media || []);
+                setAccountType(data.data.debug?.accountType || null);
+                setEngagementAvailable(data.data.debug?.engagementAvailable ?? null);
                 setApiError(null);
             } else if (data.error) {
                 setApiError(data.error.message || "Erro ao buscar dados do Instagram");
@@ -387,6 +391,11 @@ export default function AccountsPage() {
                                 {apiError && (
                                     <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
                                         <strong>Erro ao carregar dados:</strong> {apiError}. Tente reconectar sua conta.
+                                    </div>
+                                )}
+                                {accountType && engagementAvailable === false && (
+                                    <div className="mb-4 px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-800">
+                                        <strong>Conta {accountType} detectada.</strong> Contas pessoais do Instagram não fornecem métricas de engajamento (likes, comentários, visualizações) pela API. Para ver esses dados, converta sua conta para <strong>Profissional (Business ou Creator)</strong> nas configurações do Instagram.
                                     </div>
                                 )}
                                 <div className="flex items-center gap-10">
