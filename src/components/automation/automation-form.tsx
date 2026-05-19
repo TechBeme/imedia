@@ -125,10 +125,10 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
     }, []);
 
     useEffect(() => {
-        if (socialAccountId && !initialData) {
+        if (socialAccountId) {
             fetchPosts(socialAccountId);
         }
-    }, [socialAccountId, fetchPosts, initialData]);
+    }, [socialAccountId, fetchPosts]);
 
     const addKeyword = () => {
         const trimmed = keywordInput.trim().toLowerCase();
