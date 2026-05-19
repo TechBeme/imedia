@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
             }
 
             // Fetch actions per automation (Neon-safe)
-            const actions: Record<string, Array<{ type: string; config: { messages?: string[] } }>> = {};
+            const actions: Record<string, Array<{ type: string; config: { messages?: string[] }; isActive: boolean }>> = {};
             if (automationIds.length > 0) {
                 const actionRows = await db
                     .select()
@@ -62,6 +62,7 @@ export async function GET(req: NextRequest) {
                     arr.push({
                         type: row.type,
                         config: row.config as { messages?: string[] },
+                        isActive: row.isActive,
                     });
                     actions[row.automationId] = arr;
                 }

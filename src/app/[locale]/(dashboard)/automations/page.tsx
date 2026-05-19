@@ -99,6 +99,8 @@ export default function AutomationsPage() {
     const [expandedId, setExpandedId] = useState<string | null>(null);
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [deleting, setDeleting] = useState(false);
+    const [postPreviews, setPostPreviews] = useState<Record<string, Array<{ id: string; mediaUrl: string; thumbnailUrl: string | null; mediaType: string }>>>({});
+    const [loadingPreviews, setLoadingPreviews] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
         async function load() {
@@ -135,6 +137,31 @@ export default function AutomationsPage() {
     const getAccount = (accountId: string) => {
         return accounts.find((a) => a.id === accountId);
     };
+
+    async function fetchPostPreviews(automationId: string, accountId: string, postIds: string[]) {
+        if (!postIds.length) return;
+        setLoadingPreviews((prev) => ({ ...prev, [automationId]: true }));
+        try {
+            const res = await fetch(`/api/automations/posts?accountId=${accountId}`);
+            if (res.ok) {
+                const data = await res.json();
+                const allMedia = data.data?.media || [];
+                const filtered = allMedia
+                    .filter((m: { id: string }) => postIds.includes(m.id))
+                    .map((m: { id: string; media_url: string; thumbnail_url?: string; media_type: string }) => ({
+                        id: m.id,
+                        mediaUrl: m.media_url,
+                        thumbnailUrl: m.thumbnail_url || null,
+                        mediaType: m.media_type,
+                    }));
+                setPostPreviews((prev) => ({ ...prev, [automationId]: filtered }));
+            }
+        } catch (err) {
+            console.error("[fetchPostPreviews] error:", err);
+        } finally {
+            setLoadingPreviews((prev) => ({ ...prev, [automationId]: false }));
+        }
+    }
 
     async function toggleAutomation(id: string, current: boolean) {
         try {
@@ -256,7 +283,16 @@ export default function AutomationsPage() {
                                 <button
                                     type="button"
                                     className="w-full text-left p-5 cursor-pointer"
-                                    onClick={() => setExpandedId(isExpanded ? null : automation.id)}
+                                    onClick={() => {
+                                        const nextExpanded = isExpanded ? null : automation.id;
+                                        setExpandedId(nextExpanded);
+                                        if (nextExpanded && automation.scope?.posts === "specific" && automation.scope?.postIds?.length) {
+                                            const account = getAccount(automation.socialAccountId);
+                                            if (account) {
+                                                fetchPostPreviews(automation.id, account.id, automation.scope.postIds);
+                                            }
+                                        }
+                                    }}
                                 >
                                     <div className="flex items-start gap-4">
                                         {/* Platform Icon */}
@@ -414,9 +450,46 @@ export default function AutomationsPage() {
                                                         {automation.scope?.posts === "all" ? (
                                                             <p className="text-sm text-slate-600">Todas as publicações</p>
                                                         ) : (
-                                                            <p className="text-sm text-slate-600">
-                                                                {automation.scope?.postIds?.length || 0} publicações selecionadas
-                                                            </p>
+                                                            <div className="space-y-2">
+                                                                <p className="text-sm text-slate-600">
+                                                                    {automation.scope?.postIds?.length || 0} publicações selecionadas
+                                                                </p>
+                                                                {loadingPreviews[automation.id] ? (
+                                                                    <div className="grid grid-cols-4 gap-2">
+                                                                        {Array.from({ length: Math.min(automation.scope?.postIds?.length || 3, 4) }).map((_, i) => (
+                                                                            <div key={i} className="aspect-square bg-slate-200 animate-pulse rounded-lg" />
+                                                                        ))}
+                                                                    </div>
+                                                                ) : (
+                                                                    postPreviews[automation.id]?.length > 0 && (
+                                                                        <div className="grid grid-cols-4 gap-2">
+                                                                            {postPreviews[automation.id].map((post) => (
+                                                                                <a
+                                                                                    key={post.id}
+                                                                                    href={`https://instagram.com/p/${post.id}`}
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer"
+                                                                                    className="relative aspect-square rounded-lg overflow-hidden border border-slate-200 hover:border-pink-400 transition-colors"
+                                                                                    onClick={(e) => e.stopPropagation()}
+                                                                                >
+                                                                                    <img
+                                                                                        src={post.thumbnailUrl || post.mediaUrl}
+                                                                                        alt=""
+                                                                                        className="h-full w-full object-cover"
+                                                                                    />
+                                                                                    {post.mediaType === "VIDEO" && (
+                                                                                        <div className="absolute top-1 right-1">
+                                                                                            <svg className="h-3 w-3 text-white drop-shadow" fill="currentColor" viewBox="0 0 24 24">
+                                                                                                <path d="M8 5v14l11-7z" />
+                                                                                            </svg>
+                                                                                        </div>
+                                                                                    )}
+                                                                                </a>
+                                                                            ))}
+                                                                        </div>
+                                                                    )
+                                                                )}
+                                                            </div>
                                                         )}
                                                     </div>
 
