@@ -129,11 +129,18 @@ export const instagramAdapter: InstagramAutomationAdapter = {
             const url = new URL(
                 `${GRAPH_API_BASE}/${API_VERSION}/me/messages`
             );
+            url.searchParams.set("access_token", accessToken);
 
             const body = {
                 recipient: { id: userId },
                 message: { text: message },
             };
+
+            console.log("[instagram DM] Sending DM", {
+                userId,
+                messagePreview: message.slice(0, 80),
+                tokenPrefix: accessToken.slice(0, 12) + "...",
+            });
 
             const res = await fetch(url.toString(), {
                 method: "POST",
@@ -149,6 +156,7 @@ export const instagramAdapter: InstagramAutomationAdapter = {
                 return { success: false, error: data.error.message };
             }
 
+            console.log("[instagram DM] Success:", data);
             return { success: true };
         } catch (err) {
             console.error("[instagram DM] Exception:", err);
