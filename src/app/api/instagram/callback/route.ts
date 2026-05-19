@@ -8,6 +8,64 @@ import { withRateLimit } from "@/lib/api-guard";
 import { authRateLimit } from "@/lib/rate-limit";
 import { encrypt } from "@/lib/encryption";
 
+/**
+ * Subscribe an Instagram account to webhook notifications.
+ * This is called automatically after OAuth to ensure webhooks are active
+ * without requiring manual activation in Meta dashboard.
+ *
+ * Docs: https://developers.facebook.com/docs/instagram-platform/webhooks/
+ * Endpoint: POST /{ig-user-id}/subscribed_apps?subscribed_fields=...
+ */
+async function subscribeInstagramWebhooks(
+    igUserId: string,
+    accessToken: string
+): Promise<{ success: boolean; error?: string }> {
+    const WEBHOOK_FIELDS = ["comments", "mentions", "messages", "message_reactions", "messaging_postbacks"];
+
+    try {
+        const url = new URL(`https://graph.instagram.com/v25.0/${igUserId}/subscribed_apps`);
+        url.searchParams.set("subscribed_fields", WEBHOOK_FIELDS.join(","));
+        url.searchParams.set("access_token", accessToken);
+
+        console.log("[instagram/callback] Subscribing webhooks for user:", igUserId);
+        console.log("[instagram/callback] Webhook fields:", WEBHOOK_FIELDS.join(","));
+
+        const response = await fetch(url.toString(), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            console.error("[instagram/callback] Webhook subscription failed:", {
+                code: data.error.code,
+                message: data.error.message,
+                type: data.error.type,
+            });
+            return {
+                success: false,
+                error: `${data.error.type}: ${data.error.message}`,
+            };
+        }
+
+        if (data.success === true) {
+            console.log("[instagram/callback] Webhook subscription successful:", {
+                igUserId,
+                fields: WEBHOOK_FIELDS,
+            });
+            return { success: true };
+        }
+
+        console.warn("[instagram/callback] Webhook subscription unexpected response:", data);
+        return { success: false, error: "Unexpected response from Meta API" };
+    } catch (err) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        console.error("[instagram/callback] Webhook subscription exception:", message);
+        return { success: false, error: message };
+    }
+}
+
 type InstagramProfileResponse = {
     id?: string;
     user_id?: string;
@@ -163,6 +221,18 @@ export async function GET(req: NextRequest) {
                     isActive: true,
                 });
             }
+
+            // 5. Subscribe account to webhooks (fire-and-forget, non-blocking)
+            // This runs independently so OAuth success is not affected by webhook subscription
+            subscribeInstagramWebhooks(String(finalUserId), accessToken)
+                .then((result) => {
+                    if (!result.success) {
+                        console.warn("[instagram/callback] Webhook subscription deferred — will need manual activation:", result.error);
+                    }
+                })
+                .catch((err) => {
+                    console.error("[instagram/callback] Webhook subscription unexpected error:", err);
+                });
 
             // Return HTML that closes popup and notifies parent window
             return new Response(
