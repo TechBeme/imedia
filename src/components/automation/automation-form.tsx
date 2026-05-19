@@ -246,7 +246,12 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
                 });
             }
 
-            if (!initialData?.id && automationId) {
+            if (automationId) {
+                if (initialData?.id) {
+                    await fetch(`/api/automations/${automationId}/actions`, {
+                        method: "DELETE",
+                    });
+                }
                 for (const action of actions) {
                     await fetch(`/api/automations/${automationId}/actions`, {
                         method: "POST",
