@@ -430,6 +430,7 @@ export default function AccountsPage() {
                                                 variant="outline"
                                                 size="sm"
                                                 disabled={disconnecting}
+                                                onClick={handleDisconnect}
                                                 className="rounded-xl text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
                                             >
                                                 {disconnecting ? (
