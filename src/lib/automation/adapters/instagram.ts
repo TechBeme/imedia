@@ -5,7 +5,7 @@ import { decrypt } from "@/lib/encryption";
 import type { AutomationPlatform, PlatformComment } from "../types";
 
 const GRAPH_API_BASE = "https://graph.instagram.com";
-const API_VERSION = "v22.0";
+const API_VERSION = "v25.0";
 
 export interface InstagramAutomationAdapter {
     platform: AutomationPlatform;
@@ -111,12 +111,51 @@ export const instagramAdapter: InstagramAutomationAdapter = {
 
     async sendDM(
         socialAccountId: string,
-        _userId: string,
-        _message: string
+        userId: string,
+        message: string
     ): Promise<{ success: boolean; error?: string }> {
-        console.log(
-            `[instagram] DM not implemented for account ${socialAccountId} — requires Messaging API permissions`
-        );
-        return { success: false, error: "DM_SENDING_NOT_AVAILABLE" };
+        try {
+            const account = await db
+                .select()
+                .from(socialAccounts)
+                .where(eq(socialAccounts.id, socialAccountId))
+                .limit(1);
+
+            if (!account[0]?.accessToken) {
+                return { success: false, error: "No access token" };
+            }
+
+            const accessToken = await decrypt(account[0].accessToken);
+            const url = new URL(
+                `${GRAPH_API_BASE}/${API_VERSION}/me/messages`
+            );
+
+            const body = {
+                recipient: { id: userId },
+                message: { text: message },
+            };
+
+            const res = await fetch(url.toString(), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+            });
+            const data = await res.json();
+
+            if (data.error) {
+                console.error("[instagram DM] API error:", data.error);
+                return { success: false, error: data.error.message };
+            }
+
+            return { success: true };
+        } catch (err) {
+            console.error("[instagram DM] Exception:", err);
+            return {
+                success: false,
+                error: err instanceof Error ? err.message : "Unknown error",
+            };
+        }
     },
 };

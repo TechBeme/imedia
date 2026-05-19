@@ -49,9 +49,9 @@ export async function GET(req: NextRequest) {
 
     const providerAccountId = account.providerAccountId;
 
-    // Test: Instagram Graph API v22.0
-    const igProfileUrl = `https://graph.instagram.com/v22.0/${providerAccountId}?fields=account_type,username,media_count&access_token=${accessToken}`;
-    const igMediaUrl = `https://graph.instagram.com/v22.0/${providerAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=3&access_token=${accessToken}`;
+    // Test: Instagram Graph API v25.0
+    const igProfileUrl = `https://graph.instagram.com/v25.0/${providerAccountId}?fields=account_type,username,media_count&access_token=${accessToken}`;
+    const igMediaUrl = `https://graph.instagram.com/v25.0/${providerAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=3&access_token=${accessToken}`;
 
     const [igProfileRes, igMediaRes] = await Promise.all([
         fetch(igProfileUrl),

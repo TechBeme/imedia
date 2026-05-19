@@ -130,16 +130,29 @@ export function verifyMetaSignature(
 export function parseInstagramCommentWebhook(
     payload: unknown
 ): InstagramCommentWebhookEvent[] {
+    console.log("[instagram webhook] Parsing payload:", JSON.stringify(payload).slice(0, 2000));
+
     if (!isRecord(payload) || payload.object !== "instagram") {
+        console.log("[instagram webhook] Invalid payload: object !== instagram or not a record");
         return [];
     }
 
     const instagramPayload = payload as InstagramWebhookPayload;
     const events: InstagramCommentWebhookEvent[] = [];
 
-    for (const entry of instagramPayload.entry ?? []) {
+    if (!instagramPayload.entry || instagramPayload.entry.length === 0) {
+        console.log("[instagram webhook] No entries in payload");
+        return [];
+    }
+
+    for (const entry of instagramPayload.entry) {
+        console.log("[instagram webhook] Processing entry:", { id: entry.id, time: entry.time, changesCount: entry.changes?.length });
+
         for (const change of entry.changes ?? []) {
-            if (change.field !== "comments" && change.field !== "live_comments") {
+            console.log("[instagram webhook] Processing change:", { field: change.field });
+
+            if (change.field !== "comments" && change.field !== "live_comments" && change.field !== "mentions") {
+                console.log("[instagram webhook] Skipping non-comment field:", change.field);
                 continue;
             }
 
@@ -147,6 +160,16 @@ export function parseInstagramCommentWebhook(
                 const commentId = value.id || value.comment_id;
                 const postId = value.media?.id || value.media_id;
                 const text = value.text || value.message;
+
+                console.log("[instagram webhook] Normalized value:", {
+                    commentId,
+                    postId,
+                    text: text?.slice(0, 100),
+                    username: value.username || value.from?.username,
+                    userId: value.from?.id || value.sender_id || value.user_id,
+                    recipientId: value.recipient_id,
+                    entryId: entry.id,
+                });
 
                 if (!commentId || !postId || !text) {
                     console.log("[instagram webhook] Skipping incomplete comment payload", {
@@ -164,7 +187,7 @@ export function parseInstagramCommentWebhook(
                 events.push({
                     eventId: `instagram-comment-${commentId}`,
                     entryId: entry.id,
-                    field: change.field,
+                    field: change.field as "comments" | "live_comments",
                     recipientId: value.recipient_id || entry.id,
                     postId,
                     parentId: value.parent_id,
@@ -181,16 +204,30 @@ export function parseInstagramCommentWebhook(
         }
     }
 
+    console.log("[instagram webhook] Total events parsed:", events.length);
     return events;
 }
 
 export async function processInstagramCommentWebhookEvent(
     event: InstagramCommentWebhookEvent
 ) {
+    console.log("[instagram webhook] Processing event:", {
+        eventId: event.eventId,
+        entryId: event.entryId,
+        recipientId: event.recipientId,
+        postId: event.postId,
+        commentId: event.comment.id,
+        commentText: event.comment.text.slice(0, 100),
+        username: event.comment.username,
+        userId: event.comment.userId,
+    });
+
     const accountCandidates = [
         event.recipientId,
         event.entryId,
     ].filter((candidate): candidate is string => Boolean(candidate));
+
+    console.log("[instagram webhook] Account candidates:", accountCandidates);
 
     if (accountCandidates.length === 0) {
         return {
@@ -211,6 +248,8 @@ export async function processInstagramCommentWebhookEvent(
         )
         .limit(1);
 
+    console.log("[instagram webhook] Accounts found:", accounts.length, accounts.map(a => ({ id: a.id, providerAccountId: a.providerAccountId, username: a.username })));
+
     const account = accounts[0];
     if (!account) {
         console.log("[instagram webhook] No connected account found", {
@@ -230,11 +269,19 @@ export async function processInstagramCommentWebhookEvent(
             account.username &&
             event.comment.username.toLowerCase() === account.username.toLowerCase())
     ) {
+        console.log("[instagram webhook] Self-comment skipped", {
+            commentUserId: event.comment.userId,
+            accountProviderId: account.providerAccountId,
+            commentUsername: event.comment.username,
+            accountUsername: account.username,
+        });
         return {
             status: "skipped" as const,
             reason: "SELF_COMMENT",
         };
     }
+
+    console.log("[instagram webhook] Executing automation for account:", account.id);
 
     const result = await processCommentAutomationEvent({
         socialAccountId: account.id,
@@ -242,6 +289,8 @@ export async function processInstagramCommentWebhookEvent(
         postId: event.postId,
         comment: event.comment,
     });
+
+    console.log("[instagram webhook] Automation result:", result);
 
     return {
         status: "processed" as const,

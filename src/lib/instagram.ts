@@ -4,7 +4,7 @@
  */
 
 const GRAPH_API_BASE = "https://graph.instagram.com";
-const API_VERSION = "v22.0";
+const API_VERSION = "v25.0";
 
 interface PublishImageOptions {
     accessToken: string;
