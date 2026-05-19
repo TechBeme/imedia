@@ -174,19 +174,23 @@ export async function DELETE(
 
         const { searchParams } = new URL(req.url);
         const actionId = searchParams.get("actionId");
-        if (!actionId) {
-            return error("VALIDATION_ERROR", "actionId query param required", 400);
-        }
 
         try {
-            await db
-                .delete(automationActions)
-                .where(
-                    and(
-                        eq(automationActions.id, actionId),
-                        eq(automationActions.automationId, id)
-                    )
-                );
+            if (actionId) {
+                await db
+                    .delete(automationActions)
+                    .where(
+                        and(
+                            eq(automationActions.id, actionId),
+                            eq(automationActions.automationId, id)
+                        )
+                    );
+            } else {
+                // Delete all actions for this automation (used when editing)
+                await db
+                    .delete(automationActions)
+                    .where(eq(automationActions.automationId, id));
+            }
 
             return success({ deleted: true });
         } catch (err) {
