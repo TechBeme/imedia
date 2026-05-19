@@ -1,6 +1,9 @@
 import { createNavigation } from "next-intl/navigation";
 import { defineRouting } from "next-intl/routing";
-import { locales, defaultLocale } from "@/lib/i18n-config";
+
+// Inline constants to avoid Edge Runtime import issues with @/ aliases
+const locales = ["pt-BR", "en", "es"] as const;
+const defaultLocale: (typeof locales)[number] = "pt-BR";
 
 export const routing = defineRouting({
     locales,
