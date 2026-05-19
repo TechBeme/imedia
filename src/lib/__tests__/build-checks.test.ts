@@ -38,8 +38,13 @@ describe("Build & Lint Checks", () => {
                 stdio: ["pipe", "pipe", "pipe"],
                 timeout: 30000,
             });
-        } catch (error: any) {
-            output = error.stdout || error.stderr || error.message || "";
+        } catch (error) {
+            const commandError = error as {
+                stdout?: string;
+                stderr?: string;
+                message?: string;
+            };
+            output = commandError.stdout || commandError.stderr || commandError.message || "";
         }
         // If tsc outputs anything, there are type errors
         expect(output.trim()).toBe("");

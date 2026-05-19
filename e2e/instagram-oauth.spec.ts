@@ -1,10 +1,10 @@
-import { test, expect, request } from "@playwright/test";
+import { test, expect, request, type Browser, type Cookie } from "@playwright/test";
 
 const TEST_EMAIL = "test@somedia.local";
 const TEST_PASSWORD = "TestPassword123!";
 const BASE_URL = process.env.TEST_BASE_URL || "https://somedia.techbe.me";
 
-async function getAuthenticatedContext(browser: any) {
+async function getAuthenticatedContext(browser: Browser) {
     // Login via API to get session cookie
     const apiContext = await request.newContext({ baseURL: BASE_URL });
     const loginRes = await apiContext.post("/api/auth/sign-in/email", {
@@ -19,7 +19,7 @@ async function getAuthenticatedContext(browser: any) {
     // Create browser context with cookies
     const context = await browser.newContext();
     if (cookies.cookies?.length > 0) {
-        await context.addCookies(cookies.cookies.map((c: any) => ({
+        await context.addCookies(cookies.cookies.map((c: Cookie) => ({
             name: c.name,
             value: c.value,
             domain: c.domain,
@@ -27,7 +27,7 @@ async function getAuthenticatedContext(browser: any) {
             expires: c.expires,
             httpOnly: c.httpOnly,
             secure: c.secure,
-            sameSite: c.sameSite as any,
+            sameSite: c.sameSite,
         })));
     }
     return context;
@@ -39,7 +39,7 @@ test.describe("Instagram OAuth Flow", () => {
         const page = await context.newPage();
 
         // Intercept the auth request
-        let responseBody: any = null;
+        let responseBody: { data?: { url?: string } } | null = null;
         let responseStatus = 0;
 
         await page.route("**/api/instagram/auth", async (route) => {

@@ -8,6 +8,20 @@ import { withRateLimit } from "@/lib/api-guard";
 import { authRateLimit } from "@/lib/rate-limit";
 import { encrypt } from "@/lib/encryption";
 
+type InstagramProfileResponse = {
+    id?: string;
+    user_id?: string;
+    username?: string;
+    name?: string;
+    account_type?: string;
+    profile_picture_url?: string;
+    biography?: string;
+    followers_count?: number;
+    follows_count?: number;
+    media_count?: number;
+    website?: string;
+};
+
 export async function GET(req: NextRequest) {
     return withRateLimit(req, authRateLimit, async () => {
         const requestHeaders = await headers();
@@ -76,7 +90,7 @@ export async function GET(req: NextRequest) {
             // 3. Get Instagram user info using Instagram Graph API (Business/Creator accounts)
             // The token from Instagram Login works on graph.instagram.com for Business accounts
             let finalUserId = igUserId;
-            let igInfo: any = {};
+            let igInfo: InstagramProfileResponse = {};
 
             console.log("[instagram/callback] Fetching user info from Instagram Graph API...");
             const igMeUrl = new URL("https://graph.instagram.com/me");

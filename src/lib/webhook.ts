@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 
 export type WebhookPlatform = "instagram" | "youtube" | "tiktok" | "x" | "facebook" | "threads";
 export type WebhookEventType = "post.published" | "post.failed" | "comment.received" | "mention.received" | "account.disconnected" | "token.refreshed";
-export type WebhookStatus = "pending" | "processing" | "completed" | "failed" | "retrying";
+export type WebhookStatus = "pending" | "processing" | "completed" | "failed" | "retrying" | "skipped";
 
 interface StoreWebhookEventInput {
     eventId: string;
@@ -46,7 +46,7 @@ export async function updateWebhookStatus(
     errorMessage?: string
 ) {
     const update: Record<string, unknown> = { status };
-    if (status === "completed") {
+    if (status === "completed" || status === "skipped" || status === "failed") {
         update.processedAt = new Date();
     }
     if (errorMessage) {

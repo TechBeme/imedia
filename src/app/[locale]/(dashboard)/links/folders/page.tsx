@@ -53,6 +53,7 @@ export default function FoldersPage() {
     }, []);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchFolders();
     }, [fetchFolders]);
 

@@ -6,6 +6,7 @@ import {
     commentWatchState,
 } from "@/db/schema";
 import { eq, and, gte, desc } from "drizzle-orm";
+import { getAdapter } from "./adapters";
 import type {
     TriggerConfig,
     TriggerEvent,
@@ -82,8 +83,8 @@ export async function matchCommentToAutomations(
 
         // Check scope
         const scope = automation.scope as { posts: "all" | "specific"; postIds?: string[] };
-        if (scope.posts === "specific" && postId) {
-            if (!scope.postIds || !scope.postIds.includes(postId)) {
+        if (scope.posts === "specific") {
+            if (!postId || !scope.postIds || !scope.postIds.includes(postId)) {
                 continue;
             }
         }
@@ -238,6 +239,114 @@ export async function executeAutomation(
     }, results);
 
     return results;
+}
+
+/**
+ * Match and execute active automations for a single incoming comment event.
+ */
+export async function processCommentAutomationEvent(input: {
+    socialAccountId: string;
+    platform: string;
+    postId: string;
+    comment: PlatformComment;
+    cooldownMinutes?: number;
+}): Promise<{
+    matchedAutomations: number;
+    executedAutomations: number;
+    skippedAutomations: number;
+}> {
+    const adapter = getAdapter(input.platform);
+    if (!adapter) {
+        throw new Error(`No adapter for platform: ${input.platform}`);
+    }
+
+    const matched = await matchCommentToAutomations(
+        input.socialAccountId,
+        input.comment.text,
+        input.postId
+    );
+
+    let executedAutomations = 0;
+    let skippedAutomations = 0;
+
+    for (const { automation } of matched) {
+        const userIdentifier =
+            input.comment.userId || input.comment.username || input.comment.id;
+        const onCooldown = await checkCooldown(
+            automation.id,
+            userIdentifier,
+            input.cooldownMinutes ?? 60
+        );
+
+        if (onCooldown) {
+            skippedAutomations++;
+            continue;
+        }
+
+        const actionHandlers: Parameters<typeof executeAutomation>[3] = {
+            reply_comment: async (action, cmt) => {
+                const config = action.config as { messages?: string[] };
+                const message = selectRandomResponse(config.messages ?? []);
+
+                if (!message) {
+                    return {
+                        actionId: action.id,
+                        status: "skipped",
+                        error: "NO_REPLY_MESSAGE_CONFIGURED",
+                    };
+                }
+
+                const result = await adapter.replyToComment(
+                    input.socialAccountId,
+                    cmt.id,
+                    message
+                );
+
+                return {
+                    actionId: action.id,
+                    status: result.success ? "success" : "failed",
+                    output: result.success ? message : undefined,
+                    error: result.error,
+                };
+            },
+            send_dm: async (action, cmt) => {
+                const config = action.config as { messages?: string[] };
+                const message = selectRandomResponse(config.messages ?? []);
+                const result = await adapter.sendDM(
+                    input.socialAccountId,
+                    cmt.userId || "",
+                    message
+                );
+
+                return {
+                    actionId: action.id,
+                    status: result.success ? "success" : "skipped",
+                    output: result.success ? message : undefined,
+                    error: result.error,
+                };
+            },
+        };
+
+        await executeAutomation(
+            automation.id,
+            input.comment,
+            input.postId,
+            actionHandlers
+        );
+        executedAutomations++;
+    }
+
+    await updateCommentWatchState(
+        input.socialAccountId,
+        input.postId,
+        input.comment.id
+    );
+
+    return {
+        matchedAutomations: matched.length,
+        executedAutomations,
+        skippedAutomations,
+    };
 }
 
 /**

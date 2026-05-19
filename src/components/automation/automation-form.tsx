@@ -126,6 +126,7 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
 
     useEffect(() => {
         if (socialAccountId) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             fetchPosts(socialAccountId);
         }
     }, [socialAccountId, fetchPosts]);

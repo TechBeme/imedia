@@ -46,6 +46,7 @@ function LanguageSwitcherInline() {
 
     function switchLocale(newLocale: Locale) {
         const newPath = `/${newLocale}${pathname}`;
+        // eslint-disable-next-line react-hooks/immutability
         window.location.href = newPath;
     }
 

@@ -38,8 +38,10 @@ export function LanguageSwitcher() {
 
     function switchLocale(newLocale: Locale) {
         // Save user preference in cookie for 1 year
+        // eslint-disable-next-line react-hooks/immutability
         document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
         const newPath = `/${newLocale}${pathname}`;
+        // eslint-disable-next-line react-hooks/immutability
         window.location.href = newPath;
     }
 

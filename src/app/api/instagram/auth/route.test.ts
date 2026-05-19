@@ -21,6 +21,9 @@ vi.mock("@/lib/api-guard", () => ({
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
+const mockedHeaders = vi.mocked(headers);
+const mockedGetSession = vi.mocked(auth.api.getSession);
+
 describe("GET /api/instagram/auth", () => {
     const originalEnv = process.env;
 
@@ -38,11 +41,11 @@ describe("GET /api/instagram/auth", () => {
     });
 
     it("returns 401 when user is not authenticated", async () => {
-        (headers as any).mockResolvedValue(new Headers());
-        (auth.api.getSession as any).mockResolvedValue(null);
+        mockedHeaders.mockResolvedValue(new Headers());
+        mockedGetSession.mockResolvedValue(null);
 
         const req = new Request("https://somedia.techbe.me/api/instagram/auth");
-        const res = await GET(req as any);
+        const res = await GET(req);
 
         expect(res.status).toBe(401);
         const body = await res.json();
@@ -53,11 +56,11 @@ describe("GET /api/instagram/auth", () => {
         delete process.env.INSTAGRAM_APP_ID;
         delete process.env.INSTAGRAM_REDIRECT_URI;
 
-        (headers as any).mockResolvedValue(new Headers());
-        (auth.api.getSession as any).mockResolvedValue({ user: { id: "user-123" } });
+        mockedHeaders.mockResolvedValue(new Headers());
+        mockedGetSession.mockResolvedValue({ user: { id: "user-123" } });
 
         const req = new Request("https://somedia.techbe.me/api/instagram/auth");
-        const res = await GET(req as any);
+        const res = await GET(req);
 
         expect(res.status).toBe(500);
         const body = await res.json();
@@ -65,11 +68,11 @@ describe("GET /api/instagram/auth", () => {
     });
 
     it("returns 200 with a valid Instagram OAuth URL", async () => {
-        (headers as any).mockResolvedValue(new Headers());
-        (auth.api.getSession as any).mockResolvedValue({ user: { id: "user-123" } });
+        mockedHeaders.mockResolvedValue(new Headers());
+        mockedGetSession.mockResolvedValue({ user: { id: "user-123" } });
 
         const req = new Request("https://somedia.techbe.me/api/instagram/auth");
-        const res = await GET(req as any);
+        const res = await GET(req);
 
         expect(res.status).toBe(200);
         const body = await res.json();

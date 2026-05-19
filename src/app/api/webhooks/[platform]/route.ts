@@ -1,22 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import crypto from "crypto";
 import { storeWebhookEvent, updateWebhookStatus } from "@/lib/webhook";
 import { withRateLimit } from "@/lib/api-guard";
 import { webhookRateLimit } from "@/lib/rate-limit";
 import { success, error, unauthorized, internalError } from "@/lib/api-response";
+import { processInstagramWebhookPayload, verifyMetaSignature } from "@/lib/instagram-webhook";
 import type { WebhookPlatform } from "@/lib/webhook";
 
 const platformSchema = z.enum(["instagram", "youtube", "tiktok", "x", "facebook", "threads"]);
-
-function verifyInstagramSignature(body: string, signature: string | null, appSecret: string): boolean {
-    if (!signature) return false;
-    const expected = crypto
-        .createHmac("sha256", appSecret)
-        .update(body, "utf8")
-        .digest("hex");
-    return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
-}
 
 export async function POST(
     req: NextRequest,
@@ -41,11 +32,25 @@ export async function POST(
         if (platform === "instagram") {
             const signature = req.headers.get("x-hub-signature-256");
             const appSecret = process.env.INSTAGRAM_APP_SECRET;
-            if (appSecret && signature) {
-                const isValid = verifyInstagramSignature(bodyText, signature, appSecret);
+            if (appSecret) {
+                const isValid = verifyMetaSignature(bodyText, signature, appSecret);
                 if (!isValid) {
                     return unauthorized("Invalid signature");
                 }
+            } else {
+                console.warn("[webhook instagram] INSTAGRAM_APP_SECRET is not configured; signature verification skipped");
+            }
+
+            try {
+                const result = await processInstagramWebhookPayload(payload);
+                return success({
+                    received: true,
+                    commentsProcessed: result.commentsProcessed,
+                    results: result.results,
+                });
+            } catch (err) {
+                console.error("[webhook instagram] error:", err);
+                return internalError("Failed to process webhook");
             }
         }
 
@@ -70,9 +75,9 @@ export async function POST(
 
             // Process event synchronously for now
             // In production, queue this to BullMQ/Redis for async processing
-            await processWebhookEvent(event.id, platform as WebhookPlatform, payload);
+            await processWebhookEvent(event.eventId, platform as WebhookPlatform, payload);
 
-            return success({ received: true, eventId: event.id });
+            return success({ received: true, eventId: event.eventId });
         } catch (err) {
             console.error(`[webhook ${platform}] error:`, err);
             return internalError("Failed to process webhook");

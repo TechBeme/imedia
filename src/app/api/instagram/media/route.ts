@@ -26,6 +26,37 @@ export interface InstagramMedia {
     view_count?: number;
 }
 
+type InstagramProfileResponse = {
+    username?: string;
+    name?: string;
+    account_type?: string;
+    profile_picture_url?: string;
+    biography?: string;
+    followers_count?: number;
+    follows_count?: number;
+    media_count?: number;
+    website?: string;
+    error?: unknown;
+};
+
+type InstagramMediaItem = {
+    id: string;
+    caption?: string;
+    media_type: InstagramMedia["media_type"];
+    media_url: string;
+    thumbnail_url?: string;
+    permalink: string;
+    timestamp: string;
+    like_count?: number;
+    comments_count?: number;
+    view_count?: number;
+};
+
+type InstagramMediaResponse = {
+    data?: InstagramMediaItem[];
+    error?: unknown;
+};
+
 export async function GET(req: NextRequest) {
     return withRateLimit(req, apiRateLimit, async () => {
         const requestHeaders = await headers();
@@ -78,8 +109,8 @@ export async function GET(req: NextRequest) {
             const providerAccountId = account.providerAccountId;
 
             // ── Fetch from Instagram Graph API ───────────────────────────────
-            let profileData: any = {};
-            let mediaData: any = {};
+            let profileData: InstagramProfileResponse = {};
+            let mediaData: InstagramMediaResponse = {};
 
             console.log("[instagram/media] Fetching from Instagram Graph API...");
 
@@ -142,11 +173,11 @@ export async function GET(req: NextRequest) {
 
             // Log raw engagement data from API for debugging
             console.log("[instagram/media] Raw media items (first 3):");
-            (mediaData.data || []).slice(0, 3).forEach((item: any, i: number) => {
+            (mediaData.data || []).slice(0, 3).forEach((item, i: number) => {
                 console.log(`  [${i}] id=${item.id?.slice(-8)} type=${item.media_type} likes=${item.like_count} comments=${item.comments_count} views=${item.view_count}`);
             });
 
-            const media: InstagramMedia[] = (mediaData.data || []).map((item: any) => ({
+            const media: InstagramMedia[] = (mediaData.data || []).map((item) => ({
                 id: item.id,
                 caption: item.caption || null,
                 media_type: item.media_type,

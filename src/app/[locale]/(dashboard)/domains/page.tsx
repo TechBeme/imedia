@@ -40,6 +40,7 @@ export default function DomainsPage() {
 
     useEffect(() => {
         let cancelled = false;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchDomains().then(() => {
             if (cancelled) return;
         });
