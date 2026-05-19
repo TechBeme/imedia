@@ -42,7 +42,8 @@
         "trigger": {
             "title": "Disparador",
             "keywords": "Palabras clave",
-            "keywordsPlaceholder": "Escribe y presiona Enter",
+            "keywordsPlaceholder": "Escribe una palabra clave...",
+            "addKeyword": "Añadir palabra clave",
             "matchMode": "Modo de coincidencia",
             "contains": "Contiene",
             "exact": "Exacto",

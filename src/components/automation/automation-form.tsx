@@ -87,8 +87,9 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
 
     const [name, setName] = useState(initialData?.name || "");
     const [socialAccountId, setSocialAccountId] = useState(initialData?.socialAccountId || "");
-    const [keywords, setKeywords] = useState<string[]>(initialData?.triggerConfig.keywords || []);
-    const [keywordInput, setKeywordInput] = useState("");
+    const [keywords, setKeywords] = useState<string[]>(
+        initialData?.triggerConfig.keywords?.length ? initialData.triggerConfig.keywords : [""]
+    );
     const [scopePosts, setScopePosts] = useState<"all" | "specific">(initialData?.scope.posts || "all");
     const [selectedPostIds, setSelectedPostIds] = useState<string[]>(initialData?.scope.postIds || []);
     const [posts, setPosts] = useState<InstagramMedia[]>([]);
@@ -131,16 +132,26 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
         }
     }, [socialAccountId, fetchPosts]);
 
-    const addKeyword = () => {
-        const trimmed = keywordInput.trim().toLowerCase();
-        if (trimmed && !keywords.includes(trimmed)) {
-            setKeywords([...keywords, trimmed]);
-            setKeywordInput("");
-        }
+    const addKeywordRow = () => {
+        setKeywords([...keywords, ""]);
     };
 
-    const removeKeyword = (index: number) => {
+    const updateKeyword = (index: number, value: string) => {
+        const updated = [...keywords];
+        updated[index] = value;
+        setKeywords(updated);
+    };
+
+    const removeKeywordRow = (index: number) => {
+        if (keywords.length <= 1) {
+            setKeywords([""]);
+            return;
+        }
         setKeywords(keywords.filter((_, i) => i !== index));
+    };
+
+    const getValidKeywords = () => {
+        return keywords.map((k) => k.trim().toLowerCase()).filter((k) => k.length > 0);
     };
 
     const togglePost = (postId: string) => {
@@ -181,7 +192,8 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
             toast.error(t("selectAccount") || "Selecione uma conta");
             return;
         }
-        if (keywords.length === 0) {
+        const validKeywords = getValidKeywords();
+        if (validKeywords.length === 0) {
             toast.error(t("keywordsRequired") || "Adicione pelo menos uma palavra-chave");
             return;
         }
@@ -198,7 +210,7 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
                 platform: account.platform,
                 triggerType: "comment_keyword" as const,
                 triggerConfig: {
-                    keywords,
+                    keywords: validKeywords,
                     matchMode: "contains" as const,
                     caseSensitive: false,
                 },
@@ -445,49 +457,43 @@ export function AutomationForm({ accounts, initialData }: AutomationFormProps) {
                         </div>
                     )}
 
-                    {/* Keywords - Chips */}
+                    {/* Keywords - Linhas iguais às ações */}
                     <div className="space-y-3">
                         <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                             Palavras-chave
                         </Label>
-                        <div className="flex gap-2">
-                            <Input
-                                value={keywordInput}
-                                onChange={(e) => setKeywordInput(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                        e.preventDefault();
-                                        addKeyword();
-                                    }
-                                }}
-                                placeholder="Digite e pressione Enter"
-                                className="rounded-lg h-10"
-                            />
-                            <Button
-                                type="button"
-                                variant="outline"
-                                size="icon"
-                                className="h-10 w-10 rounded-lg shrink-0"
-                                onClick={addKeyword}
-                            >
-                                <Plus className="h-4 w-4" />
-                            </Button>
-                        </div>
-                        {keywords.length > 0 && (
-                            <div className="flex flex-wrap gap-2">
-                                {keywords.map((kw, i) => (
-                                    <Badge
-                                        key={i}
-                                        variant="secondary"
-                                        className="rounded-md text-xs gap-1 cursor-pointer h-7 px-2.5 bg-pink-50 text-pink-600 border-pink-200 hover:bg-pink-100"
-                                        onClick={() => removeKeyword(i)}
+                        <div className="space-y-2">
+                            {keywords.map((kw, index) => (
+                                <div key={index} className="flex gap-2">
+                                    <Input
+                                        value={kw}
+                                        placeholder={`Palavra-chave ${index + 1}`}
+                                        onChange={(e) => updateKeyword(index, e.target.value)}
+                                        className="rounded-lg h-10"
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-10 w-10 rounded-lg shrink-0"
+                                        onClick={() => removeKeywordRow(index)}
+                                        disabled={keywords.length <= 1 && !kw}
                                     >
-                                        {kw}
-                                        <X className="h-3 w-3" />
-                                    </Badge>
-                                ))}
-                            </div>
-                        )}
+                                        <X className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="rounded-lg gap-1 h-8 text-xs"
+                            onClick={addKeywordRow}
+                        >
+                            <Plus className="h-3.5 w-3.5" />
+                            Adicionar palavra-chave
+                        </Button>
                         <p className="text-xs text-muted-foreground">
                             A automação será ativada quando um comentário contiver qualquer uma dessas palavras.
                         </p>

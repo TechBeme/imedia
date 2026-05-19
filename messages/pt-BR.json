@@ -42,7 +42,8 @@
         "trigger": {
             "title": "Gatilho",
             "keywords": "Palavras-chave",
-            "keywordsPlaceholder": "Digite e pressione Enter",
+            "keywordsPlaceholder": "Digite uma palavra-chave...",
+            "addKeyword": "Adicionar palavra-chave",
             "matchMode": "Modo de correspondência",
             "contains": "Contém",
             "exact": "Exato",

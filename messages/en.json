@@ -42,7 +42,8 @@
         "trigger": {
             "title": "Trigger",
             "keywords": "Keywords",
-            "keywordsPlaceholder": "Type and press Enter",
+            "keywordsPlaceholder": "Type a keyword...",
+            "addKeyword": "Add keyword",
             "matchMode": "Match mode",
             "contains": "Contains",
             "exact": "Exact",

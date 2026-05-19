@@ -4,6 +4,8 @@ import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { X, Plus } from "lucide-react";
 import {
     Select,
     SelectContent,
@@ -31,26 +33,57 @@ export function TriggerConfig({
 }: TriggerConfigProps) {
     const t = useTranslations("automations.trigger");
 
-    const handleKeywordsInput = (value: string) => {
-        const split = value
-            .split(",")
-            .map((k) => k.trim())
-            .filter(Boolean);
-        onKeywordsChange(split);
+    const addKeyword = () => {
+        onKeywordsChange([...keywords, ""]);
+    };
+
+    const updateKeyword = (index: number, value: string) => {
+        const updated = [...keywords];
+        updated[index] = value;
+        onKeywordsChange(updated);
+    };
+
+    const removeKeyword = (index: number) => {
+        const updated = keywords.filter((_, i) => i !== index);
+        onKeywordsChange(updated);
     };
 
     return (
         <div className="space-y-4 rounded-lg border p-4">
             <h3 className="font-semibold">{t("title")}</h3>
-            <div className="space-y-2">
+            <div className="space-y-3">
                 <Label>{t("keywords")}</Label>
-                <Input
-                    placeholder={t("keywordsPlaceholder")}
-                    defaultValue={keywords.join(", ")}
-                    onChange={(e) => handleKeywordsInput(e.target.value)}
-                />
+                {keywords.map((kw, index) => (
+                    <div key={index} className="flex gap-2">
+                        <Input
+                            value={kw}
+                            placeholder={t("keywordsPlaceholder")}
+                            onChange={(e) =>
+                                updateKeyword(index, e.target.value)
+                            }
+                        />
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeKeyword(index)}
+                            disabled={keywords.length <= 1}
+                        >
+                            <X className="h-4 w-4" />
+                        </Button>
+                    </div>
+                ))}
+                <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addKeyword}
+                >
+                    <Plus className="mr-1 h-4 w-4" />
+                    {t("addKeyword")}
+                </Button>
                 <p className="text-xs text-muted-foreground">
-                    {keywords.length} keyword(s)
+                    {keywords.filter(Boolean).length} keyword(s)
                 </p>
             </div>
             <div className="space-y-2">
