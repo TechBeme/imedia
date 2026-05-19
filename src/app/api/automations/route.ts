@@ -2,8 +2,8 @@ import { NextRequest } from "next/server";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { db } from "@/db";
-import { automations, socialAccounts } from "@/db/schema";
-import { eq, and, desc } from "drizzle-orm";
+import { automations, automationLogs, automationActions, socialAccounts } from "@/db/schema";
+import { eq, and, desc, inArray } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { success, error, unauthorized, internalError } from "@/lib/api-response";
 import { withRateLimit } from "@/lib/api-guard";
@@ -27,7 +27,47 @@ export async function GET(req: NextRequest) {
                 .where(eq(automations.userId, session.user.id))
                 .orderBy(desc(automations.createdAt));
 
-            return success({ automations: list, stats: {}, actions: {} });
+            // Fetch stats per automation using simple SELECT + JS count (Neon-safe)
+            const automationIds = list.map((a) => a.id);
+            const stats: Record<string, { totalRuns: number; successRuns: number; failedRuns: number }> = {};
+            if (automationIds.length > 0) {
+                const logs = await db
+                    .select({
+                        automationId: automationLogs.automationId,
+                        status: automationLogs.status,
+                    })
+                    .from(automationLogs)
+                    .where(inArray(automationLogs.automationId, automationIds));
+
+                for (const log of logs) {
+                    const s = stats[log.automationId] || { totalRuns: 0, successRuns: 0, failedRuns: 0 };
+                    s.totalRuns += 1;
+                    if (log.status === "success") s.successRuns += 1;
+                    else if (log.status === "failed") s.failedRuns += 1;
+                    stats[log.automationId] = s;
+                }
+            }
+
+            // Fetch actions per automation (Neon-safe)
+            const actions: Record<string, Array<{ type: string; config: { messages?: string[] } }>> = {};
+            if (automationIds.length > 0) {
+                const actionRows = await db
+                    .select()
+                    .from(automationActions)
+                    .where(inArray(automationActions.automationId, automationIds))
+                    .orderBy(automationActions.order);
+
+                for (const row of actionRows) {
+                    const arr = actions[row.automationId] || [];
+                    arr.push({
+                        type: row.type,
+                        config: row.config as { messages?: string[] },
+                    });
+                    actions[row.automationId] = arr;
+                }
+            }
+
+            return success({ automations: list, stats, actions });
         } catch (err) {
             console.error("[automations GET] error:", err);
             return internalError("Failed to fetch automations");
